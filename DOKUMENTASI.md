@@ -361,13 +361,32 @@ Alur kerja berkas terjemahan:
 python3 tool/check_translations.py tool/translations/id.tsv   # cek nilai rusak
 python3 tool/todo_translations.py /tmp/todo.txt              # daftar yang belum
 python3 tool/merge_translations.py batch1.tsv batch2.tsv     # gabungkan batch
+python3 tool/audit_translations.py                           # tandai yang perlu dicek
+python3 tool/sample_audit.py                                 # sampel acak 100 kata
 python3 tool/build_words.py                                  # tulis words.tsv
 ```
 
-Kuncinya adalah romaji ASCII; hanya 5 kata yang romajinya bentrok (homofon
-seperti クラス "a class" dan くらす "to live"), untuk itu kunci kedua memakai
-suffix `#2`. `merge_translations.py` menolak kunci yang bukan romaji supaya sisa
-batch lama tidak ikut terbawa sebagai baris mati.
+Berkas terjemahan dan perannya:
+
+| Berkas | Kunci | Peran |
+| --- | --- | --- |
+| `translations/id.tsv` | romaji ASCII | terjemahan otomatis, kunci bentrok dapat suffix `#2` |
+| `translations/manual_fixes.tsv` | kata kana | koreksi manual, **diterapkan terakhir** |
+| `translations/whitelist.txt` | — | serapan dan nama diri yang sah tetap sama |
+| `translations/review.tsv` | kata kana | keluaran audit, baris yang perlu diperiksa |
+| `translations/uncertain.tsv` | kata kana | arti yang masih diragukan, perlu dicek manusia |
+| `translations/sample.tsv` | kata kana | sampel acak 100 kata (seed tetap) |
+
+`manual_fixes.tsv` menang atas `id.tsv` dan dikunci dengan **kata kana**, bukan
+romaji, supaya satu koreksi berlaku untuk semua homograf yang sama. Kalau
+kuncinya romaji, koreksi untuk `しょうじょ` (少女 "gadis muda") bisa ikut
+menimpa `しょうじょう` (上場 "stasiun terminal") karena keduanya dibaca mirip.
+
+Pemeriksaan ejaan otomatis **tidak dijalankan**: tidak ada kamus bahasa
+Indonesia berlisensi jelas yang tersedia luring. Paket `nlp-id` (MIT) hanya
+punya lemma korpus riset yang memuat bukan-kata, dan `espeak-ng` `id_dict`
+adalah kamus pelafalan. `audit_translations.py` menerima `--lemma-file` untuk
+memakai daftar kata sebagai **petunjuk kandidat**, bukan acuan benar/salah.
 
 ---
 
@@ -435,12 +454,18 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
    Satu-satunya efek ke huruf adalah pencatatan huruf yang tertukar (soal satu huruf).
 3. **Tidak ada sinkronisasi antar perangkat.** Data lokal murni, tanpa akun atau cloud. Menghapus data
    app berarti progres hilang.
-4. **1.112 dari 2.865 kata JLPT tidak punya rekaman utuh**, jadi suaranya dari TTS HP. Kalau voice
+4. **Semua 2.865 kata JLPT sudah punya rekaman utuh** (patch v7), jadi tidak
+   bergantung pada TTS HP. TTS hanya menyisakan 6.682 kata dari pool lama
+   (level kosong) yang muncul kalau saklar *Include other common words* hidup.
+   Kalau voice
    Jepang tidak terpasang, barulah dipakai cadangan huruf demi huruf (lebih lambat).
 5. **Kata dari pool lama (di luar JLPT) belum punya arti Bahasa Indonesia.** Semua 2.865 kata JLPT
-   sudah; sisa 7.834 kata masih memakai arti Inggris. Pool itu hanya muncul kalau saklar
-   *Include other common words* dinyalakan.
-6. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
+   sudah; sisa 7.826 kata itu **tidak punya arti sama sekali** (bukan Indonesia, bukan Inggris).
+   Pool itu hanya muncul kalau saklar *Include other common words* dinyalakan.
+7. **Sebagian arti Indonesia masih perlu diperiksa manusia.** Semuanya hasil terjemahan
+   otomatis; 41 sudah dikoreksi lewat `manual_fixes.tsv`, dan 8 yang masih
+   diragukan tercatat di `tool/translations/uncertain.tsv`.
+8. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
    (mis. ファ, ティ) tidak dimasukkan.
-7. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
-8. **Tutorial awal** hanya muncul sekali (flag `onboarded`).
+9. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
+10. **Tutorial awal** hanya muncul sekali (flag `onboarded`).

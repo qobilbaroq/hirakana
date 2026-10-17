@@ -241,3 +241,9 @@ drama
 bank
 department
 store
+sweater
+switer
+jiaket
+blouse
+rok
+

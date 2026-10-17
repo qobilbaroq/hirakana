@@ -25,14 +25,15 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi *Replay*, dan perbandingan hasil.
 - **Latihan baca**: tebak romaji dari kata sungguhan, rangkaian 2-3 huruf, atau satu huruf.
   Pool utamanya **2.865 kosakata JLPT N5, N4, dan N3** (tingkatnya bisa diatur di Settings),
-  semuanya sudah punya arti Bahasa Indonesia.
+  semuanya sudah punya arti Bahasa Indonesia (41 sudah dikoreksi manual, 8 masih
+  menunggu pemeriksaan manusia).
   Arti kata muncul setelah menjawab.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 
 **Suara (offline)**
 - Rekaman suara untuk setiap huruf, versi normal dan lambat.
-- Rekaman kata utuh untuk 1.753 dari 2.865 kata JLPT.
-- 1.112 kata tanpa rekaman dan rangkaian huruf dibacakan oleh **TTS HP** sebagai satu ucapan.
+- Rekaman suara utuh untuk **semua 2.865 kata JLPT**.
+- Kata pool lama dan rangkaian huruf dibacakan oleh **TTS HP** sebagai satu ucapan.
 - Kalau TTS tidak tersedia, baru dibunyikan huruf demi huruf dengan jeda pendek.
 - Pola putar ulang: normal, normal, lambat (bisa diganti di Settings).
 
