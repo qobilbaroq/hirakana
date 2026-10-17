@@ -48,6 +48,43 @@ class SettingsScreen extends StatelessWidget {
                     : settings.setAmoled,
               ),
               const SizedBox(height: AppSpacing.lg),
+              Text('Session length', style: AppText.section),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                'Cards or questions in one session. Minimum 10. '
+                'If you chose fewer letters than this, letters repeat.',
+                style: AppText.muted,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Slider(
+                      min: AppSettings.minSessionSize.toDouble(),
+                      max: AppSettings.maxSessionSize.toDouble(),
+                      divisions: (AppSettings.maxSessionSize -
+                              AppSettings.minSessionSize) ~/
+                          5,
+                      value: settings.sessionSize.toDouble(),
+                      label: '${settings.sessionSize}',
+                      onChanged: (v) => settings.setSessionSize(v.round()),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 40,
+                    child: Text('${settings.sessionSize}',
+                        textAlign: TextAlign.end, style: AppText.section),
+                  ),
+                ],
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Show word meaning'),
+                subtitle: const Text(
+                    'After a correct answer in reading practice, for words that have a meaning.'),
+                value: settings.showMeaning,
+                onChanged: settings.setShowMeaning,
+              ),
+              const SizedBox(height: AppSpacing.lg),
               Text('Daily goal', style: AppText.section),
               const SizedBox(height: AppSpacing.xs),
               Text('How many minutes feels easy for you each day.',
@@ -109,7 +146,8 @@ class SettingsScreen extends StatelessWidget {
               Text(
                 'Stroke order data: KanjiVG (CC BY-SA 3.0), kanjivg.tagaini.net\n'
                 'Letter voice clips: veardk/just-gojuon (MIT)\n'
-                'Word voice: HTS voice tohoku-f01, Tohoku University ICN Lab (CC BY 4.0)',
+                'Word voice: HTS voice tohoku-f01, Tohoku University ICN Lab (CC BY 4.0)\n'
+                'Word list: JMdict, EDRDG (CC BY-SA 4.0), edrdg.org',
                 style: AppText.muted,
               ),
             ],

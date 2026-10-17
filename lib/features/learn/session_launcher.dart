@@ -67,17 +67,16 @@ Future<void> launchSession(
   }
 
   if (mode == 'words') {
-    final count = (await WordRepository.instance.available(args.type)).length;
-    if (count < WordRepository.minWords) {
+    if (!await WordRepository.instance.canRun(args.type)) {
       if (!context.mounted) return;
       final goChoose = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Not enough words yet'),
+          title: const Text('Choose a few more letters'),
           content: Text(
-            'Word practice only uses words made from your chosen letters. '
-            'Right now only $count word${count == 1 ? '' : 's'} fit. '
-            'Add a few more letters to unlock more.',
+            'Reading practice needs at least '
+            '${WordRepository.minLetters} chosen letters in a script '
+            'so it can make 4 answer choices.',
           ),
           actions: [
             TextButton(

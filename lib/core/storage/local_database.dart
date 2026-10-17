@@ -47,16 +47,30 @@ class LocalDatabase {
     ''');
   }
 
+  /// Riwayat kata yang sudah pernah muncul di latihan baca, supaya kata yang
+  /// belum pernah / paling lama tidak muncul diutamakan.
+  static Future<void> _createWordHistory(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS word_history (
+        text TEXT PRIMARY KEY,
+        seen_count INTEGER NOT NULL DEFAULT 1,
+        last_at INTEGER NOT NULL
+      )
+    ''');
+  }
+
   Future<Database> _open() async {
     final path = _path ?? join(await getDatabasesPath(), 'kana_quest.db');
     return openDatabase(
       path,
-      version: 2,
+      version: 3,
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) await _createConfusions(db);
+        if (oldVersion < 3) await _createWordHistory(db);
       },
       onCreate: (db, version) async {
         await _createConfusions(db);
+        await _createWordHistory(db);
         await db.execute('''
           CREATE TABLE kana_progress (
             kana_id TEXT PRIMARY KEY,

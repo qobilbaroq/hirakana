@@ -62,8 +62,8 @@ class _PracticeScreenState extends State<PracticeScreen> {
           const SizedBox(height: AppSpacing.sm),
           _PracticeTile(
             icon: Icons.menu_book_outlined,
-            title: 'Read words',
-            subtitle: 'Real words made from your chosen letters.',
+            title: 'Reading practice',
+            subtitle: 'Words and letter groups. Pick the romaji.',
             onTap: () => launchSession(context,
                 mode: 'words', args: SessionArgs(type: _type)),
           ),

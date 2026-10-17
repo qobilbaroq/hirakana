@@ -21,7 +21,15 @@ class AppSettings extends ChangeNotifier {
 
   static const goalChoices = [5, 10, 15, 20, 30];
 
+  /// Jumlah kartu/soal per sesi: minimal 10, kelipatan 5.
+  static const minSessionSize = 10;
+  static const maxSessionSize = 60;
+
   int goalMinutes = 10;
+  int sessionSize = minSessionSize;
+
+  /// Tampilkan arti kata setelah jawaban benar (hanya untuk kata yang punya arti).
+  bool showMeaning = false;
   ThemeMode themeMode = ThemeMode.system;
   /// Hanya berlaku kalau tema aktif gelap.
   bool amoled = false;
@@ -37,6 +45,11 @@ class AppSettings extends ChangeNotifier {
       'dark' => ThemeMode.dark,
       _ => ThemeMode.system,
     };
+    sessionSize = (int.tryParse(await _repo.getMeta('session_size') ?? '') ??
+            minSessionSize)
+        .clamp(minSessionSize, maxSessionSize)
+        .toInt();
+    showMeaning = (await _repo.getMeta('show_meaning')) == '1';
     amoled = (await _repo.getMeta('theme_amoled')) == '1';
     autoPlay = (await _repo.getMeta('audio_autoplay')) != '0';
     final pattern = await _repo.getMeta('audio_pattern');
@@ -50,6 +63,18 @@ class AppSettings extends ChangeNotifier {
     goalMinutes = v;
     notifyListeners();
     await _repo.setMeta('goal_minutes', '$v');
+  }
+
+  Future<void> setSessionSize(int v) async {
+    sessionSize = v.clamp(minSessionSize, maxSessionSize).toInt();
+    notifyListeners();
+    await _repo.setMeta('session_size', '$sessionSize');
+  }
+
+  Future<void> setShowMeaning(bool v) async {
+    showMeaning = v;
+    notifyListeners();
+    await _repo.setMeta('show_meaning', v ? '1' : '0');
   }
 
   Future<void> setThemeMode(ThemeMode m) async {

@@ -17,9 +17,11 @@ class KanaAudioService {
   AudioPlayer? _player;
   String? _cycleKey;
   int _count = 0;
+  int _sequenceId = 0;
 
   /// Mengembalikan false kalau gagal, supaya latihan visual tetap jalan.
   Future<bool> _playAsset(String path, {String? fallback}) async {
+    _sequenceId++; // membatalkan putaran berurutan yang masih jalan
     final player = _player ??= AudioPlayer();
     try {
       await player.stop();
@@ -61,6 +63,31 @@ class KanaAudioService {
   /// Putar kata utuh mengikuti pola putar yang sama.
   Future<bool> playWordCycle(Word word) =>
       playWord(word.reading, slow: _nextIsSlow('word:${word.text}'));
+
+  /// Memutar beberapa huruf berurutan (untuk rangkaian huruf dan kata yang
+  /// belum punya rekaman utuh). Mengikuti pola normal/lambat; versi lambat
+  /// diberi jeda lebih panjang antar huruf.
+  Future<void> playKanaSequence(List<Kana> letters, {required String key}) async {
+    final slow = _nextIsSlow('seq:$key');
+    final id = ++_sequenceId;
+    final player = _player ??= AudioPlayer();
+    for (final k in letters) {
+      if (id != _sequenceId) return;
+      try {
+        await player.stop();
+        final done = player.onPlayerComplete.first;
+        await player.play(AssetSource(
+            slow ? 'audio/slow/${k.romaji}.mp3' : 'audio/${k.romaji}.mp3'));
+        await done.timeout(const Duration(seconds: 4));
+      } catch (_) {}
+      await Future<void>.delayed(Duration(milliseconds: slow ? 350 : 40));
+    }
+  }
+
+  void stopSequence() {
+    _sequenceId++;
+    _player?.stop();
+  }
 
   /// Panggil saat pindah ke kartu/soal berikutnya.
   void resetCycle() {

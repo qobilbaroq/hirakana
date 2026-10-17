@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -14,49 +13,13 @@ import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/session_header.dart';
 import '../../data/repositories/kana_repository.dart';
 import '../../data/repositories/word_repository.dart';
-import '../../data/seed/word_data.dart';
+import '../../data/seed/kana_data.dart';
 import '../learn/session_controller.dart';
+import 'word_questions.dart';
 
-class _WordQuestion {
-  const _WordQuestion({
-    required this.word,
-    required this.options,
-  });
-
-  final Word word;
-  final List<String> options; // cara baca (romaji), salah satunya benar
-  String get answer => word.reading;
-}
-
-/// Pilihan jawaban untuk satu kata: [answer] selalu ikut, sisanya dipilih dari
-/// kata lain yang panjang romajinya mirip supaya tidak bisa ditebak dari
-/// panjang saja. Dipisah dari widget supaya bisa diuji langsung.
-List<String> buildWordOptions(
-  Word w,
-  List<Word> available,
-  Random rng,
-) {
-  int gap(Word x) => (x.reading.length - w.reading.length).abs();
-  final others = [...available, ...allWords]
-    ..removeWhere((x) => x.text == w.text);
-  others.shuffle(rng);
-  others.sort((a, b) => gap(a).compareTo(gap(b)));
-
-  final options = <String>{w.reading};
-  for (final x in others) {
-    options.add(x.reading);
-    if (options.length == 4) break;
-  }
-  final result = options.toList()..shuffle(rng);
-  assert(
-    result.contains(w.reading) && result.length == 4,
-    'Pilihan kata tidak sah untuk "${w.text}" (${w.reading}): $result',
-  );
-  return result;
-}
-
-/// Latihan membaca kata: lihat kata, pilih cara baca atau artinya.
-/// Hanya memakai kata yang tersusun dari huruf pilihan pengguna.
+/// Latihan baca: lihat kata, rangkaian huruf, atau satu huruf, lalu pilih cara
+/// bacanya (romaji). Soal diambil dari huruf pilihan pengguna; kata yang
+/// belum pernah / paling lama tidak muncul diutamakan. Tidak menanyakan arti.
 class WordPracticeScreen extends StatefulWidget {
   const WordPracticeScreen({super.key, required this.args});
 
@@ -68,10 +31,9 @@ class WordPracticeScreen extends StatefulWidget {
 
 class _WordPracticeScreenState extends State<WordPracticeScreen> {
   final _repo = KanaRepository.instance;
-  final _rng = Random();
   final _clock = Stopwatch();
 
-  final List<_WordQuestion> _questions = [];
+  final List<ReadQuestion> _questions = [];
   bool _loaded = false;
   int _index = 0;
   int _correct = 0;
@@ -89,25 +51,21 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
 
   @override
   void dispose() {
+    KanaAudioService.instance.stopSequence();
     if (!_finished) _save();
     super.dispose();
   }
 
   Future<void> _start() async {
-    final pool = await WordRepository.instance.available(widget.args.type);
-    pool.shuffle(_rng);
-    final chosen = pool.take(WordRepository.sessionSize).toList();
-    for (final w in chosen) {
-      _questions.add(_build(w, pool));
-    }
+    _questions.addAll(await buildReadingSession(
+      type: widget.args.type,
+      size: AppSettings.instance.sessionSize,
+    ));
     _sessionId = await _repo.startSession('words', widget.args.type);
     _clock.start();
     if (!mounted) return;
     setState(() => _loaded = true);
   }
-
-  _WordQuestion _build(Word w, List<Word> available) =>
-      _WordQuestion(word: w, options: buildWordOptions(w, available, _rng));
 
   Future<void> _save() async {
     final id = _sessionId;
@@ -128,17 +86,39 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
       _answeredCount++;
       if (ok) _correct++;
     });
+    if (q.kind == ReadKind.word) {
+      // Catat supaya kata ini tidak cepat muncul lagi.
+      WordRepository.instance.markSeen([q.text]);
+    }
+    if (!ok && q.kind == ReadKind.single) {
+      // Huruf yang tertukar dicatat untuk "Often mixed up".
+      for (final k in allKana) {
+        if (k.type == q.letters.first.type && k.romaji == option) {
+          _repo.recordConfusion(q.letters.first, k);
+          break;
+        }
+      }
+    }
     // Suara baru diputar setelah menjawab, supaya tidak membocorkan jawaban.
     if (AppSettings.instance.autoPlay) _hear(q);
     await _save();
   }
 
-  /// Putar kata utuh (normal, normal, lambat sesuai Settings).
-  void _hear(_WordQuestion q) {
-    KanaAudioService.instance.playWordCycle(q.word);
+  /// Satu huruf: rekaman huruf. Kata dengan rekaman utuh: rekaman kata.
+  /// Selain itu (rangkaian huruf, kata tanpa rekaman): huruf dibunyikan berurutan.
+  void _hear(ReadQuestion q) {
+    final audio = KanaAudioService.instance;
+    if (q.kind == ReadKind.single) {
+      audio.playCycle(q.letters.first);
+    } else if (q.hasWholeWordAudio) {
+      audio.playWordCycle(q.word!);
+    } else {
+      audio.playKanaSequence(q.letters, key: q.text);
+    }
   }
 
   void _next() {
+    KanaAudioService.instance.stopSequence();
     KanaAudioService.instance.resetCycle();
     if (_index + 1 >= _questions.length) {
       _finished = true;
@@ -165,6 +145,12 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     });
   }
 
+  String _prompt(ReadQuestion q) => switch (q.kind) {
+        ReadKind.word => 'How do you read this word?',
+        ReadKind.chunk => 'How do you read these letters?',
+        ReadKind.single => 'What is the romaji of this letter?',
+      };
+
   @override
   Widget build(BuildContext context) {
     if (!_loaded) {
@@ -180,10 +166,15 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
           child: Column(
             children: [
               SessionHeader(
-                title: 'WORDS · ${_index + 1} / ${_questions.length}',
+                title: 'READING · ${_index + 1} / ${_questions.length}',
                 progress: _index / _questions.length,
                 leadingIcon: Icons.arrow_back,
                 onLeading: () => Navigator.pop(context),
+                trailing: IconButton(
+                  tooltip: 'Play sound',
+                  icon: const Icon(Icons.volume_up_outlined),
+                  onPressed: _answered ? () => _hear(q) : null,
+                ),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -191,14 +182,14 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'How do you read this word?',
+                        _prompt(q),
                         textAlign: TextAlign.center,
                         style: AppText.section,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: KanaCharacter(q.word.text, size: 64),
+                        child: KanaCharacter(q.text, size: 72),
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       _grid(q),
@@ -226,7 +217,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     );
   }
 
-  Widget _grid(_WordQuestion q) {
+  Widget _grid(ReadQuestion q) {
     Widget tile(String option) {
       var state = OptionState.idle;
       if (_answered) {
@@ -260,9 +251,11 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     return Column(children: rows);
   }
 
-  Widget _feedback(_WordQuestion q) {
+  Widget _feedback(ReadQuestion q) {
     if (!_answered) return const SizedBox(height: 24);
     final ok = _picked == q.answer;
+    final meaning = q.word?.meaning ?? '';
+    final showMeaning = ok && AppSettings.instance.showMeaning && meaning.isNotEmpty;
     return Column(
       children: [
         Row(
@@ -279,7 +272,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
-          '${q.word.text}  ·  ${q.word.reading}',
+          '${q.text}  ·  ${q.answer}',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: 'Noto Sans JP',
@@ -288,10 +281,9 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
             color: AppColors.ink,
           ),
         ),
-        // Arti baru dibuka setelah jawaban benar.
-        if (ok) ...[
+        if (showMeaning) ...[
           const SizedBox(height: AppSpacing.xs),
-          Text(q.word.meaning, textAlign: TextAlign.center, style: AppText.muted),
+          Text(meaning, textAlign: TextAlign.center, style: AppText.muted),
         ],
         TextButton.icon(
           onPressed: () => _hear(q),

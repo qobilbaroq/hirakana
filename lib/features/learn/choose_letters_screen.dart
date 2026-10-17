@@ -4,6 +4,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/widgets/kana_character.dart';
+import '../../core/widgets/kana_group_row.dart';
 import '../../core/widgets/mastery_indicator.dart';
 import '../../data/models/kana.dart';
 import '../../data/repositories/kana_repository.dart';
@@ -153,13 +154,7 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
                       ),
                     ),
                   ),
-                  Wrap(
-                    spacing: AppSpacing.sm,
-                    runSpacing: AppSpacing.sm,
-                    children: [
-                      for (final k in entry.value) _tile(k),
-                    ],
-                  ),
+                  kanaGroupRow(entry.value, _tile),
                   const SizedBox(height: AppSpacing.sm),
                 ],
                 const SizedBox(height: AppSpacing.lg),
@@ -185,7 +180,6 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
           borderRadius: BorderRadius.circular(12),
           onTap: () => _toggle(k),
           child: Container(
-            width: 64,
             height: 68,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
