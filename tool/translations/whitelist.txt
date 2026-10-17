@@ -233,3 +233,11 @@ web
 blog
 wi-fi
 usb
+
+# --- audit v7 batch 3: serapan sah yang identik dengan Inggris ---
+buddha
+jeans
+drama
+bank
+department
+store
