@@ -40,7 +40,13 @@ def bad_caps(value):
     return False
 
 
-def main(paths):
+def main(paths, kana_keys=False):
+    """[kana_keys] untuk berkas yang kuncinya kana (manual_fixes.tsv).
+
+    id.tsv memakai romaji sebagai kunci supaya bisa dipakai build_words.py;
+    manual_fixes.tsv memakai kata kana sebagai kunci supaya satu koreksi
+    berlaku untuk semua homograf yang sama, bukan cuma satu romaji.
+    """
     total = bad = 0
     for path in paths:
         for no, raw in enumerate(open(path, encoding='utf-8'), 1):
@@ -55,7 +61,7 @@ def main(paths):
                 continue
             key, value = parts[0], parts[1]
             why = None
-            if not KEY.match(key):
+            if not kana_keys and not KEY.match(key):
                 why = 'kunci bukan romaji'
             elif not value.strip():
                 why = 'kosong'
@@ -75,4 +81,8 @@ def main(paths):
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:] or ['tool/translations/id.tsv']))
+    argv = sys.argv[1:]
+    kana = '--kana-keys' in argv
+    if kana:
+        argv.remove('--kana-keys')
+    sys.exit(main(argv or ['tool/translations/id.tsv'], kana_keys=kana))
