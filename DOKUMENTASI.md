@@ -1,7 +1,6 @@
 # Dokumentasi Kana Quest
 
-Penjelasan cara kerja app. Untuk cara menjalankan dan membangun, lihat [README.md](README.md);
-untuk rilis Android, lihat [RELEASE.md](RELEASE.md).
+Penjelasan cara kerja app. Untuk cara menjalankan dan membangun, lihat [README.md](README.md).
 
 Isi:
 

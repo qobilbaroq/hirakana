@@ -72,14 +72,12 @@ flutter build ipa --release                   # iOS (harus di macOS + Xcode)
 ```
 
 Hasil build ada di `build/<platform>/`. APK Android: `build/app/outputs/flutter-apk/`.
-Panduan lengkap rilis Android (nama app, ikon, tanda tangan, build) ada di **[RELEASE.md](RELEASE.md)**.
 
 ## Dokumentasi
 
 | Dokumen | Isi |
 | --- | --- |
 | [DOKUMENTASI.md](DOKUMENTASI.md) | Cara kerja app: sistem belajar, antrean sesi, kuis, latihan baca, layar, aset, database, batasan |
-| [RELEASE.md](RELEASE.md) | Panduan rilis Android, daftar fitur untuk halaman toko, catatan rilis |
 
 ## Struktur proyek
 
