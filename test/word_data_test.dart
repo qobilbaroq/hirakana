@@ -174,6 +174,30 @@ void main() {
           level: WordLevel.n5n4n3);
       expect(n3.length, greaterThan(n5.length));
     });
+
+    test('TIADA kata tanpa arti yang lolos ke pool mana pun', () {
+      // 7.568 dari 7.826 kata pool lama tidak punya arti Indonesia maupun
+      // Inggris. Kalau ikut masuk, latihan baca untuk huruf a-o/s-ta jadi
+      // 903 soal dengan 590 soal tanpa arti.
+      for (final includeExtra in [false, true]) {
+        for (final type in ['hiragana', 'katakana', 'mixed']) {
+          for (final level in WordLevel.values) {
+            final pool = WordRepository.filterAvailable(
+              all, _tenLetters, type,
+              level: level,
+              includeExtra: includeExtra,
+            );
+            final tanpa = pool.where((w) => !w.hasAnyMeaning).toList();
+            expect(
+              tanpa, isEmpty,
+              reason: 'type=$type level=${level.name} '
+                  'includeExtra=$includeExtra: '
+                  '${tanpa.take(5).map((w) => w.text)}',
+            );
+          }
+        }
+      }
+    });
   });
 
   group('pemilihan kata memprioritaskan level rendah', () {

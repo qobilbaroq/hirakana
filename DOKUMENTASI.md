@@ -459,9 +459,12 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
    (level kosong) yang muncul kalau saklar *Include other common words* hidup.
    Kalau voice
    Jepang tidak terpasang, barulah dipakai cadangan huruf demi huruf (lebih lambat).
-5. **Kata dari pool lama (di luar JLPT) belum punya arti Bahasa Indonesia.** Semua 2.865 kata JLPT
-   sudah; sisa 7.826 kata itu **tidak punya arti sama sekali** (bukan Indonesia, bukan Inggris).
-   Pool itu hanya muncul kalau saklar *Include other common words* dinyalakan.
+5. **Kata dari pool lama (di luar JLPT) hampir semuanya tanpa arti.** Semua 2.865 kata JLPT
+   sudah punya arti; dari 7.826 kata pool lama hanya **258** yang punya arti, sisanya nol
+   juga. Karena itu `filterAvailable` **membuang kata pool lama yang tidak punya arti**, sehingga
+   tidak ada soal yang jawabannya tanpa arti. Dengan saklar *Include other common words* hidup
+   dan huruf a-o/s-ta aktif, pool latihan baca hiragana = 313 kata (306 JLPT + 7 pool lama),
+   bukan 903.
 7. **Sebagian arti Indonesia masih perlu diperiksa manusia.** Semuanya hasil terjemahan
    otomatis; 41 sudah dikoreksi lewat `manual_fixes.tsv`, dan 8 yang masih
    diragukan tercatat di `tool/translations/uncertain.tsv`.

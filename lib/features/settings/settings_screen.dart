@@ -106,7 +106,9 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Include other common words'),
                 subtitle: const Text(
-                    'Tambahkan kata umum di luar JLPT. Nivel N5 dulu.'),
+                    'Tambahkan kata umum di luar JLPT yang punya arti. '
+                    'Hanya sebagian kecil dari pool lama yang sudah '
+                    'diterjemahkan.'),
                 value: settings.wordExtra,
                 onChanged: settings.setWordExtra,
               ),

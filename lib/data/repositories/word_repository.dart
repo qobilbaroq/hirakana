@@ -133,8 +133,14 @@ class WordRepository {
 
   /// Dipisah dari [available] supaya bisa diuji tanpa database.
   ///
-  /// [level] deciding tingkat JLPT mana yang boleh dipakai. Kata dengan level
-  /// kosong (kata umum non-JLPT) hanya ikut kalau [includeExtra] hidup.
+  /// [level] menentukan tingkat JLPT mana yang boleh dipakai. Kata dengan
+  /// level kosong (kata umum non-JLPT) hanya ikut kalau [includeExtra] hidup,
+  /// DAN kata itu wajib punya arti.
+  ///
+  /// Kenapa wajib punya arti: dari 7.826 kata pool lama, hanya 258 yang punya
+  /// arti Indonesia dan sisanya nol juga. Kalau yang tidak punya arti ikut
+  /// masuk, matikan saklarnya pun latihan baca jadi 903 soal dengan 590 soal
+  /// tanpa arti — lebih buruk daripada tidak menambah apa-apa.
   static List<Word> filterAvailable(
     List<Word> words,
     Set<String> active,
@@ -146,6 +152,7 @@ class WordRepository {
     for (final w in words) {
       if (w.level.isEmpty) {
         if (!includeExtra) continue;
+        if (!w.hasAnyMeaning) continue;
       } else if (!level.includes(w.level)) {
         continue;
       }
