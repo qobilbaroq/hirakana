@@ -1,0 +1,18 @@
+# Arti yang masih-diragukan. Format:
+# kata<TAB>bacaan<TAB>arti-sekarang<TAB>arti-inggris<TAB>alasan-ragu
+#
+# Ini bukan daftar kesalahan. Ini daftar yang perlu dicek manusia karena
+# saya tidak yakin, atau karena maknanya tergantung konteks.
+#
+# Cara dapatnya: 100 kata acak (seed tetap 20261018, 40 N5 / 30 N4 / 30 N3)
+# lewat tool/sample_audit.py, diperiksa satu per satu; sisanya dari flag
+# 'gloss' dan 'token' di tool/translations/review.tsv.
+
+ふじゆう	fujiyuu	cacat, terbatas	disability, handicap, inconvenience	不自由 memakai kata 'terbatas' yang juga bisa berarti 'dibatasi'. sourced dari医学 (medis) sehingga santer biasanya 'cacat' atau 'kelainan', tapi kedua kemungkinan itu beda rasa dan saya tidak yakin mana yang lebih pas untuk pemula.
+ライター	raitaa	penulis, korek	lighter; writer	Termasuk meanings 'eraser' (penghapus papan tulis) yang tidak ada di gloss sumber dan tidak saya masukkan karena mungkin tidak terlalu sering dipakai.
+はえる	haeru	tumbuh, tumbuhnya	to grow, to spring up; to cut (teeth)	Gloss kedua (tumbuhnya gigi) tidak saya masukkan karena 'tumbuh' sudah menutupinya untuk pemula.
+やける	yakeru	terbakar	to burn, to be roasted	Gloss lengkap juga memuat berkarat (besi) dan menjadi precursors kulit (matahari), tidak saya masukkan karena terlalu jauh dari makna dasar.
+デパート	depaato	department store	department store	'department store' memang dipakai di Indonesia tapi yang lebih lazim 'mal'. Perlu keputusan: pertahankan serapan atau ganti.
+ジュース	juusu	jus	juice, soft drink; deuce	Gloss ketiga (deuce = 40-40 tenis) sengaja tidak dimasukkan karena sangat niche.
+ノック	nokku	ketukan	knock; fungo (baseball)	Sama seperti di atas: gloss kedua (fango baseball) tidak dimasukkan.
+ひっし	hisshi	putus asa	desperation, frantic, inevitable result	'putus asa' terasa terlalu被动 (pasif) untuk 必死 yang aktif dan penuh semangat. Kandidat lain: 'berGtkonsentrasi' atau ' desperate'.
