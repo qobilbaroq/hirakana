@@ -6,6 +6,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
+import '../../core/audio/system_tts_service.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/widgets/answer_option.dart';
 import '../../core/widgets/kana_character.dart';
@@ -104,17 +105,46 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     await _save();
   }
 
-  /// Satu huruf: rekaman huruf. Kata dengan rekaman utuh: rekaman kata.
-  /// Selain itu (rangkaian huruf, kata tanpa rekaman): huruf dibunyikan berurutan.
-  void _hear(ReadQuestion q) {
-    final audio = KanaAudioService.instance;
-    if (q.kind == ReadKind.single) {
-      audio.playCycle(q.letters.first);
-    } else if (q.hasWholeWordAudio) {
-      audio.playWordCycle(q.word!);
-    } else {
-      audio.playKanaSequence(q.letters, key: q.text);
-    }
+  /// Rantai suara: satu huruf pakai rekaman huruf, kata berrekaman pakai rekaman
+  /// kata, sisanya dibacakan TTS sistem sebagai satu ucapan, dan hanya kalau
+  /// TTS tidak tersedia barulah huruf dibunyikan berurutan.
+  ///
+  /// Memanggil [_warnMissingJapaneseVoice] tepat satu kali per sesi kalau voice
+  /// Jepang tidak terpasang di perangkat.
+  Future<void> _hear(ReadQuestion q) async {
+    final ok = await KanaAudioService.instance.playRead(
+      letters: q.letters,
+      word: q.word,
+      text: q.text,
+      key: q.text,
+      // Jenis soalnya, bukan jumlah kana: kata seperti ツー cuma punya satu
+      // kana dan harus tetap dibacakan utuh.
+      isSingleLetter: q.kind == ReadKind.single,
+    );
+    if (!ok) _warnMissingJapaneseVoice();
+  }
+
+  /// Snackbar sekali per sesi: memberi tahu cara memasang voice Jepang.
+  bool _warnedVoice = false;
+
+  void _warnMissingJapaneseVoice() {
+    if (_warnedVoice) return;
+    // Pemanggilan ini datang dari _hear() setelah await (TTS + pemutaran).
+    // Kalau pengguna sudah keluar dari sesi, context-nya tidak hidup lagi.
+    if (!mounted) return;
+    final tts = SystemTtsService.instance;
+    // Jangan pesan kalau ini cuma soal satu huruf: tidak butuh TTS sama sekali.
+    if (!tts.japaneseVoiceChecked) return;
+    if (tts.japaneseVoiceAvailable) return;
+    _warnedVoice = true;
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(const SnackBar(
+        content: Text(
+          'Suara Jepang belum terpasang di HP. '
+          'Pasang di Pengaturan > Text-to-speech.',
+        ),
+      ));
   }
 
   void _next() {
@@ -254,8 +284,14 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
   Widget _feedback(ReadQuestion q) {
     if (!_answered) return const SizedBox(height: 24);
     final ok = _picked == q.answer;
-    final meaning = q.word?.meaning ?? '';
-    final showMeaning = ok && AppSettings.instance.showMeaning && meaning.isNotEmpty;
+    // Arti muncul setelah menjawab, benar ATAU salah: kalau hanya muncul saat
+    // benar, pengguna merasa artinya hilang saat masih belajar.
+    final word = q.word;
+    final showMeaning =
+        AppSettings.instance.showMeaning && (word?.hasAnyMeaning ?? false);
+    final meaningIsIndo = (word?.meaning ?? '').isNotEmpty;
+    final meaning = word?.displayMeaning ?? '';
+    final kanji = word?.kanji ?? '';
     return Column(
       children: [
         Row(
@@ -281,9 +317,39 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
             color: AppColors.ink,
           ),
         ),
+        if (kanji.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            kanji,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Noto Sans JP',
+              fontSize: 14,
+              color: AppColors.muted,
+            ),
+          ),
+        ],
         if (showMeaning) ...[
           const SizedBox(height: AppSpacing.xs),
-          Text(meaning, textAlign: TextAlign.center, style: AppText.muted),
+          // Arti Indonesia; kalau kosong pakai arti Inggris berlabel EN.
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!meaningIsIndo)
+                Padding(
+                  padding: const EdgeInsets.only(top: 3, right: 4),
+                  child: Text('EN', style: AppText.overline),
+                ),
+              Flexible(
+                child: Text(
+                  meaning,
+                  textAlign: TextAlign.center,
+                  style: AppText.muted,
+                ),
+              ),
+            ],
+          ),
         ],
         TextButton.icon(
           onPressed: () => _hear(q),

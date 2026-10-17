@@ -78,11 +78,37 @@ class SettingsScreen extends StatelessWidget {
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Show word meaning'),
+                title: const Text('Tampilkan arti kata setelah menjawab'),
                 subtitle: const Text(
-                    'After a correct answer in reading practice, for words that have a meaning.'),
+                    'Arti muncul setelah kamu menjawab, benar atau salah.'),
                 value: settings.showMeaning,
                 onChanged: settings.setShowMeaning,
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              Text('Tingkat kata', style: AppText.section),
+              const SizedBox(height: AppSpacing.sm),
+              Wrap(
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
+                children: [
+                  for (final l in WordLevel.values)
+                    ChoiceChip(
+                      label: Text(l.label),
+                      selected: settings.wordLevel == l,
+                      selectedColor: AppColors.sage.withValues(alpha: 0.35),
+                      backgroundColor: AppColors.sand,
+                      side: BorderSide.none,
+                      onSelected: (_) => settings.setWordLevel(l),
+                    ),
+                ],
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Include other common words'),
+                subtitle: const Text(
+                    'Tambahkan kata umum di luar JLPT. Nivel N5 dulu.'),
+                value: settings.wordExtra,
+                onChanged: settings.setWordExtra,
               ),
               const SizedBox(height: AppSpacing.lg),
               Text('Daily goal', style: AppText.section),

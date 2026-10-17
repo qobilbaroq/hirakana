@@ -3,6 +3,8 @@ import 'package:audioplayers/audioplayers.dart';
 import '../../data/models/kana.dart';
 import '../../data/seed/word_data.dart';
 import '../settings/app_settings.dart';
+import 'audio_source.dart';
+import 'system_tts_service.dart';
 
 /// Memutar suara dari file audio yang ikut di dalam aplikasi (offline):
 ///   assets/audio/<romaji>.mp3             huruf, normal (rekaman asli)
@@ -64,11 +66,15 @@ class KanaAudioService {
   Future<bool> playWordCycle(Word word) =>
       playWord(word.reading, slow: _nextIsSlow('word:${word.text}'));
 
-  /// Memutar beberapa huruf berurutan (untuk rangkaian huruf dan kata yang
-  /// belum punya rekaman utuh). Mengikuti pola normal/lambat; versi lambat
-  /// diberi jeda lebih panjang antar huruf.
-  Future<void> playKanaSequence(List<Kana> letters, {required String key}) async {
-    final slow = _nextIsSlow('seq:$key');
+  /// Memutar beberapa huruf berurutan. Ini CADANGAN TERAKHIR: hanya dipakai
+  /// kalau TTS sistem tidak tersedia atau gagal. Jeda antar huruf sengaja
+  /// pendek supaya terdengar menyambung, bukan terputus-putus.
+  Future<void> playKanaSequence(
+    List<Kana> letters, {
+    required String key,
+    bool? slowOverride,
+  }) async {
+    final slow = slowOverride ?? _nextIsSlow('seq:$key');
     final id = ++_sequenceId;
     final player = _player ??= AudioPlayer();
     for (final k in letters) {
@@ -80,7 +86,55 @@ class KanaAudioService {
             slow ? 'audio/slow/${k.romaji}.mp3' : 'audio/${k.romaji}.mp3'));
         await done.timeout(const Duration(seconds: 4));
       } catch (_) {}
-      await Future<void>.delayed(Duration(milliseconds: slow ? 350 : 40));
+      await Future<void>.delayed(Duration(milliseconds: slow ? 90 : 15));
+    }
+  }
+
+  /// Memutar suara satu soal latihan baca, mengikuti rantai:
+  /// rekaman huruf -> rekaman kata -> TTS sistem -> huruf demi huruf.
+  ///
+  /// Pola putar (normal, normal, lambat) dihitung SEKALI di sini supaya
+  /// pergantian ke cadangan tidak memakai counter dua kali.
+  Future<bool> playRead({
+    required List<Kana> letters,
+    required Word? word,
+    required String text,
+    required String key,
+    required bool isSingleLetter,
+  }) async {
+    if (letters.isEmpty) return false;
+    // Hanya periksa ketersediaan TTS kalau benar-benar dipakai. Kalau kata
+    // ini punya rekaman (atau soalnya satu huruf), probing TTS menambah jeda
+    // tanpa manfaat dan bisa membuat peringatan suara Jepang muncul
+    // padahal TTS tidak akan dipakai.
+    final needsTts = word == null || !word.hasAudio;
+    final ttsReady =
+        needsTts && await SystemTtsService.instance.ensureAvailable();
+    final source = pickReadAudioSourceFor(
+      letters: letters,
+      word: word,
+      isSingleLetter: isSingleLetter,
+      ttsAvailable: ttsReady,
+    );
+
+    switch (source) {
+      case AudioSource.letterClip:
+        return play(letters.first.romaji, slow: _nextIsSlow('kana:${letters.first.id}'));
+
+      case AudioSource.wordClip:
+        return playWord(word!.reading, slow: _nextIsSlow('word:${word.text}'));
+
+      case AudioSource.systemTts:
+        final slow = _nextIsSlow('tts:$key');
+        if (await SystemTtsService.instance.speak(text, slow: slow)) return true;
+        // TTS gagal: pakai cadangan huruf demi huruf, dengan keputusan lambat
+        // yang SUDAH dihitung di atas.
+        await playKanaSequence(letters, key: key, slowOverride: slow);
+        return false;
+
+      case AudioSource.letterSequence:
+        await playKanaSequence(letters, key: key);
+        return true;
     }
   }
 

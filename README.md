@@ -23,13 +23,17 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Kuis** 5 jenis: kana ke bunyi, bunyi ke kana, ketik romaji, hiragana vs katakana,
   dan *look-alike drill* untuk huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi *Replay*, dan perbandingan hasil.
-- **Latihan baca**: tebak romaji dari kata sungguhan (sekitar 9 ribu kata), rangkaian 2-3 huruf,
-  atau satu huruf. Kata yang belum pernah muncul diutamakan, jadi tidak itu-itu saja.
+- **Latihan baca**: tebak romaji dari kata sungguhan, rangkaian 2-3 huruf, atau satu huruf.
+  Pool utamanya **2.865 kosakata JLPT N5, N4, dan N3** (tingkatnya bisa diatur di Settings),
+  semuanya sudah punya arti Bahasa Indonesia.
+  Arti kata muncul setelah menjawab.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 
 **Suara (offline)**
 - Rekaman suara untuk setiap huruf, versi normal dan lambat.
-- Rekaman kata utuh untuk ribuan kata; kata lain dibunyikan huruf demi huruf.
+- Rekaman kata utuh untuk 1.753 dari 2.865 kata JLPT.
+- 1.112 kata tanpa rekaman dan rangkaian huruf dibacakan oleh **TTS HP** sebagai satu ucapan.
+- Kalau TTS tidak tersedia, baru dibunyikan huruf demi huruf dengan jeda pendek.
 - Pola putar ulang: normal, normal, lambat (bisa diganti di Settings).
 
 **Kemajuan**
@@ -103,6 +107,7 @@ test/         unit dan widget test
 | [veardk/just-gojuon](https://github.com/veardk/just-gojuon) | rekaman suara huruf | MIT (asal rekaman tidak dijelaskan di repo sumbernya) |
 | HTS voice tohoku-f01, Tohoku University ICN Lab | suara kata (sintesis Open JTalk) | CC BY 4.0 |
 | [JMdict](https://www.edrdg.org/jmdict/j_jmdict.html), EDRDG | daftar kata umum | CC BY-SA 4.0 |
+| [open-anki-jlpt-decks](https://github.com/jamsinclair/open-anki-jlpt-decks) | kosakata JLPT N5/N4/N3 | MIT; data turunan Jonathan Waller / tanos.co.uk (CC BY) |
 
 Kredit ini juga tampil di dalam app (Settings dan layar Practice). Kalau kamu membagikan app ini
 secara publik, pertahankan kredit tersebut.

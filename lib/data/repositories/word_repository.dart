@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../../core/settings/app_settings.dart';
 import '../../core/storage/local_database.dart';
 import '../models/kana.dart';
 import '../seed/kana_data.dart';
@@ -120,18 +121,34 @@ class WordRepository {
     return sb.toString();
   }
 
-  /// Kata yang SEMUA hurufnya ada di huruf aktif. [type]: hiragana | katakana | mixed.
+  /// Kata yang SEMUA hurufnya ada di huruf aktif DAN levelnya sesuai pengaturan.
+  /// [type]: hiragana | katakana | mixed.
   Future<List<Word>> available(String type) async {
     final words = await WordBank.instance.load();
     final active = await KanaRepository.instance.activeIds();
-    return filterAvailable(words, active, type);
+    final s = AppSettings.instance;
+    return filterAvailable(words, active, type,
+        level: s.wordLevel, includeExtra: s.wordExtra);
   }
 
   /// Dipisah dari [available] supaya bisa diuji tanpa database.
+  ///
+  /// [level] deciding tingkat JLPT mana yang boleh dipakai. Kata dengan level
+  /// kosong (kata umum non-JLPT) hanya ikut kalau [includeExtra] hidup.
   static List<Word> filterAvailable(
-      List<Word> words, Set<String> active, String type) {
+    List<Word> words,
+    Set<String> active,
+    String type, {
+    WordLevel level = WordLevel.n5n4n3,
+    bool includeExtra = false,
+  }) {
     final result = <Word>[];
     for (final w in words) {
+      if (w.level.isEmpty) {
+        if (!includeExtra) continue;
+      } else if (!level.includes(w.level)) {
+        continue;
+      }
       final pieces = parse(w.text);
       if (pieces == null) continue;
       final letters = [for (final p in pieces) if (p.kana != null) p.kana!];
@@ -162,16 +179,39 @@ class WordRepository {
     return {for (final r in rows) r['text'] as String: r['last_at'] as int};
   }
 
-  /// Memilih [count] kata dari [pool]: yang belum pernah muncul dulu (acak),
-  /// lalu yang paling lama tidak muncul. Hasilnya diacak urutannya.
+  /// Memilih [count] kata dari [pool].
+  ///
+  /// Prioritas:
+  /// 1. belum pernah muncul, di dalamnya level TERENDAH dulu (N5 -> N4 -> N3),
+  ///    acak di antara yang setingkat;
+  /// 2. setelah semua pernah muncul, yang paling lama tidak muncul.
+  ///
+  /// Hasilnya diacak urutannya supaya tidak terlihat mengelompok per level.
   Future<List<Word>> pick(List<Word> pool, int count, Random rng) async {
     final last = await _lastSeen();
-    final unseen = pool.where((w) => !last.containsKey(w.text)).toList()
-      ..shuffle(rng);
+
+    final unseen = pool.where((w) => !last.containsKey(w.text)).toList();
+    // Kelompokkan per level, urut dari level terendah.
+    final byLevel = <String, List<Word>>{};
+    for (final w in unseen) {
+      byLevel.putIfAbsent(w.level, () => []).add(w);
+    }
+    final ordered = <Word>[];
+    for (final key in byLevel.keys.toList()
+      ..sort((a, b) {
+        final ra = Word.levelRank[a] ?? 99;
+        final rb = Word.levelRank[b] ?? 99;
+        return ra.compareTo(rb);
+      })) {
+      final group = byLevel[key]!..shuffle(rng);
+      ordered.addAll(group);
+    }
+
     final seen = pool.where((w) => last.containsKey(w.text)).toList()
       ..shuffle(rng)
       ..sort((a, b) => last[a.text]!.compareTo(last[b.text]!));
-    return ([...unseen, ...seen].take(count).toList())..shuffle(rng);
+
+    return ([...ordered, ...seen].take(count).toList())..shuffle(rng);
   }
 
   Future<void> markSeen(Iterable<String> texts) async {

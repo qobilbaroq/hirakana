@@ -14,6 +14,36 @@ enum AudioPattern {
   final List<bool> cycle;
 }
 
+  /// Tingkat kosakata yang dipakai di latihan baca.
+enum WordLevel {
+  n5('N5 only', 0),
+  n5n4('N5-N4', 1),
+  n5n4n3('N5-N3', 2);
+
+  const WordLevel(this.label, this.maxRank);
+  final String label;
+
+  /// Level tertinggi yang ikut dipakai (0 = N5, 2 = N3).
+  final int maxRank;
+
+  bool includes(String level) {
+    final rank = WordLevel._rankOf(level);
+    return rank != null && rank <= maxRank;
+  }
+
+  static int? _rankOf(String level) => switch (level) {
+        'N5' => 0,
+        'N4' => 1,
+        'N3' => 2,
+        _ => null,
+      };
+
+  static WordLevel fromName(String? name) => WordLevel.values.firstWhere(
+        (v) => v.name == name,
+        orElse: () => WordLevel.n5n4n3,
+      );
+}
+
 /// Pengaturan pengguna. Disimpan di tabel meta, dimuat sekali saat app mulai.
 class AppSettings extends ChangeNotifier {
   AppSettings._();
@@ -29,7 +59,13 @@ class AppSettings extends ChangeNotifier {
   int sessionSize = minSessionSize;
 
   /// Tampilkan arti kata setelah jawaban benar (hanya untuk kata yang punya arti).
-  bool showMeaning = false;
+  bool showMeaning = true;
+
+  /// Tingkat kosakata JLPT yang dipakai di latihan baca.
+  WordLevel wordLevel = WordLevel.n5n4n3;
+
+  /// Kalau hidup, kata umum non-JLPT (level kosong) ikut dipakai.
+  bool wordExtra = false;
   ThemeMode themeMode = ThemeMode.system;
   /// Hanya berlaku kalau tema aktif gelap.
   bool amoled = false;
@@ -49,7 +85,12 @@ class AppSettings extends ChangeNotifier {
             minSessionSize)
         .clamp(minSessionSize, maxSessionSize)
         .toInt();
-    showMeaning = (await _repo.getMeta('show_meaning')) == '1';
+    // DefaultNYA HIDUP. Kalau kunci belum pernah disimpan (pengguna baru),
+    // pakai true; kalau sudah pernah disimpan, hormati pilihannya.
+    wordLevel = WordLevel.fromName(await _repo.getMeta('word_level'));
+    wordExtra = (await _repo.getMeta('word_extra')) == '1';
+    final storedMeaning = await _repo.getMeta('show_meaning');
+    showMeaning = storedMeaning == null ? true : storedMeaning == '1';
     amoled = (await _repo.getMeta('theme_amoled')) == '1';
     autoPlay = (await _repo.getMeta('audio_autoplay')) != '0';
     final pattern = await _repo.getMeta('audio_pattern');
@@ -69,6 +110,19 @@ class AppSettings extends ChangeNotifier {
     sessionSize = v.clamp(minSessionSize, maxSessionSize).toInt();
     notifyListeners();
     await _repo.setMeta('session_size', '$sessionSize');
+  }
+
+
+  Future<void> setWordLevel(WordLevel v) async {
+    wordLevel = v;
+    notifyListeners();
+    await _repo.setMeta('word_level', v.name);
+  }
+
+  Future<void> setWordExtra(bool v) async {
+    wordExtra = v;
+    notifyListeners();
+    await _repo.setMeta('word_extra', v ? '1' : '0');
   }
 
   Future<void> setShowMeaning(bool v) async {

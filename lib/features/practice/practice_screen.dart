@@ -1,14 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
+import '../../data/repositories/word_repository.dart';
 import '../learn/quiz_question.dart';
 import '../learn/session_controller.dart';
 import '../learn/session_launcher.dart';
 
 class PracticeScreen extends StatefulWidget {
-  const PracticeScreen({super.key});
+  const PracticeScreen({super.key, this.tabIndex});
+
+  /// Dialirkan oleh MainShell. Halaman ini hidup terus di dalam IndexedStack,
+  /// jadi initState hanya jalan sekali saat app dibuka. Tanpa sinyal ini,
+  /// jumlah kata yang ditampilkan sudah basi begitu pengguna mengubah
+  /// huruf aktif di Choose letters.
+  final ValueListenable<int>? tabIndex;
 
   @override
   State<PracticeScreen> createState() => _PracticeScreenState();
@@ -16,6 +24,67 @@ class PracticeScreen extends StatefulWidget {
 
 class _PracticeScreenState extends State<PracticeScreen> {
   String _type = 'hiragana';
+
+  /// Berapa kata yang bisa dipakai latihan baca untuk script aktif. Kalau
+  /// sedikit, pengguna perlu menambah huruf supaya pool kata bertambah.
+  int? _wordCount;
+
+  /// Hitungan masih jalan; jangan mulai hitung kedua.
+  Future<void>? _counting;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.tabIndex?.addListener(_onTabChanged);
+    _loadWordCount();
+  }
+
+  @override
+  void didUpdateWidget(covariant PracticeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.tabIndex != widget.tabIndex) {
+      oldWidget.tabIndex?.removeListener(_onTabChanged);
+      widget.tabIndex?.addListener(_onTabChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.tabIndex?.removeListener(_onTabChanged);
+    super.dispose();
+  }
+
+  void _onTabChanged() {
+    if (widget.tabIndex?.value == _practiceTabIndex) _loadWordCount();
+  }
+
+  /// Indeks tab Practice di MainShell.
+  static const _practiceTabIndex = 2;
+
+  Future<void> _loadWordCount() {
+    final running = _counting;
+    if (running != null) return running;
+    return _counting = _countWords();
+  }
+
+  Future<void> _countWords() async {
+    int? n;
+    try {
+      n = (await WordRepository.instance.available(_type)).length;
+    } catch (_) {
+      n = null;
+    }
+    _counting = null;
+    if (mounted) setState(() => _wordCount = n);
+  }
+
+  /// Di bawah jumlah ini latihan baca jadi terlalu repetitive.
+  static const _minComfortableWords = 20;
+
+  void _setType(String t) {
+    setState(() => _type = t);
+    _loadWordCount();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +112,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                   selectedColor: AppColors.sage.withValues(alpha: 0.35),
                   backgroundColor: AppColors.sand,
                   side: BorderSide.none,
-                  onSelected: (_) => setState(() => _type = t.$1),
+                  onSelected: (_) => _setType(t.$1),
                 ),
             ],
           ),
@@ -67,6 +136,21 @@ class _PracticeScreenState extends State<PracticeScreen> {
             onTap: () => launchSession(context,
                 mode: 'words', args: SessionArgs(type: _type)),
           ),
+          if (_wordCount != null && _wordCount! < _minComfortableWords) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Row(
+              children: [
+                Icon(Icons.info_outline, size: 16, color: AppColors.muted),
+                const SizedBox(width: AppSpacing.xs),
+                Expanded(
+                  child: Text(
+                    'Tambah huruf untuk membuka lebih banyak kata.',
+                    style: AppText.muted,
+                  ),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: AppSpacing.lg),
           Text('Recognition', style: AppText.section),
           const SizedBox(height: AppSpacing.sm),

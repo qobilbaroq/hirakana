@@ -175,21 +175,45 @@ Kalau kata yang cocok sedikit, sisanya diisi rangkaian huruf, jadi sesi selalu p
 sama (huruf yang sering tertukar diutamakan), sehingga pilihannya mirip dan tidak bisa ditebak dari
 panjangnya. Selalu 4 pilihan unik yang memuat jawaban.
 
-**Daftar kata** ada di `assets/data/words.tsv` (sekitar 9 ribu kata, dimuat sekali oleh `WordBank`):
-kata kurasi (dengan arti Indonesia) ditambah kata umum dari JMdict. Sebuah kata hanya muncul kalau
-**semua hurufnya ada di huruf aktif**. Jumlahnya dibuat merata per tahap huruf: dengan vowels + k + s
-saja ada ratusan kata, bukan puluhan.
+**Daftar kata** ada di `assets/data/words.tsv` (10.691 baris, dimuat sekali oleh `WordBank`):
+2.865 kata kosakata JLPT N5/N4/N3 (semua sudah punya arti Indonesia) ditambah 7.826
+kata umum dari pool lama. Sebuah kata hanya muncul kalau **semua hurufnya ada di huruf
+aktif**. Jumlahnya dibuat merata per tahap huruf: dengan vowels + k + s saja ada ratusan
+kata, bukan puluhan.
+
+Kalau kata yang tersedia untuk huruf aktif kurang dari 20, tab **Practice** menampilkan
+saratan "Tambah huruf untuk membuka lebih banyak kata." (`lib/features/practice/practice_screen.dart`).
 
 **Tidak itu-itu saja.** Kata yang sudah muncul dicatat di tabel `word_history`. Saat memilih kata, yang
 belum pernah muncul diutamakan (acak), lalu yang paling lama tidak muncul.
 
-**Suara**: satu huruf memakai rekaman huruf; kata dengan rekaman utuh memakai rekaman kata
-(`assets/audio/words/<romaji>.mp3`); rangkaian huruf dan kata tanpa rekaman dibunyikan huruf demi huruf.
-Suara diputar setelah menjawab (supaya tidak membocorkan jawaban) dan mengikuti pola normal/lambat
-di Settings.
+**Suara** memakai rantai, dipilih oleh fungsi murni `pickReadAudioSource`
+(`lib/core/audio/audio_source.dart`):
 
-**Arti** tidak ditanyakan. Setelah jawaban **benar**, arti bisa ditampilkan kalau *Show word meaning*
-aktif di Settings (default mati) dan kata itu punya arti (kata dari JMdict tidak punya arti Indonesia).
+| Soal | Sumber suara |
+| --- | --- |
+| satu huruf | rekaman huruf (`assets/audio/romaji.mp3`) |
+| kata yang punya rekaman | rekaman kata (`assets/audio/words/cara-baca.mp3`) |
+| kata tanpa rekaman, rangkaian huruf | **TTS sistem** membaca teks kana sebagai satu ucapan |
+| TTS tidak tersedia atau gagal | cadangan: rekaman huruf berurutan (jeda 15 ms / 90 ms) |
+
+TTS memakai paket `flutter_tts` (`lib/core/audio/system_tts_service.dart`): bahasa
+`ja-JP`, volume 1,0, kecepatan 0,5 normal dan 0,3 lambat (0,35 untuk iOS/macOS
+karena skalanya berbeda). Hasil pemeriksaan `isLanguageAvailable` di-cache. Semua
+pemanggilan dibungkus try/catch dan mengembalikan bool. Di Linux dan platform
+tanpa dukungan, TTS dianggap tidak tersedia.
+
+Kalau voice Jepang tidak terpasang, SnackBar muncul **satu kali per sesi**
+kemudian app memakai cadangan huruf demi huruf. AndroidManifest punya blok
+`<queries>` dengan `android.intent.action.TTSSERVICE` (syarat Android 11+).
+
+Suara diputar setelah menjawab (supaya tidak membocorkan jawaban) dan mengikuti
+pola normal/lambat dari Settings.
+
+**Arti** tidak ditanyakan. Setelah menjawab (benar **atau** salah), arti
+ditampilkan kalau *Tampilkan arti kata setelah menjawab* aktif (default **hidup**).
+Arti Bahasa Indonesia dipakai dulu; kalau kosong, arti Inggris dengan label `EN`.
+Kanji asli ditampilkan kecil di sebelah kata.
 
 ---
 
@@ -223,7 +247,9 @@ Disimpan di tabel `meta`, dimuat saat app mulai (`AppSettings`):
 | Tema | System / Light / Dark | `theme_mode` |
 | AMOLED black | hidup/mati (hanya berlaku di mode gelap) | `theme_amoled` |
 | Session length | 10 sampai 60, kelipatan 5 | `session_size` |
-| Show word meaning | hidup/mati | `show_meaning` |
+| Tampilkan arti kata setelah menjawab | hidup/mati (default hidup) | `show_meaning` |
+| Tingkat kata | N5 saja / N5-N4 / N5-N3 (default N5-N3) | `word_level` |
+| Include other common words | hidup/mati (default mati) | `word_extra` |
 | Daily goal | 5 / 10 / 15 / 20 / 30 menit | `goal_minutes` |
 | Play sound automatically | hidup/mati | `audio_autoplay` |
 | Replay pattern | normal-normal-lambat, normal-lambat, selalu normal, selalu lambat | `audio_pattern` |
@@ -276,7 +302,72 @@ tohoku-f01. Kolom ketiga `words.tsv` (0/1) menandai kata yang punya rekaman utuh
 | `strokes/kana_strokes.json` (KanjiVG) | CC BY-SA 3.0 |
 | `audio/*.mp3` huruf (just-gojuon) | MIT untuk repo; asal rekaman tidak dijelaskan, cek sebelum rilis publik |
 | `audio/words/` (tohoku-f01) | CC BY 4.0 (atribusi) |
+| `data/words.tsv` bagian JLPT N5/N4/N3 | MIT (open-anki-jlpt-decks); data turunan Jonathan Waller / tanos.co.uk, CC BY |
 | `data/words.tsv` bagian JMdict | CC BY-SA 4.0 (EDRDG) |
+
+### `assets/data/words.tsv`
+
+Format TSV, kolom dipisah TAB (baris lama 4 kolom masih bisa dibaca):
+
+```
+kata  cara-baca  ada-audio(0/1)  arti-indonesia  arti-inggris  level(N5|N4|N3|kosong)  kanji(opsional)
+```
+
+Kolom `level` diisi hanya untuk kosakata JLPT; kata lama dari pool sebelumnya
+dipertahankan dengan level kosong sebagai "kata umum lainnya" dan hanya dipakai
+kalau saklar *Include other common words* dinyalakan.
+
+Pool lama **ikut disaring** dengan aturan yang sama seperti JLPT: minimal dua
+huruf kana, tanpa kana kecil terlarang, dan semua karakter harus dikenal.
+Sebelumnya pool lama masuk tanpa saringan, sehingga entry seperti `き`, `ご`,
+dan `ツー` (satu kana + tanda panjang) ikut jadi "kata" dan tidak bisa
+dijawab dengan benar.
+
+`ada-audio` = 1 hanya kalau **kedua** berkas
+`assets/audio/words/<cara-baca>.mp3` dan `_slow.mp3` benar-benar ada. Kata tanpa
+rekaman dibaca dengan TTS sistem (lihat bagian 6).
+
+#### Sumber dan lisensi
+
+- **open-anki-jlpt-decks** (github.com/jamsinclair) - lisensi **MIT**. Berkas
+  mentah `n5.csv`, `n4.csv`, `n3.csv` disimpan di `tool/data/`. Diakses 17 Oktober 2026.
+- Data itu sendiri turunan daftar JLPT **Jonathan Waller / tanos.co.uk**, yang
+  dinyatakan berlisensi **CC BY**. Halaman tanos.co.uk tidak dapat dibuka saat
+  penyusunan (galat koneksi), jadi status lisensi dicatat dari pernyataan repo
+  Bluskyo/JLPT_Vocabulary yang mengutip Waller secara eksplisit.
+- Credit ditampilkan di layar Settings.
+
+**Catatan penting:** sejak 2010 JEET tidakокомunikasi daftar kosakata resmi, jadi
+pen pembagian N5/N4/N3 di daftar ini adalah **perkiraan komunitas**, bukan
+penetapan resmi. Dua-duanya boleh dipakai dan dibagikan ulang (MIT dan CC BY),
+asalkan atribusi seperti di atas ikut disertakan.
+
+#### Membangun ulang
+
+```
+python3 tool/build_words.py            # tulis assets/data/words.tsv
+python3 tool/build_words.py --stats    # hanya statistik
+```
+
+Skripnya idempoten: dibaca dari `tool/data/` (bukan dari berkas yang dia buat
+sendiri), jadi dijalankan berkali-kali menghasilkan berkas yang sama. Daftar
+bahasa Indonesia ada di `tool/translations/id.tsv`; **semua 2.865 kata JLPT punya
+arti Indonesia** (100%). Bahasa Inggris tetap ikut tersimpan sebagai cadangan
+(`arti-inggris`) dan dipakai kalau arti Indonesia kosong.
+
+Alur kerja berkas terjemahan:
+
+```
+python3 tool/check_translations.py tool/translations/id.tsv   # cek nilai rusak
+python3 tool/todo_translations.py /tmp/todo.txt              # daftar yang belum
+python3 tool/merge_translations.py batch1.tsv batch2.tsv     # gabungkan batch
+python3 tool/build_words.py                                  # tulis words.tsv
+```
+
+Kuncinya adalah romaji ASCII; hanya 5 kata yang romajinya bentrok (homofon
+seperti クラス "a class" dan くらす "to live"), untuk itu kunci kedua memakai
+suffix `#2`. `merge_translations.py` menolak kunci yang bukan romaji supaya sisa
+batch lama tidak ikut terbawa sebagai baris mati.
 
 ---
 
@@ -325,6 +416,12 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
 - `session_size_test.dart`: batas ukuran sesi, `fillToSize`, progres dengan huruf berulang.
 - `word_questions_test.dart`: data kata (semua bisa dibaca, file audio ada, cukup kata per tahap huruf),
   romaji, pilihan jawaban, sesi baca penuh, dan kata tidak berulang antar sesi.
+- `word_data_test.dart`: parsing `words.tsv` (4-7 kolom), arti Indonesia/Inggris, dan gate
+  "minimal 90% kata JLPT punya arti Indonesia" (kondisi sekarang: 100%).
+- `word_meaning_widget_test.dart`: arti muncul setelah menjawab (benar maupun salah), fallback
+  Inggris berlabel `EN`, dan toggle *Tampilkan arti* mematikan tampilannya.
+- `audio_source_test.dart`: pemilihan sumber suara (rekaman huruf / rekaman kata / TTS / cadangan),
+  termasuk kasus kata ber-satu kana (`ツー`) yang tidak boleh salah dikira soal satu huruf.
 - `amoled_test.dart`: palet (kontras teks, tombol utama tidak menyilaukan, AMOLED hitam sejati dan hangat)
   dan tema Material.
 
@@ -338,9 +435,11 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
    Satu-satunya efek ke huruf adalah pencatatan huruf yang tertukar (soal satu huruf).
 3. **Tidak ada sinkronisasi antar perangkat.** Data lokal murni, tanpa akun atau cloud. Menghapus data
    app berarti progres hilang.
-4. **Suara kata adalah sintesis**, bukan penutur asli, dan hanya sekitar 1.700 kata yang punya rekaman utuh;
-   kata lain dibunyikan huruf demi huruf.
-5. **Kata dari JMdict tidak punya arti** dalam Bahasa Indonesia. Arti hanya ada pada kata kurasi.
+4. **1.112 dari 2.865 kata JLPT tidak punya rekaman utuh**, jadi suaranya dari TTS HP. Kalau voice
+   Jepang tidak terpasang, barulah dipakai cadangan huruf demi huruf (lebih lambat).
+5. **Kata dari pool lama (di luar JLPT) belum punya arti Bahasa Indonesia.** Semua 2.865 kata JLPT
+   sudah; sisa 7.834 kata masih memakai arti Inggris. Pool itu hanya muncul kalau saklar
+   *Include other common words* dinyalakan.
 6. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
    (mis. ファ, ティ) tidak dimasukkan.
 7. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.

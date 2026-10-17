@@ -1,7 +1,7 @@
 name: kana_quest
 description: "Aplikasi belajar Hiragana & Katakana, offline-first. Multi-platform: Android, Linux, Windows, macOS, iOS, Web."
 publish_to: 'none'
-version: 1.3.0+4
+version: 1.4.0+5
 
 environment:
   sdk: ^3.10.8
@@ -19,6 +19,7 @@ dependencies:
   path_provider: ^2.1.6
   audioplayers: ^6.1.0
   path_drawing: ^1.0.1
+  flutter_tts: ^4.2.5
 
 dev_dependencies:
   flutter_test:

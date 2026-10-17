@@ -45,6 +45,23 @@ void main() {
       }
     });
 
+    test('tiada kata dengan kurang dari 2 huruf kana', () {
+      // KORECSI: pool lama pernah ikut tanpa saringan, jadi き/ご/て dan ツー
+      // (1 kana + tanda panjang) ikut jadi "kata". Soal seperti ini tidak
+      // bisa dijawab dengan benar, atau hanya terbaca jadi satu huruf.
+      //
+      // Kana kecil sebagai huruf kedua (しゃ, きゃ) itu SAH dan dihitung satu
+      // huruf oleh WordRepository.parse, jadi tidak diperiksa di sini.
+      final bad = <String>[];
+      for (final w in real) {
+        final pieces = WordRepository.parse(w.text);
+        if (pieces == null) continue;
+        final letters = pieces.where((p) => p.kana != null).toList();
+        if (letters.length < 2) bad.add('${w.text} (${w.reading})');
+      }
+      expect(bad, isEmpty);
+    });
+
     test('kata cukup banyak untuk setiap tahap huruf, bukan hanya vowels + k + s', () {
       final groups = <String>[];
       final seen = <String>{};
@@ -69,18 +86,23 @@ void main() {
         }
       }
       // Seluruh hiragana: ribuan kata.
+      // CATATAN: sejak pool utama diganti ke kosakata JLPT (lihat
+      // DOKUMENTASI.md bagian 6), jumlah kata jadi lebih kecil daripada
+      // pool kamus sebelumnya, jadi ambangnya diturunkan. Pool katakana
+      // jauh lebih tipis karena daftar JLPT ditulis dalam hiragana.
       final all = WordRepository.filterAvailable(
           real, hiraganaList.map((k) => k.id).toSet(), 'hiragana');
-      expect(all.length, greaterThan(3000));
+      expect(all.length, greaterThan(2000));
       final allKata = WordRepository.filterAvailable(
           real, katakanaList.map((k) => k.id).toSet(), 'katakana');
-      expect(allKata.length, greaterThan(1000));
+      expect(allKata.length, greaterThan(150));
     });
 
-    test('vowels + k + s: ratusan kata, cukup untuk puluhan sesi', () {
+    test('vowels + k + s: cukup kata untuk beberapa sesi', () {
       final avail = WordRepository.filterAvailable(
           real, idsOfGroups(['vowels', 'k', 's']), 'hiragana');
-      expect(avail.length, greaterThan(300));
+      // Ambang diturunkan karena pool sekarang JLPT saja, bukan kamus.
+      expect(avail.length, greaterThan(120));
       expect(avail.map((w) => w.text).toSet().length, avail.length);
     });
   });
