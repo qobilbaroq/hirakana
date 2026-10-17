@@ -26,6 +26,7 @@ LEGACY_TSV = os.path.join(TOOL, "data", "words_legacy.tsv")
 OUT_TSV = os.path.join(ROOT, "assets", "data", "words.tsv")
 WORDS_AUDIO = os.path.join(ROOT, "assets", "audio", "words")
 INDO_TSV = os.path.join(TOOL, "translations", "id.tsv")
+MANUAL_FIXES_TSV = os.path.join(TOOL, "translations", "manual_fixes.tsv")
 
 SMALL = "ゃゅょャュョ"          # boleh: digabung jadi satu huruf (きゃ)
 FORBIDDEN_SMALL = "ぁぃぅぇぉァィゥェォ"  # tidak ada di data huruf app
@@ -34,6 +35,9 @@ LONG_MARK = "ー"
 
 LEVELS = [("n5.csv", "N5"), ("n4.csv", "N4"), ("n3.csv", "N3")]
 LEVEL_ORDER = {"N5": 0, "N4": 1, "N3": 2}
+
+# Batas gloss untuk memotong arti Inggris (lihat truncate_gloss).
+GLOSS_BOUNDARY = re.compile(r'[;,]\s')
 
 
 # --------------------------------------------------------------- data huruf
@@ -210,16 +214,82 @@ def load_jlpt():
     return list(best.values()), stats
 
 
-def load_indo():
-    """Baca tool/translations/id.tsv (kata TAB arti Indonesia).
+MEANING_MAX = 40
 
-    Berkas ini boleh diisi sebagian: kata yang belum diterjemahkan memakai
-    arti Inggris sebagai cadangan (lihat DOKUMENTASI.md bagian 6).
+
+# Label gaya kamus yang tidak ada artinya bagi pengguna dan hanya bikin
+# membingungkan di layar. Formatnya persis seperti di JMdict.
+JMdict_LABEL = re.compile(
+    r"\((?:abbr|pol|uk|oik|ksb|arch|obs|dial|hum|uk)\.\)")
+
+WORD_ONLY_LABEL = re.compile(r"\s*\((?:[a-z]{2,12})\.\)")
+
+
+def clean_gloss(text):
+    """Buang label gaya kamus dari arti Inggris.
+
+    Daftar JLPT warisan JMdict menyisipkan penanda seperti "(abbr.)" dan
+    "(oik)" di dalam arti. Penanda itu tidak menjelaskan apa pun ke
+    pembaca Indonesia dan hanya menambah-pollusi layar, jadi dibuang.
     """
-    if not os.path.isfile(INDO_TSV):
+    if not text:
+        return text
+    out = JMdict_LABEL.sub('', text)
+    out = WORD_ONLY_LABEL.sub('', out)
+    return re.sub(r'\s{2,}', ' ', out).strip()
+
+
+def _parens_balanced(text):
+    """Kurung buka/tutup sama banyak dan tidak menggantung di akhir."""
+    return text.count('(') == text.count(')') and not text.endswith('(')
+
+
+def truncate_gloss(text, limit=MEANING_MAX):
+    """Potong arti Inggris di batas gloss, tidak pernah di tengah kata.
+
+    Arti JLPT sering berupa daftar gloss: "to heat (up), to warm (up); to
+    warm". Memotongnya di jumlah karakter tertentu pernah memotong kata jadi
+    "to hea" atau "gener", yang membingungkan di layar.
+
+    potongan dianggap layak kalau dua syarat ini sama-sama terpenuhi:
+
+    1. kurung buka/tutup berpasangan dan tidak menggantung di akhir;
+    2. karakter tepat sesudah potongan adalah batas kata (spasi, koma,
+       titik koma, atau akhir teks), bukan huruf.
+
+    Selama syarat belum terpenuhi, mundur ke batas gloss terdekat
+    ('; ' atau ', '), atau satu kata kalau tidak ada batas gloss.
+    """
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    while cut:
+        next_ch = text[len(cut):len(cut) + 1]
+        word_ok = next_ch in ('', ' ', ';', ',', ')')
+        if _parens_balanced(cut) and word_ok:
+            break
+        bounds = list(GLOSS_BOUNDARY.finditer(cut))
+        cand = ''
+        if bounds:
+            cand = cut[:bounds[-1].start()].rstrip(' ,;')
+        if not cand:
+            cand = re.sub(r"\s*\S*$", "", cut)
+        if cand == cut:
+            break                      # tidak ada yang bisa dipotong lagi
+        cut = cand
+    return cut
+
+
+def load_tsv_keys(path):
+    """Baca berkas "kunci TAB nilai", lewati komentar dan baris rusak.
+
+    Dipakai bersama oleh id.tsv dan manual_fixes.tsv supaya keduanya punya
+    aturan baca yang sama.
+    """
+    if not os.path.isfile(path):
         return {}
     result = {}
-    for line in open(INDO_TSV, encoding="utf-8"):
+    for line in open(path, encoding="utf-8"):
         line = line.rstrip("\n")
         if not line.strip() or line.startswith("#"):
             continue
@@ -232,12 +302,34 @@ def load_indo():
     return result
 
 
+def load_indo():
+    """Baca tool/translations/id.tsv (romaji TAB arti Indonesia).
+
+    Berkas ini boleh diisi sebagian: kata yang belum diterjemahkan memakai
+    arti Inggris sebagai cadangan (lihat DOKUMENTASI.md bagian 6).
+    """
+    return load_tsv_keys(INDO_TSV)
+
+
+def load_manual_fixes():
+    """Baca tool/translations/manual_fixes.tsv.
+
+    Isi koreksi manual yang diperiksa tangan, keyed dengan KATA KANA (bukan
+    romaji). Diterapkan TERAKHIR, sesudah id.tsv, supaya koreksi ini tidak
+    pernah tertimpa kalau id.tsv dibangun ulang atau diterjemahkan ulang.
+    """
+    return load_tsv_keys(MANUAL_FIXES_TSV)
+
+
 # -------------------------------------------------------------------- main
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--stats", action="store_true",
                     help="hanya tampilkan statistik, jangan tulis berkas")
+    ap.add_argument("--out", default=None,
+                    help="tulis ke berkas lain (dipakai test untuk membandingkan "
+                         "keluaran pipeline dengan assets/data/words.tsv)")
     args = ap.parse_args()
 
     global table
@@ -248,6 +340,7 @@ def main():
     jlpt_list, raw_stats = load_jlpt()
     old = load_old_pool()
     indo = load_indo()
+    manual_fixes = load_manual_fixes()
     jlpt_texts = {w["text"] for w in jlpt_list}
 
     rows = []
@@ -289,9 +382,29 @@ def main():
             "kanji": "",
         })
 
+    # Koreksi manual diterapkan TERAKHIR: menimpa apa pun hasil terjemahan
+    # otomatis, supaya koreksi yang sudah diperiksa tangan tidak hilang
+    # ketika id.tsv dibangun ulang.
+    applied = 0
+    unknown = []
+    for r in rows:
+        fix = manual_fixes.get(r["text"])
+        if fix is None:
+            continue
+        if r["meaning_id"] != fix:
+            applied += 1
+        r["meaning_id"] = fix
+    for key in manual_fixes:
+        if key not in {r["text"] for r in rows}:
+            unknown.append(key)
+    if unknown:
+        print(f"PERINGATAN: {len(unknown)} koreksi manual tidak cocok "
+              f"dengan kata mana pun: {', '.join(sorted(unknown)[:5])}",
+              file=sys.stderr)
+
     for r in rows:
         r["has_audio"] = 1 if has_audio(r["reading"]) else 0
-        r["meaning_en"] = r["meaning_en"][:40]
+        r["meaning_en"] = truncate_gloss(clean_gloss(r["meaning_en"]))
         r["meaning_id"] = r["meaning_id"][:35]
 
     # statistik
@@ -335,15 +448,16 @@ def main():
     if args.stats:
         return 0
 
-    tmp = OUT_TSV + ".tmp"
+    out = args.out or OUT_TSV
+    tmp = out + ".tmp"
     with open(tmp, "w", encoding="utf-8", newline="\n") as f:
         for r in sorted(rows, key=lambda x: (x["level"] or "ZZZ", x["text"])):
             f.write("\t".join([
                 r["text"], r["reading"], str(r["has_audio"]),
                 r["meaning_id"], r["meaning_en"], r["level"], r["kanji"],
             ]) + "\n")
-    os.replace(tmp, OUT_TSV)
-    print(f"\ntertulis: {OUT_TSV}")
+    os.replace(tmp, out)
+    print(f"\ntertulis: {out}")
     return 0
 
 
