@@ -159,6 +159,63 @@ void main() {
     Future<void> activate(List<String> groups) =>
         repo.setActiveIds(idsOfGroups(groups));
 
+    test('SETIAP soal kata memakai rekaman kata utuh, bukan huruf per huruf', () async {
+      // Semua huruf aktif supaya sesi memakai sebanyak mungkin kata sungguhan.
+      await repo.setActiveIds(allKana.map((k) => k.id).toSet());
+      var totalKata = 0, totalHuruf = 0;
+      for (var seed = 0; seed < 12; seed++) {
+        final qs = await buildReadingSession(
+            type: 'mixed', size: 30, rng: Random(500 + seed));
+        for (final q in qs) {
+          if (q.kind == ReadKind.word) {
+            totalKata++;
+            // Inilah yang Anda lihat di aplikasi: soal kata WAJIB punya rekaman utuh.
+            expect(q.hasWholeWordAudio, isTrue,
+                reason: 'kata "${q.text}" akan dibunyikan huruf per huruf');
+            expect(q.word, isNotNull);
+            expect(File('assets/audio/words/${q.word!.reading}.mp3').existsSync(),
+                isTrue,
+                reason: 'rekaman hilang untuk "${q.text}"');
+            expect(
+                File('assets/audio/words/${q.word!.reading}_slow.mp3')
+                    .existsSync(),
+                isTrue,
+                reason: 'rekaman lambat hilang untuk "${q.text}"');
+          } else {
+            // Rangkaian huruf / satu huruf memang dibunyikan per huruf - itu
+            // memang desainnya, bukan kata.
+            expect(q.word, isNull);
+            expect(q.hasWholeWordAudio, isFalse);
+            totalHuruf++;
+          }
+        }
+      }
+      expect(totalKata, greaterThan(0));
+      expect(totalHuruf, greaterThan(0));
+      // Pada mode "All words" soal huruf memang masih muncul, tapi tidak satu
+      // pun di antaranya adalah kata.
+      expect(totalKata + totalHuruf, greaterThan(300));
+    });
+
+    test('memilih tingkat N5-N4/N3 membuat soal kata jauh lebih banyak', () async {
+      await repo.setActiveIds(allKana.map((k) => k.id).toSet());
+      Future<int> hitungKata(String? level) async {
+        final qs = await buildReadingSession(
+            type: 'mixed', size: 20, vocabLevel: level, rng: Random(7));
+        return qs.where((q) => q.kind == ReadKind.word).length;
+      }
+
+      final semua = await hitungKata(null);
+      final n5 = await hitungKata('n5n4');
+      final n3 = await hitungKata('n3');
+      expect(semua, greaterThan(0));
+      expect(n5, greaterThan(0));
+      expect(n3, greaterThan(0));
+      // 85% kata (dibanding 60% di mode "All words").
+      expect(n5, greaterThan(semua));
+      expect(n3, greaterThan(semua));
+    });
+
     test('sesi penuh, pilihan sah, tanpa teks dobel, ada variasi jenis soal', () async {
       await activate(['vowels', 'k', 's']);
       final qs = await buildReadingSession(
