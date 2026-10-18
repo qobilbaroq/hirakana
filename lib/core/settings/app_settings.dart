@@ -28,8 +28,8 @@ class AppSettings extends ChangeNotifier {
   int goalMinutes = 10;
   int sessionSize = minSessionSize;
 
-  /// Tampilkan arti kata setelah jawaban benar (hanya untuk kata yang punya arti).
-  bool showMeaning = false;
+  /// Tampilkan arti kata setelah menjawab (hanya untuk kata yang punya arti).
+  bool showMeaning = true;
   ThemeMode themeMode = ThemeMode.system;
   /// Hanya berlaku kalau tema aktif gelap.
   bool amoled = false;
@@ -49,7 +49,7 @@ class AppSettings extends ChangeNotifier {
             minSessionSize)
         .clamp(minSessionSize, maxSessionSize)
         .toInt();
-    showMeaning = (await _repo.getMeta('show_meaning')) == '1';
+    showMeaning = (await _repo.getMeta('show_meaning')) != '0';
     amoled = (await _repo.getMeta('theme_amoled')) == '1';
     autoPlay = (await _repo.getMeta('audio_autoplay')) != '0';
     final pattern = await _repo.getMeta('audio_pattern');

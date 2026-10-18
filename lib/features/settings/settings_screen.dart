@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
 import '../../core/settings/app_settings.dart';
+import '../../core/update/update_service.dart';
 import '../../data/seed/kana_data.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -141,6 +144,10 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
+              if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) ...[
+                const _UpdateSection(),
+                const SizedBox(height: AppSpacing.lg),
+              ],
               Text('Credits', style: AppText.section),
               const SizedBox(height: AppSpacing.xs),
               Text(
@@ -154,6 +161,144 @@ class SettingsScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _UpdateSection extends StatefulWidget {
+  const _UpdateSection();
+
+  @override
+  State<_UpdateSection> createState() => _UpdateSectionState();
+}
+
+class _UpdateSectionState extends State<_UpdateSection> {
+  GitHubRelease? _release;
+  String? _error;
+  bool _checking = true;
+  bool _downloading = false;
+  double? _downloadProgress;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkForUpdate();
+  }
+
+  Future<void> _checkForUpdate() async {
+    setState(() {
+      _checking = true;
+      _error = null;
+    });
+    try {
+      final release = await GitHubUpdateService.instance.checkForUpdate();
+      if (!mounted) return;
+      setState(() {
+        _release = release;
+        _checking = false;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _error = _errorText(error);
+        _checking = false;
+      });
+    }
+  }
+
+  Future<void> _downloadAndInstall() async {
+    final release = _release;
+    if (release == null) return;
+    setState(() {
+      _downloading = true;
+      _downloadProgress = null;
+      _error = null;
+    });
+    try {
+      await GitHubUpdateService.instance.downloadAndInstall(
+        release,
+        onProgress: (progress) {
+          if (mounted) setState(() => _downloadProgress = progress);
+        },
+      );
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _error = _errorText(error));
+    } finally {
+      if (mounted) setState(() => _downloading = false);
+    }
+  }
+
+  String _errorText(Object error) {
+    if (error is UpdateException) return error.message;
+    if (error is PlatformException && error.message != null) {
+      return error.message!;
+    }
+    return error.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('App update', style: AppText.section),
+        const SizedBox(height: AppSpacing.xs),
+        if (_checking)
+          const LinearProgressIndicator()
+        else if (_release == null && _error == null)
+          Text('Aplikasi sudah versi terbaru.', style: AppText.muted)
+        else if (_release != null) ...[
+          Text(
+            '${_release!.title} (${_release!.version}) tersedia.',
+            style: AppText.body,
+          ),
+          if (_release!.notes.trim().isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Text(_release!.notes.trim(), style: AppText.muted),
+          ],
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            'Unduh langsung dari GitHub. Android akan meminta konfirmasi '
+            'sebelum memasang pembaruan.',
+            style: AppText.muted,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          if (_downloading && _downloadProgress != null)
+            LinearProgressIndicator(value: _downloadProgress),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FilledButton.icon(
+              onPressed: _downloading ? null : _downloadAndInstall,
+              icon: _downloading
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.system_update_alt),
+              label: Text(_downloading
+                  ? 'Mengunduh pembaruan'
+                  : 'Unduh & instal'),
+            ),
+          ),
+        ],
+        if (_error != null) ...[
+          const SizedBox(height: AppSpacing.xs),
+          Text(_error!, style: TextStyle(color: AppColors.clay)),
+        ],
+        if (!_checking) ...[
+          const SizedBox(height: AppSpacing.xs),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: _downloading ? null : _checkForUpdate,
+              icon: const Icon(Icons.refresh, size: 18),
+              label: const Text('Periksa pembaruan'),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
