@@ -38,6 +38,13 @@ flutter:
     - assets/data/
     - assets/strokes/
 
+  fonts:
+    - family: Noto Sans JP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Regular.otf
+        - asset: assets/fonts/NotoSansJP-Bold.otf
+          weight: 700
+
 # Ikon aplikasi: jalankan `dart run flutter_launcher_icons`
 flutter_launcher_icons:
   android: true
