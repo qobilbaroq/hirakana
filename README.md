@@ -23,8 +23,9 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Kuis** 5 jenis: kana ke bunyi, bunyi ke kana, ketik romaji, hiragana vs katakana,
   dan *look-alike drill* untuk huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi *Replay*, dan perbandingan hasil.
-- **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang **semuanya punya arti Bahasa Indonesia**,
-  rangkaian 2-3 huruf, atau satu huruf. Kata yang belum pernah muncul diutamakan, jadi tidak itu-itu saja.
+- **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang **semuanya punya arti Bahasa Indonesia**
+  dan punya rekaman utuh. Tidak ada soal rangkaian huruf acak — tiap soal adalah kata sungguhan.
+  Kalau huruf aktif masih sedikit, kata diulang supaya sesi tetap penuh.
 - **Saring kosakata per tingkat**: Practice → Words, pilih *All words* / *N5–N4* / *N3*.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 

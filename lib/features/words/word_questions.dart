@@ -117,22 +117,44 @@ Future<List<ReadQuestion>> buildReadingSession({
   ];
 
   final pool = await words.available(type, level: vocabLevel);
-  final byLevel = vocabLevel != null;
-  var wordCount = min((size * (byLevel ? 0.85 : 0.6)).round(), pool.length);
-  final chunkCount =
-      scripts.isEmpty ? 0 : (size * (byLevel ? 0.10 : 0.25)).round();
-  final singleCount =
-      scripts.isEmpty ? 0 : (size * (byLevel ? 0.05 : 0.15)).round();
-  if (scripts.isEmpty) wordCount = min(size, pool.length);
-  // Selisihnya diisi rangkaian huruf supaya sesi penuh.
-  var chunkTotal = chunkCount + (size - wordCount - chunkCount - singleCount);
-  if (scripts.isEmpty) chunkTotal = 0;
+  // Setiap soal adalah KATA SUNGGUHAN dengan rekaman utuh - tidak ada soal
+  // rangkaian huruf atau satu huruf lagi, karena yang seperti itu bukan
+  // kosakata dan suaranya hanya bunyi per huruf.
+  //
+  // Kalau huruf aktif masih sedikit sehingga pool-nya kecil, kata diulang
+  // sampai sesi penuh - pola yang sama dipakai mode kuis untuk huruf
+  // (fillToSize di KanaRepository.buildQueue). Rangkaian huruf dan satu
+  // huruf hanya jadi cadangan kalau pool-nya benar-benar kosong, supaya
+  // sesi tidak tampil nol soal.
+  var wordCount = min(size, pool.length);
+  var chunkCount = 0;
+  var singleCount = 0;
+  // Selisih ukuran sesi DAN pool diisi dengan mengulang kata (di bawah),
+  // bukan dengan rangkaian huruf. Jadi chunkTotal = 0 selama pool tidak kosong.
+  var chunkTotal = 0;
+  if (pool.isEmpty) {
+    wordCount = 0;
+    chunkCount = scripts.isEmpty ? 0 : (size * 0.6).round();
+    singleCount = scripts.isEmpty ? 0 : (size * 0.15).round();
+    chunkTotal = chunkCount + (size - chunkCount - singleCount);
+    if (scripts.isEmpty) chunkTotal = 0;
+  }
 
   final questions = <ReadQuestion>[];
   final usedTexts = <String>{};
 
   // 1) kata sungguhan
   final picked = await words.pick(pool, wordCount, r);
+  // Pool lebih kecil daripada ukuran sesi (huruf aktif masih sedikit):
+  // ulangi kata yang sudah dipilih sampai sesi penuh, dengan urutan
+  // diacak tiap putaran supaya kata yang sama tidak bersebelahan.
+  if (picked.isNotEmpty && picked.length < size) {
+    final base = [...picked];
+    while (picked.length < size) {
+      final round = [...base]..shuffle(r);
+      picked.addAll(round.take(size - picked.length));
+    }
+  }
   for (final w in picked) {
     final pieces = WordRepository.parse(w.text)!;
     final letters = [for (final p in pieces) if (p.kana != null) p.kana!];
@@ -221,14 +243,27 @@ Future<List<ReadQuestion>> buildReadingSession({
     addChunk();
   }
 
-  // Acak urutan dan hindari teks yang sama berurutan.
-  questions.shuffle(r);
-  for (var i = 1; i < questions.length; i++) {
-    if (questions[i].text == questions[i - 1].text && i + 1 < questions.length) {
-      final t = questions[i];
-      questions[i] = questions[i + 1];
-      questions[i + 1] = t;
+  // Acak urutan dan pastikan teks yang sama tidak pernah bersebelahan.
+  return _shuffleNoAdjacent(questions, r).take(size).toList();
+}
+
+/// Mengacak [items] dengan syarat dua item berurutan tidak punya teks sama.
+/// Susun greedily: tiap kali ambil kandidat acak yang teksnya berbeda dari
+/// yang terakhir. Kalau semua sisa kandidat bertabrakan (hanya mungkin kalau
+/// semua teksnya identik), ambil saja yang pertama - tidak ada yang bisa
+/// dilakukan.
+List<ReadQuestion> _shuffleNoAdjacent(List<ReadQuestion> items, Random rng) {
+  if (items.length < 2) return items;
+  final rest = [...items]..shuffle(rng);
+  final out = <ReadQuestion>[rest.removeLast()];
+  while (rest.isNotEmpty) {
+    final last = out.last.text;
+    final pick = rest.indexWhere((q) => q.text != last);
+    if (pick == -1) {
+      out.addAll(rest);
+      break;
     }
+    out.add(rest.removeAt(pick));
   }
-  return questions.take(size).toList();
+  return out;
 }

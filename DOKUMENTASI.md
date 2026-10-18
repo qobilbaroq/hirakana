@@ -164,13 +164,17 @@ dipakai sebagai pengecoh di kuis biasa.
 Tab **Practice -> Reading practice**. Selalu menanyakan **cara baca (romaji)**, bukan arti.
 Satu sesi (sebanyak ukuran sesi) berisi campuran:
 
-| Jenis | Porsi | Contoh |
-| --- | --- | --- |
-| Kata sungguhan | ~60% | `さかな` -> sakana |
-| Rangkaian 2-3 huruf acak | ~25% | `くあせ` -> kuase |
-| Satu huruf | ~15% | `け` -> ke |
+Setiap soal adalah **kata sungguhan** dari pool kurasi, contoh `さかな` -> sakana. Tidak ada lagi soal
+rangkaian huruf acak (`くあせ`) atau satu huruf: yang seperti itu bukan kosakata, dan suaranya hanya
+bunyi per huruf sehingga tidak berguna untuk latihan membaca.
 
-Kalau kata yang cocok sedikit, sisanya diisi rangkaian huruf, jadi sesi selalu penuh.
+Kalau kata yang cocok lebih sedikit daripada ukuran sesi — misal baru aktif 5 huruf vokal, hanya ada
+10 kata — sisanya diisi dengan **mengulang** kata yang sudah dipilih (diacak tiap putaran, dan satu
+kata tidak pernah muncul dua kali berturut). Ini pola yang sama seperti mode kuis saat huruf diulang.
+Sesi tetap penuh dan tetap 100% kata.
+
+Rangkaian huruf dan satu huruf **hanya** dipakai sebagai cadangan kalau pool-nya benar-benar kosong,
+supaya sesi tidak tampil nol soal.
 
 **Pilihan jawaban** dibuat dengan mengganti **satu huruf** pada soal dengan huruf lain dari script yang
 sama (huruf yang sering tertukar diutamakan), sehingga pilihannya mirip dan tidak bisa ditebak dari
@@ -186,7 +190,9 @@ semua hiragana aktif. Jumlahnya naik di setiap tahap, tidak pernah stagnan.
 belum pernah muncul diutamakan (acak), lalu yang paling lama tidak muncul.
 
 **Suara**: satu huruf memakai rekaman huruf; kata dengan rekaman utuh memakai rekaman kata
-(`assets/audio/words/<romaji>.mp3`); rangkaian huruf dan kata tanpa rekaman dibunyikan huruf demi huruf.
+(`assets/audio/words/<romaji>.mp3`). Karena semua soal adalah kata yang punya rekaman utuh, tidak ada
+soal yang dibunyikan huruf demi huruf. Rangkaian huruf hanya muncul sebagai cadangan kalau pool kata
+kosong, dan bunyinya memang per huruf.
 Suara diputar setelah menjawab (supaya tidak membocorkan jawaban) dan mengikuti pola normal/lambat
 di Settings.
 

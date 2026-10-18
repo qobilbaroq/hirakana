@@ -15,8 +15,8 @@ Tanpa akun, tanpa iklan, tanpa hukuman kalau kamu melewatkan sehari. Semua fitur
 - **Flashcard** dengan pengulangan berjarak: ingat dulu, baru buka jawabannya.
 - **Kuis** 5 jenis, termasuk membedakan hiragana vs katakana dan latihan huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi urutan goresan, dan perbandingan hasil.
-- **Latihan baca**: tebak romaji dari 729 kata sungguhan yang semuanya punya arti Bahasa Indonesia,
-  rangkaian huruf, atau satu huruf. Soal tidak itu-itu saja.
+- **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang semuanya punya arti Bahasa Indonesia dan
+  rekaman utuh. Tiap soal adalah kata; kalau huruf aktif masih sedikit, kata diulang supaya sesi penuh.
 - **Suara** untuk setiap huruf dan setiap kata, normal dan lambat, tersedia offline.
 - **Kemajuan nyata**: penguasaan diukur lintas sesi, bukan sekali jawab benar.
 - **Panjang sesi dan target harian bisa diatur.**
@@ -27,7 +27,8 @@ Tanpa akun, tanpa iklan, tanpa hukuman kalau kamu melewatkan sehari. Semua fitur
 
 ### 1.3.0 (kode build 4)
 - Panjang sesi bisa diatur di Settings (10 sampai 60; minimal 10). Huruf diulang kalau huruf aktif lebih sedikit.
-- Latihan baca dirombak: tebak romaji dari kata, rangkaian huruf, atau satu huruf. Tidak lagi menanyakan arti
+- Latihan baca dirombak: **setiap soal adalah kata sungguhan** dengan rekaman utuh; tidak lagi ada soal
+  rangkaian huruf acak atau satu huruf. Tidak lagi menanyakan arti
   (arti bisa ditampilkan setelah jawaban benar lewat Settings).
 - Daftar kata disusun ulang jadi 729 kata kurasi yang **semuanya punya arti Bahasa Indonesia dan rekaman
   utuh**, tetap merata untuk semua tahap huruf. Kata yang belum pernah muncul diutamakan supaya tidak

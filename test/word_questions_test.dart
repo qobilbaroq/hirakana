@@ -191,32 +191,46 @@ void main() {
         }
       }
       expect(totalKata, greaterThan(0));
-      expect(totalHuruf, greaterThan(0));
-      // Pada mode "All words" soal huruf memang masih muncul, tapi tidak satu
-      // pun di antaranya adalah kata.
-      expect(totalKata + totalHuruf, greaterThan(300));
+      // Tidak ada soal huruf lagi sama sekali: semuanya kata sungguhan.
+      expect(totalHuruf, 0,
+          reason: 'masih ada soal yang bukan kata (dibunyikan per huruf)');
+      expect(totalKata, greaterThan(300));
     });
 
-    test('memilih tingkat N5-N4/N3 membuat soal kata jauh lebih banyak', () async {
+    test('semua mode (All words / N5-N4 / N3) 100% kata', () async {
       await repo.setActiveIds(allKana.map((k) => k.id).toSet());
       Future<int> hitungKata(String? level) async {
         final qs = await buildReadingSession(
             type: 'mixed', size: 20, vocabLevel: level, rng: Random(7));
+        expect(qs.every((q) => q.kind == ReadKind.word), isTrue,
+            reason: 'mode ${level ?? "All words"} masih ada soal huruf');
+        expect(qs.every((q) => q.hasWholeWordAudio), isTrue);
         return qs.where((q) => q.kind == ReadKind.word).length;
       }
 
-      final semua = await hitungKata(null);
-      final n5 = await hitungKata('n5n4');
-      final n3 = await hitungKata('n3');
-      expect(semua, greaterThan(0));
-      expect(n5, greaterThan(0));
-      expect(n3, greaterThan(0));
-      // 85% kata (dibanding 60% di mode "All words").
-      expect(n5, greaterThan(semua));
-      expect(n3, greaterThan(semua));
+      expect(await hitungKata(null), 20);
+      expect(await hitungKata('n5n4'), 20);
+      expect(await hitungKata('n3'), 20);
     });
 
-    test('sesi penuh, pilihan sah, tanpa teks dobel, ada variasi jenis soal', () async {
+    test('pool kecil: sesi tetap penuh dan semua soal tetap kata', () async {
+      // Hanya vokal: katakana yang tersedia cuma 1 kata, hiragana 10.
+      await activate(['vowels']);
+      for (final size in [10, 25, 60]) {
+        final qs = await buildReadingSession(
+            type: 'mixed', size: size, rng: Random(size));
+        expect(qs.length, size, reason: 'sesi $size tidak penuh');
+        expect(qs.every((q) => q.kind == ReadKind.word), isTrue);
+        expect(qs.every((q) => q.hasWholeWordAudio), isTrue);
+        // Kata boleh berulang, tapi tidak boleh sama bersebelahan.
+        for (var i = 1; i < qs.length; i++) {
+          expect(qs[i].text == qs[i - 1].text, isFalse,
+              reason: '"${qs[i].text}" muncul dua kali berturut');
+        }
+      }
+    });
+
+    test('sesi penuh, pilihan sah, tanpa teks dobel, semuanya soal kata', () async {
       await activate(['vowels', 'k', 's']);
       final qs = await buildReadingSession(
           type: 'hiragana', size: 10, rng: Random(1));
@@ -227,8 +241,8 @@ void main() {
         expect(q.options.toSet().length, 4);
         expect(q.options, contains(q.answer));
       }
-      expect(qs.any((q) => q.kind == ReadKind.word), isTrue);
-      expect(qs.any((q) => q.kind != ReadKind.word), isTrue);
+      expect(qs.every((q) => q.kind == ReadKind.word), isTrue);
+      expect(qs.every((q) => q.word != null && q.hasWholeWordAudio), isTrue);
     });
 
     test('kata tidak berulang antar sesi selama masih ada yang belum muncul', () async {
