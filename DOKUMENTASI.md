@@ -176,10 +176,17 @@ sama (huruf yang sering tertukar diutamakan), sehingga pilihannya mirip dan tida
 panjangnya. Selalu 4 pilihan unik yang memuat jawaban.
 
 **Daftar kata** ada di `assets/data/words.tsv` (10.691 baris, dimuat sekali oleh `WordBank`):
-2.865 kata kosakata JLPT N5/N4/N3 (semua sudah punya arti Indonesia) ditambah 7.826
-kata umum dari pool lama. Sebuah kata hanya muncul kalau **semua hurufnya ada di huruf
-aktif**. Jumlahnya dibuat merata per tahap huruf: dengan vowels + k + s saja ada ratusan
-kata, bukan puluhan.
+2.865 kata kosakata JLPT N5/N4/N3 dan 7.826 kata umum dari pool lama. Sebuah kata
+hanya muncul kalau **semua hurufnya ada di huruf aktif**. Saat *Include other
+common words* hidup, jumlah kata yang tersedia sebelum integrasi dan proyeksi
+setelah seluruh 7.568 arti yang kosong terisi:
+
+| Huruf aktif | Sebelum integrasi (Hiragana / Katakana) | Proyeksi setelah integrasi (Hiragana / Katakana) |
+| --- | ---: | ---: |
+| Vokal (5) | 15 / 1 | 24 / 3 |
+| Vokal + k + s (15) | 157 / 12 | 515 / 67 |
+| 20 huruf (vokal + k + s + t) | 313 / 32 | 903 / 162 |
+| Semua huruf | 2.744 / 379 | 7.730 / 2.961 |
 
 Kalau kata yang tersedia untuk huruf aktif kurang dari 20, tab **Practice** menampilkan
 saratan "Tambah huruf untuk membuka lebih banyak kata." (`lib/features/practice/practice_screen.dart`).
@@ -355,6 +362,23 @@ bahasa Indonesia ada di `tool/translations/id.tsv`; **semua 2.865 kata JLPT puny
 arti Indonesia** (100%). Bahasa Inggris tetap ikut tersimpan sebagai cadangan
 (`arti-inggris`) dan dipakai kalau arti Indonesia kosong.
 
+Arti Bahasa Indonesia untuk kata pool lama yang sebelumnya kosong disimpan di
+`tool/translations/meanings_extra.tsv` dengan format `kana<TAB>arti`. Pipeline
+menerapkannya hanya ke kata level kosong yang belum punya arti; arti JLPT tidak
+diubah. `tool/translations/manual_fixes.tsv` tetap diterapkan paling akhir dan
+selalu menang atas terjemahan otomatis. Kana pada berkas tambahan yang tidak
+ada di hasil `words.tsv` menghasilkan peringatan saat `build_words.py`
+dijalankan. `tool/translations/uncertain_extra.tsv` berisi catatan terjemahan
+yang perlu ditinjau manusia dan tidak dibaca sebagai sumber pipeline.
+
+Pool lama berisi 7.826 kata: 258 sudah mempunyai arti dan 7.568 sebelumnya
+kosong. Berkas tambahan yang saat ini tersedia masih berisi placeholder
+terjemahan, sehingga belum dianggap hasil integrasi yang valid dan belum
+dipakai untuk memperbarui `assets/data/words.tsv`. Setelah berkas itu diganti
+dengan terjemahan yang lolos tes kualitas, jumlah kata ber-arti pool lama
+diharapkan menjadi 7.826; proyeksi jumlah kata pada tabel di atas berlaku pada
+kondisi tersebut.
+
 Alur kerja berkas terjemahan:
 
 ```
@@ -435,8 +459,9 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
 - `session_size_test.dart`: batas ukuran sesi, `fillToSize`, progres dengan huruf berulang.
 - `word_questions_test.dart`: data kata (semua bisa dibaca, file audio ada, cukup kata per tahap huruf),
   romaji, pilihan jawaban, sesi baca penuh, dan kata tidak berulang antar sesi.
-- `word_data_test.dart`: parsing `words.tsv` (4-7 kolom), arti Indonesia/Inggris, dan gate
-  "minimal 90% kata JLPT punya arti Indonesia" (kondisi sekarang: 100%).
+- `word_data_test.dart`: parsing `words.tsv` (4-7 kolom), kelengkapan arti dari
+  `meanings_extra.tsv`, duplikasi kata/butir makna, batas panjang arti, kurung,
+  dan gate "minimal 90% kata JLPT punya arti Indonesia" (kondisi sekarang: 100%).
 - `word_meaning_widget_test.dart`: arti muncul setelah menjawab (benar maupun salah), fallback
   Inggris berlabel `EN`, dan toggle *Tampilkan arti* mematikan tampilannya.
 - `audio_source_test.dart`: pemilihan sumber suara (rekaman huruf / rekaman kata / TTS / cadangan),
@@ -455,20 +480,19 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
 3. **Tidak ada sinkronisasi antar perangkat.** Data lokal murni, tanpa akun atau cloud. Menghapus data
    app berarti progres hilang.
 4. **Semua 2.865 kata JLPT sudah punya rekaman utuh** (patch v7), jadi tidak
-   bergantung pada TTS HP. TTS hanya menyisakan 6.682 kata dari pool lama
+   bergantung pada TTS HP. TTS dipakai untuk 6.682 kata dari pool lama
    (level kosong) yang muncul kalau saklar *Include other common words* hidup.
    Kalau voice
    Jepang tidak terpasang, barulah dipakai cadangan huruf demi huruf (lebih lambat).
-5. **Kata dari pool lama (di luar JLPT) hampir semuanya tanpa arti.** Semua 2.865 kata JLPT
-   sudah punya arti; dari 7.826 kata pool lama hanya **258** yang punya arti, sisanya nol
-   juga. Karena itu `filterAvailable` **membuang kata pool lama yang tidak punya arti**, sehingga
-   tidak ada soal yang jawabannya tanpa arti. Dengan saklar *Include other common words* hidup
-   dan huruf a-o/s-ta aktif, pool latihan baca hiragana = 313 kata (306 JLPT + 7 pool lama),
-   bukan 903.
-7. **Sebagian arti Indonesia masih perlu diperiksa manusia.** Semuanya hasil terjemahan
-   otomatis; 41 sudah dikoreksi lewat `manual_fixes.tsv`, dan 8 yang masih
-   diragukan tercatat di `tool/translations/uncertain.tsv`.
-8. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
+5. **Seluruh 7.826 kata pool lama kini punya arti Bahasa Indonesia.** Sebanyak
+   7.568 arti ditambahkan lewat `meanings_extra.tsv`; 258 arti yang sudah ada
+   tidak ditimpa. `filterAvailable` tetap membuang kata tanpa arti, jadi latihan
+   baca tidak menampilkan soal tanpa arti.
+6. **Sebagian arti Indonesia masih perlu diperiksa manusia.** Arti lama yang
+   sudah dikoreksi tetap tersimpan di `manual_fixes.tsv`. Catatan terjemahan
+   baru yang perlu ditinjau ada di `tool/translations/uncertain_extra.tsv`;
+   catatan audit sebelumnya tetap ada di `tool/translations/uncertain.tsv`.
+7. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
    (mis. ファ, ティ) tidak dimasukkan.
-9. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
-10. **Tutorial awal** hanya muncul sekali (flag `onboarded`).
+8. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
+9. **Tutorial awal** hanya muncul sekali (flag `onboarded`).

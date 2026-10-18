@@ -26,6 +26,8 @@ LEGACY_TSV = os.path.join(TOOL, "data", "words_legacy.tsv")
 OUT_TSV = os.path.join(ROOT, "assets", "data", "words.tsv")
 WORDS_AUDIO = os.path.join(ROOT, "assets", "audio", "words")
 INDO_TSV = os.path.join(TOOL, "translations", "id.tsv")
+MEANINGS_EXTRA_TSV = os.path.join(
+    TOOL, "translations", "meanings_extra.tsv")
 MANUAL_FIXES_TSV = os.path.join(TOOL, "translations", "manual_fixes.tsv")
 
 SMALL = "ゃゅょャュョ"          # boleh: digabung jadi satu huruf (きゃ)
@@ -321,6 +323,11 @@ def load_manual_fixes():
     return load_tsv_keys(MANUAL_FIXES_TSV)
 
 
+def load_extra_meanings():
+    """Baca arti Indonesia untuk kata pool lama, keyed dengan kata kana."""
+    return load_tsv_keys(MEANINGS_EXTRA_TSV)
+
+
 # -------------------------------------------------------------------- main
 
 def main():
@@ -341,6 +348,7 @@ def main():
     old = load_old_pool()
     indo = load_indo()
     manual_fixes = load_manual_fixes()
+    extra_meanings = load_extra_meanings()
     jlpt_texts = {w["text"] for w in jlpt_list}
 
     rows = []
@@ -378,9 +386,18 @@ def main():
             "reading": w["reading"],
             "level": "",
             "meaning_en": "",
-            "meaning_id": w["meaning_id"],
+            "meaning_id": (
+                w["meaning_id"] or extra_meanings.get(text, "")),
             "kanji": "",
         })
+
+    row_texts = {r["text"] for r in rows}
+    unknown_extra = sorted(set(extra_meanings) - row_texts)
+    if unknown_extra:
+        print(f"PERINGATAN: {len(unknown_extra)} arti tambahan tidak "
+              f"cocok dengan kata di words.tsv: "
+              f"{', '.join(unknown_extra[:5])}",
+              file=sys.stderr)
 
     # Koreksi manual diterapkan TERAKHIR: menimpa apa pun hasil terjemahan
     # otomatis, supaya koreksi yang sudah diperiksa tangan tidak hilang
@@ -425,6 +442,13 @@ def main():
         total += n
         print(f"  {lvl:>8}: {n}")
     print(f"  {'TOTAL':>8}: {total}")
+    print()
+
+    old_rows = [r for r in rows if not r["level"]]
+    old_with_id = sum(1 for r in old_rows if r["meaning_id"])
+    print("=== KATA POOL LAMA ===")
+    print(f"  ada arti Indonesia   : {old_with_id} / {len(old_rows)}")
+    print(f"  tanpa arti Indonesia : {len(old_rows) - old_with_id}")
     print()
 
     lvl_words = [r for r in rows if r["level"]]

@@ -3,6 +3,15 @@
 Dokumen ini hanya berisi daftar versi dan apa yang berubah. Panduan teknis
 publishing ke Play Store tidak disimpan di sini.
 
+## Integrasi terjemahan (belum siap dirilis)
+
+- Pipeline disiapkan untuk membaca `tool/translations/meanings_extra.tsv`
+  hanya bagi kata pool lama yang belum mempunyai arti; JLPT tidak ditimpa dan
+  `manual_fixes.tsv` tetap diterapkan paling akhir.
+- Integrasi belum diterbitkan: berkas terjemahan yang tersedia memuat
+  placeholder dan belum lolos pemeriksaan kualitas. Angka jumlah kata
+  pascaintegrasi masih proyeksi, bukan hasil rilis.
+
 ## Catatan rilis 1.4.0 (kode build 5)
 
 ### Untuk pengguna
