@@ -105,7 +105,14 @@ void main() {
       expect(n3, isNotEmpty);
       expect(n5.every((w) => w.level == 'n5n4'), isTrue);
       expect(n3.every((w) => w.level == 'n3'), isTrue);
-      expect(semua.length, greaterThan(n5.length + n3.length));
+      // Semua kata sudah diberi tingkat, jadi "semua" tepat sama dengan
+      // gabungan N5-N4 + N3. Sebelumnya di sini dipakai `greaterThan`
+      // karena masih ada kata tanpa tingkat; sekarang memakai kesamaan
+      // supaya kata yang somehow luput dari giveiran akan caught.
+      expect(semua.length, n5.length + n3.length);
+      expect(all.every((w) => w.level.isNotEmpty), isTrue,
+          reason: 'ada kata tanpa tingkat: '
+              '${all.where((w) => w.level.isEmpty).take(5).map((w) => w.text)}');
     });
 
     test('kata hanya muncul kalau semua hurufnya aktif', () {

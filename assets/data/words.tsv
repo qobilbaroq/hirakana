@@ -1,47 +1,47 @@
-あい	ai	1	cinta
+あい	ai	1	cinta	n5n4	Sehari-hari
 あう	au	1	bertemu	n5n4	Aktivitas
-あお	ao	1	biru
+あお	ao	1	biru	n5n4	Sehari-hari
 あおい	aoi	1	biru	n5n4	Sehari-hari
 いい	ii	1	bagus	n5n4	Sehari-hari
 いいえ	iie	1	tidak	n5n4	Sehari-hari
-いう	iu	1	berkata
-いえ	ie	1	rumah
-うえ	ue	1	atas
-おおい	ooi	1	banyak
-あか	aka	1	merah
+いう	iu	1	berkata	n5n4	Sehari-hari
+いえ	ie	1	rumah	n5n4	Rumah
+うえ	ue	1	atas	n5n4	Sehari-hari
+おおい	ooi	1	banyak	n5n4	Sehari-hari
+あか	aka	1	merah	n5n4	Sehari-hari
 あかい	akai	1	merah	n5n4	Sehari-hari
 あき	aki	1	musim gugur	n5n4	Waktu
-いか	ika	1	cumi-cumi
+いか	ika	1	cumi-cumi	n5n4	Hewan
 いく	iku	1	pergi	n5n4	Aktivitas
-いけ	ike	1	kolam
+いけ	ike	1	kolam	n5n4	Alam
 いっかい	ikkai	1	lantai satu / satu kali	n5n4	Angka
-えき	eki	1	stasiun
+えき	eki	1	stasiun	n5n4	Perjalanan
 おおきい	ookii	1	besar	n5n4	Sehari-hari
-おか	oka	1	bukit
-かい	kai	1	kerang
+おか	oka	1	bukit	n5n4	Alam
+かい	kai	1	kerang	n5n4	Hewan
 かう	kau	1	membeli	n5n4	Aktivitas
 かお	kao	1	wajah	n3	Kesehatan
 かかく	kakaku	1	harga	n3	Pekerjaan
-かき	kaki	1	kesemek
+かき	kaki	1	kesemek	n5n4	Makanan
 かく	kaku	1	menulis	n5n4	Aktivitas
 き	ki	1	pohon	n5n4	Sehari-hari
 きく	kiku	1	mendengar / bertanya	n5n4	Aktivitas
 きこく	kikoku	1	pulang ke negara asal	n3	Perjalanan
 くうこう	kuukou	1	bandara	n3	Perjalanan
-くき	kuki	1	batang
+くき	kuki	1	batang	n5n4	Alam
 けいえい	keiei	1	manajemen	n3	Pekerjaan
 けいかく	keikaku	1	rencana	n3	Pekerjaan
 こうこう	koukou	1	SMA	n3	Pendidikan
-こえ	koe	1	suara
+こえ	koe	1	suara	n5n4	Sehari-hari
 ここ	koko	1	di sini	n5n4	Sehari-hari
 あさ	asa	1	pagi	n5n4	Waktu
 あし	ashi	1	kaki	n3	Kesehatan
 あそこ	asoko	1	di sana	n5n4	Sehari-hari
-いし	ishi	1	batu
+いし	ishi	1	batu	n5n4	Alam
 いす	isu	1	kursi	n5n4	Sehari-hari
 いせき	iseki	1	situs bersejarah	n3	Perjalanan
 うそ	uso	1	bohong	n3	Komunikasi
-えさ	esa	1	pakan
+えさ	esa	1	pakan	n5n4	Hewan
 おいしい	oishii	1	enak	n5n4	Makanan
 おかし	okashi	1	camilan / kue	n5n4	Makanan
 おそい	osoi	1	lambat	n5n4	Sehari-hari
@@ -49,9 +49,9 @@
 かす	kasu	1	meminjamkan	n5n4	Aktivitas
 けさ	kesa	1	pagi ini	n5n4	Waktu
 けしき	keshiki	1	pemandangan	n3	Perjalanan
-さけ	sake	1	sake
+さけ	sake	1	sake	n5n4	Makanan
 さっき	sakki	1	tadi	n5n4	Waktu
-し	shi	1	empat
+し	shi	1	empat	n5n4	Angka
 しお	shio	1	garam	n5n4	Makanan
 すいえい	suiei	1	renang	n5n4	Aktivitas
 すいか	suika	1	semangka	n5n4	Makanan
@@ -59,7 +59,7 @@
 すこし	sukoshi	1	sedikit	n5n4	Angka
 すし	sushi	1	sushi	n5n4	Makanan
 せいせき	seiseki	1	nilai	n3	Pendidikan
-せかい	sekai	1	dunia
+せかい	sekai	1	dunia	n5n4	Sehari-hari
 せき	seki	1	batuk	n3	Kesehatan
 そこ	soko	1	di situ	n5n4	Sehari-hari
 あさって	asatte	1	lusa	n5n4	Waktu
@@ -72,26 +72,26 @@
 いとこ	itoko	1	sepupu	n5n4	Keluarga
 うた	uta	1	lagu	n5n4	Aktivitas
 うたう	utau	1	bernyanyi	n5n4	Aktivitas
-うち	uchi	1	rumah
+うち	uchi	1	rumah	n5n4	Rumah
 おっと	otto	1	suami (saya)	n5n4	Keluarga
 おとうと	otouto	1	adik laki-laki	n5n4	Keluarga
 おとこ	otoko	1	laki-laki	n5n4	Keluarga
-きた	kita	1	utara
+きた	kita	1	utara	n5n4	Perjalanan
 きって	kitte	1	prangko	n3	Komunikasi
 くち	kuchi	1	mulut	n3	Kesehatan
 くつ	kutsu	1	sepatu	n5n4	Sehari-hari
 けいさつ	keisatsu	1	polisi	n3	Pekerjaan
-けいたい	keitai	1	ponsel
+けいたい	keitai	1	ponsel	n5n4	Sehari-hari
 こたえ	kotae	1	jawaban	n3	Pendidikan
-こと	koto	1	hal
+こと	koto	1	hal	n5n4	Sehari-hari
 ことし	kotoshi	1	tahun ini	n5n4	Waktu
 さとう	satou	1	gula	n5n4	Makanan
-した	shita	1	bawah
+した	shita	1	bawah	n5n4	Sehari-hari
 せいと	seito	1	murid	n3	Pendidikan
-そして	soshite	1	lalu
-そと	soto	1	luar
+そして	soshite	1	lalu	n5n4	Sehari-hari
+そと	soto	1	luar	n5n4	Sehari-hari
 たかい	takai	1	tinggi / mahal	n5n4	Sehari-hari
-たこ	tako	1	gurita
+たこ	tako	1	gurita	n5n4	Hewan
 ちいさい	chiisai	1	kecil	n5n4	Sehari-hari
 ちかてつ	chikatetsu	1	kereta bawah tanah	n3	Perjalanan
 ちこく	chikoku	1	terlambat	n3	Pekerjaan
@@ -99,9 +99,9 @@
 ちち	chichi	1	ayah (saya)	n5n4	Keluarga
 つうち	tsuuchi	1	pemberitahuan	n3	Komunikasi
 つかう	tsukau	1	menggunakan	n5n4	Aktivitas
-つき	tsuki	1	bulan
+つき	tsuki	1	bulan	n5n4	Alam
 つくえ	tsukue	1	meja	n5n4	Sehari-hari
-つち	tsuchi	1	tanah
+つち	tsuchi	1	tanah	n5n4	Alam
 て	te	1	tangan	n3	Kesehatan
 とお	too	1	sepuluh (buah)	n5n4	Angka
 とおか	tooka	1	tanggal 10	n5n4	Waktu
@@ -110,28 +110,28 @@
 あなた	anata	1	kamu	n5n4	Keluarga
 あに	ani	1	kakak laki-laki (saya)	n5n4	Keluarga
 あね	ane	1	kakak perempuan (saya)	n5n4	Keluarga
-いなか	inaka	1	desa
-いぬ	inu	1	anjing
+いなか	inaka	1	desa	n5n4	Perjalanan
+いぬ	inu	1	anjing	n5n4	Hewan
 おかね	okane	1	uang	n5n4	Sehari-hari
 おとこのこ	otokonoko	1	anak laki-laki	n5n4	Keluarga
 おなか	onaka	1	perut	n5n4	Makanan
-かたな	katana	1	pedang
+かたな	katana	1	pedang	n5n4	Sehari-hari
 かなしい	kanashii	1	sedih	n5n4	Sehari-hari
-かに	kani	1	kepiting
-きつね	kitsune	1	rubah
+かに	kani	1	kepiting	n5n4	Hewan
+きつね	kitsune	1	rubah	n5n4	Hewan
 きのう	kinou	1	kemarin	n5n4	Waktu
 きのこ	kinoko	1	jamur	n5n4	Makanan
 ここのか	kokonoka	1	tanggal 9	n5n4	Waktu
 ここのつ	kokonotsu	1	sembilan (buah)	n5n4	Angka
 さかな	sakana	1	ikan	n5n4	Makanan
-すな	suna	1	pasir
+すな	suna	1	pasir	n5n4	Alam
 せなか	senaka	1	punggung	n3	Kesehatan
-たな	tana	1	rak
-たぬき	tanuki	1	tanuki
+たな	tana	1	rak	n5n4	Rumah
+たぬき	tanuki	1	tanuki	n5n4	Hewan
 たのしい	tanoshii	1	menyenangkan	n5n4	Sehari-hari
-なか	naka	1	dalam
+なか	naka	1	dalam	n5n4	Sehari-hari
 なく	naku	1	menangis	n5n4	Aktivitas
-なし	nashi	1	pir
+なし	nashi	1	pir	n5n4	Makanan
 なっとう	nattou	1	natto	n5n4	Makanan
 なつ	natsu	1	musim panas	n5n4	Waktu
 なな	nana	1	tujuh	n5n4	Angka
@@ -140,24 +140,24 @@
 なのか	nanoka	1	tanggal 7	n5n4	Waktu
 に	ni	1	dua	n5n4	Angka
 にく	niku	1	daging	n5n4	Makanan
-ぬの	nuno	1	kain
+ぬの	nuno	1	kain	n5n4	Sehari-hari
 ねこ	neko	1	kucing	n5n4	Sehari-hari
 ねつ	netsu	1	demam	n3	Kesehatan
 おうふく	oufuku	1	pulang pergi	n3	Perjalanan
-さいふ	saifu	1	dompet
+さいふ	saifu	1	dompet	n5n4	Sehari-hari
 そふ	sofu	1	kakek (saya)	n5n4	Keluarga
 とうふ	toufu	1	tahu	n5n4	Makanan
 はい	hai	1	ya	n5n4	Sehari-hari
 はきけ	hakike	1	mual	n3	Kesehatan
-はこ	hako	1	kotak
-はし	hashi	1	sumpit
+はこ	hako	1	kotak	n5n4	Rumah
+はし	hashi	1	sumpit	n5n4	Makanan
 はち	hachi	1	delapan	n5n4	Angka
 はつか	hatsuka	1	tanggal 20	n5n4	Waktu
-はと	hato	1	merpati
+はと	hato	1	merpati	n5n4	Hewan
 はな	hana	1	bunga / hidung	n5n4	Sehari-hari
 はなす	hanasu	1	berbicara	n5n4	Aktivitas
 はは	haha	1	ibu (saya)	n5n4	Keluarga
-ひ	hi	1	api
+ひ	hi	1	api	n5n4	Alam
 ひく	hiku	1	menarik	n5n4	Aktivitas
 ひくい	hikui	1	rendah	n5n4	Sehari-hari
 ひこうき	hikouki	1	pesawat	n3	Perjalanan
@@ -169,18 +169,18 @@
 ふけつ	fuketsu	1	kotor	n3	Kesehatan
 ふたつ	futatsu	1	dua (buah)	n5n4	Angka
 ふつか	futsuka	1	tanggal 2	n5n4	Waktu
-ふとい	futoi	1	tebal
+ふとい	futoi	1	tebal	n5n4	Sehari-hari
 ふね	fune	1	kapal	n3	Perjalanan
-へそ	heso	1	pusar
+へそ	heso	1	pusar	n5n4	Tubuh
 ほうこう	houkou	1	arah	n3	Perjalanan
 ほうこく	houkoku	1	laporan	n3	Pekerjaan
 ほうたい	houtai	1	perban	n3	Kesehatan
-ほか	hoka	1	lainnya
-ほし	hoshi	1	bintang
-ほね	hone	1	tulang
+ほか	hoka	1	lainnya	n5n4	Sehari-hari
+ほし	hoshi	1	bintang	n5n4	Alam
+ほね	hone	1	tulang	n5n4	Tubuh
 あたま	atama	1	kepala	n3	Kesehatan
 あまい	amai	1	manis	n5n4	Makanan
-あめ	ame	1	hujan
+あめ	ame	1	hujan	n5n4	Alam
 いつも	itsumo	1	selalu	n5n4	Waktu
 いま	ima	1	sekarang	n5n4	Waktu
 いもうと	imouto	1	adik perempuan	n5n4	Keluarga
@@ -188,51 +188,51 @@
 うみ	umi	1	laut	n5n4	Sehari-hari
 おもい	omoi	1	berat	n5n4	Sehari-hari
 かたみち	katamichi	1	sekali jalan	n3	Perjalanan
-かみ	kami	1	kertas
-かめ	kame	1	kura-kura
-きもの	kimono	1	kimono
-くま	kuma	1	beruang
-くも	kumo	1	awan
-さしみ	sashimi	1	sashimi
+かみ	kami	1	kertas	n5n4	Rumah
+かめ	kame	1	kura-kura	n5n4	Hewan
+きもの	kimono	1	kimono	n5n4	Pakaian
+くま	kuma	1	beruang	n5n4	Hewan
+くも	kumo	1	awan	n5n4	Alam
+さしみ	sashimi	1	sashimi	n5n4	Makanan
 さむい	samui	1	dingin	n5n4	Sehari-hari
-さめ	same	1	hiu
+さめ	same	1	hiu	n5n4	Hewan
 しま	shima	1	pulau	n3	Perjalanan
-たたみ	tatami	1	tikar tatami
-つめ	tsume	1	kuku
-とても	totemo	1	sangat
+たたみ	tatami	1	tikar tatami	n5n4	Rumah
+つめ	tsume	1	kuku	n5n4	Tubuh
+とても	totemo	1	sangat	n5n4	Sehari-hari
 なまえ	namae	1	nama	n5n4	Keluarga
-なみ	nami	1	ombak
+なみ	nami	1	ombak	n5n4	Alam
 にもつ	nimotsu	1	barang bawaan	n3	Perjalanan
-ぬま	numa	1	rawa
+ぬま	numa	1	rawa	n5n4	Alam
 ねむい	nemui	1	mengantuk	n3	Kesehatan
 のみもの	nomimono	1	minuman	n5n4	Makanan
 のむ	nomu	1	minum	n5n4	Aktivitas
-はさみ	hasami	1	gunting
+はさみ	hasami	1	gunting	n5n4	Rumah
 ひま	hima	1	senggang	n5n4	Sehari-hari
 ひみつ	himitsu	1	rahasia	n3	Komunikasi
 まいにち	mainichi	1	setiap hari	n5n4	Waktu
 まえ	mae	1	sebelum / depan	n5n4	Waktu
-また	mata	1	lagi
-まち	machi	1	kota
+また	mata	1	lagi	n5n4	Sehari-hari
+まち	machi	1	kota	n5n4	Perjalanan
 まにあう	maniau	1	keburu	n3	Perjalanan
-まめ	mame	1	kacang
-みせ	mise	1	toko
+まめ	mame	1	kacang	n5n4	Makanan
+みせ	mise	1	toko	n5n4	Sehari-hari
 みそ	miso	1	miso	n5n4	Makanan
 みち	michi	1	jalan	n5n4	Sehari-hari
 みっつ	mittsu	1	tiga (buah)	n5n4	Angka
 みみ	mimi	1	telinga	n3	Kesehatan
-むかし	mukashi	1	dahulu
-むし	mushi	1	serangga
+むかし	mukashi	1	dahulu	n5n4	Waktu
+むし	mushi	1	serangga	n5n4	Hewan
 むすめ	musume	1	putri	n5n4	Keluarga
-むね	mune	1	dada
+むね	mune	1	dada	n5n4	Tubuh
 め	me	1	mata	n3	Kesehatan
 めいし	meishi	1	kartu nama	n3	Pekerjaan
-めし	meshi	1	nasi
+めし	meshi	1	nasi	n5n4	Makanan
 めまい	memai	1	pusing	n3	Kesehatan
 もう	mou	1	sudah	n5n4	Waktu
-もち	mochi	1	mochi
-もっと	motto	1	lebih
-もの	mono	1	benda
+もち	mochi	1	mochi	n5n4	Makanan
+もっと	motto	1	lebih	n5n4	Sehari-hari
+もの	mono	1	benda	n5n4	Sehari-hari
 ものさし	monosashi	1	penggaris	n3	Pendidikan
 もも	momo	1	persik	n5n4	Makanan
 えいよう	eiyou	1	gizi	n3	Kesehatan
@@ -241,11 +241,11 @@
 おやすみ	oyasumi	1	selamat tidur	n5n4	Sehari-hari
 けいやく	keiyaku	1	kontrak	n3	Pekerjaan
 こよう	koyou	1	perekrutan	n3	Pekerjaan
-たいよう	taiyou	1	matahari
+たいよう	taiyou	1	matahari	n5n4	Alam
 つうやく	tsuuyaku	1	penerjemah lisan	n3	Komunikasi
 つよい	tsuyoi	1	kuat	n5n4	Sehari-hari
 はやい	hayai	1	cepat	n5n4	Sehari-hari
-はやし	hayashi	1	hutan kecil
+はやし	hayashi	1	hutan kecil	n5n4	Alam
 ふゆ	fuyu	1	musim dingin	n5n4	Waktu
 へや	heya	1	kamar	n5n4	Sehari-hari
 もよう	moyou	1	corak	n3	Perjalanan
@@ -253,35 +253,35 @@
 やさい	yasai	1	sayur	n5n4	Makanan
 やさしい	yasashii	1	mudah / baik hati	n5n4	Sehari-hari
 やすい	yasui	1	murah	n5n4	Sehari-hari
-やすみ	yasumi	1	libur
+やすみ	yasumi	1	libur	n5n4	Waktu
 やすむ	yasumu	1	beristirahat	n5n4	Aktivitas
 やっつ	yattsu	1	delapan (buah)	n5n4	Angka
 やま	yama	1	gunung	n5n4	Sehari-hari
 ゆうめい	yuumei	1	terkenal	n5n4	Sehari-hari
-ゆかた	yukata	1	yukata
+ゆかた	yukata	1	yukata	n5n4	Pakaian
 ゆき	yuki	1	salju	n5n4	Sehari-hari
-ゆめ	yume	1	mimpi
+ゆめ	yume	1	mimpi	n5n4	Sehari-hari
 ようか	youka	1	tanggal 8	n5n4	Waktu
 ようす	yousu	1	keadaan	n3	Kesehatan
-よこ	yoko	1	samping
+よこ	yoko	1	samping	n5n4	Sehari-hari
 よむ	yomu	1	membaca	n5n4	Aktivitas
 よやく	yoyaku	1	reservasi	n3	Perjalanan
 あける	akeru	1	membuka	n5n4	Aktivitas
 あたらしい	atarashii	1	baru	n5n4	Sehari-hari
 あらう	arau	1	mencuci	n5n4	Aktivitas
-あり	ari	1	semut
-ある	aru	1	ada (benda)
+あり	ari	1	semut	n5n4	Hewan
+ある	aru	1	ada (benda)	n5n4	Sehari-hari
 あるく	aruku	1	berjalan	n5n4	Aktivitas
 あれ	are	1	itu (yang jauh)	n5n4	Sehari-hari
-いる	iru	1	ada (makhluk hidup)
+いる	iru	1	ada (makhluk hidup)	n5n4	Sehari-hari
 うれしい	ureshii	1	senang	n5n4	Sehari-hari
 おかえり	okaeri	1	selamat datang kembali	n5n4	Sehari-hari
 おきる	okiru	1	bangun	n5n4	Aktivitas
-おふろ	ofuro	1	bak mandi
-かみなり	kaminari	1	petir
-から	kara	1	dari
+おふろ	ofuro	1	bak mandi	n5n4	Rumah
+かみなり	kaminari	1	petir	n5n4	Alam
+から	kara	1	dari	n5n4	Sehari-hari
 からい	karai	1	pedas	n5n4	Makanan
-からす	karasu	1	gagak
+からす	karasu	1	gagak	n5n4	Hewan
 かりる	kariru	1	meminjam	n5n4	Aktivitas
 かるい	karui	1	ringan	n5n4	Sehari-hari
 きいろ	kiiro	1	kuning	n5n4	Sehari-hari
@@ -291,25 +291,25 @@
 くる	kuru	1	datang	n5n4	Aktivitas
 くるま	kuruma	1	mobil	n5n4	Sehari-hari
 くろい	kuroi	1	hitam	n5n4	Sehari-hari
-けむり	kemuri	1	asap
-こおり	koori	1	es
+けむり	kemuri	1	asap	n5n4	Alam
+こおり	koori	1	es	n5n4	Alam
 こころ	kokoro	1	hati / jiwa	n3	Kesehatan
-ことり	kotori	1	burung kecil
+ことり	kotori	1	burung kecil	n5n4	Hewan
 これ	kore	1	ini	n5n4	Sehari-hari
-さくら	sakura	1	sakura
+さくら	sakura	1	sakura	n5n4	Alam
 さようなら	sayounara	1	selamat tinggal	n5n4	Sehari-hari
-さる	saru	1	monyet
+さる	saru	1	monyet	n5n4	Hewan
 しかる	shikaru	1	memarahi	n3	Komunikasi
 しめる	shimeru	1	menutup	n5n4	Aktivitas
-しろ	shiro	1	putih
+しろ	shiro	1	putih	n5n4	Sehari-hari
 しろい	shiroi	1	putih	n5n4	Sehari-hari
-する	suru	1	melakukan
+する	suru	1	melakukan	n5n4	Aktivitas
 そら	sora	1	langit	n5n4	Sehari-hari
 それ	sore	1	itu	n5n4	Sehari-hari
-ちから	chikara	1	kekuatan
-ところ	tokoro	1	tempat
-となり	tonari	1	sebelah
-とら	tora	1	harimau
+ちから	chikara	1	kekuatan	n5n4	Sehari-hari
+ところ	tokoro	1	tempat	n5n4	Sehari-hari
+となり	tonari	1	sebelah	n5n4	Sehari-hari
+とら	tora	1	harimau	n5n4	Hewan
 とり	tori	1	burung	n5n4	Sehari-hari
 とりにく	toriniku	1	daging ayam	n5n4	Makanan
 ねる	neru	1	tidur	n5n4	Aktivitas
@@ -317,49 +317,49 @@
 はいる	hairu	1	masuk	n5n4	Aktivitas
 はしる	hashiru	1	berlari	n5n4	Aktivitas
 はる	haru	1	musim semi	n5n4	Waktu
-はれ	hare	1	cerah
-ひかり	hikari	1	cahaya
+はれ	hare	1	cerah	n5n4	Alam
+ひかり	hikari	1	cahaya	n5n4	Alam
 ひとり	hitori	1	satu orang	n5n4	Angka
 ひる	hiru	1	siang	n5n4	Waktu
 ふたり	futari	1	dua orang	n5n4	Angka
 ふるい	furui	1	lama / tua	n5n4	Sehari-hari
 ほめる	homeru	1	memuji	n3	Komunikasi
-まくら	makura	1	bantal
-まつり	matsuri	1	festival
+まくら	makura	1	bantal	n5n4	Rumah
+まつり	matsuri	1	festival	n5n4	Waktu
 みる	miru	1	melihat	n5n4	Aktivitas
-むら	mura	1	desa
+むら	mura	1	desa	n5n4	Perjalanan
 もらう	morau	1	menerima	n5n4	Aktivitas
-もり	mori	1	hutan
-やきとり	yakitori	1	yakitori
+もり	mori	1	hutan	n5n4	Alam
+やきとり	yakitori	1	yakitori	n5n4	Makanan
 よる	yoru	1	malam hari	n5n4	Waktu
 よろしく	yoroshiku	1	mohon bantuannya	n5n4	Sehari-hari
 りかい	rikai	1	pemahaman	n3	Komunikasi
-りす	risu	1	tupai
-るす	rusu	1	tidak di rumah
+りす	risu	1	tupai	n5n4	Hewan
+るす	rusu	1	tidak di rumah	n5n4	Sehari-hari
 れきし	rekishi	1	sejarah	n3	Pendidikan
-ろうか	rouka	1	lorong
-ろうそく	rousoku	1	lilin
+ろうか	rouka	1	lorong	n5n4	Perjalanan
+ろうそく	rousoku	1	lilin	n5n4	Rumah
 ろく	roku	1	enam	n5n4	Angka
 いいわけ	iiwake	1	dalih	n3	Komunikasi
 うわさ	uwasa	1	gosip	n3	Komunikasi
 おかわり	okawari	1	tambah porsi	n5n4	Makanan
 かいわ	kaiwa	1	percakapan	n3	Pendidikan
 かわ	kawa	1	sungai	n5n4	Sehari-hari
-かわいい	kawaii	1	imut
+かわいい	kawaii	1	imut	n5n4	Sehari-hari
 ことわる	kotowaru	1	menolak	n3	Komunikasi
-しあわせ	shiawase	1	bahagia
+しあわせ	shiawase	1	bahagia	n5n4	Sehari-hari
 すわる	suwaru	1	duduk	n5n4	Aktivitas
 つうわ	tsuuwa	1	percakapan telepon	n3	Komunikasi
 つたわる	tsutawaru	1	tersampaikan	n3	Komunikasi
 にわ	niwa	1	halaman	n5n4	Sehari-hari
-にわとり	niwatori	1	ayam
+にわとり	niwatori	1	ayam	n5n4	Hewan
 よわい	yowai	1	lemah	n5n4	Sehari-hari
-わかい	wakai	1	muda
+わかい	wakai	1	muda	n5n4	Sehari-hari
 わかる	wakaru	1	mengerti	n5n4	Aktivitas
 わすれる	wasureru	1	melupakan	n5n4	Aktivitas
 わたし	watashi	1	saya	n5n4	Keluarga
 わたしたち	watashitachi	1	kami / kita	n5n4	Keluarga
-わに	wani	1	buaya
+わに	wani	1	buaya	n5n4	Hewan
 わらう	warau	1	tertawa	n5n4	Aktivitas
 わるい	warui	1	buruk	n5n4	Sehari-hari
 あんない	annai	1	panduan	n3	Perjalanan
@@ -370,8 +370,8 @@
 おねえさん	oneesan	1	kakak perempuan	n5n4	Keluarga
 おんな	onna	1	perempuan	n5n4	Keluarga
 けんさ	kensa	1	pemeriksaan	n3	Kesehatan
-こうえん	kouen	1	taman
-こんにちは	konnichiwa	1	halo
+こうえん	kouen	1	taman	n5n4	Perjalanan
+こんにちは	konnichiwa	1	halo	n5n4	Sehari-hari
 さん	san	1	tiga	n5n4	Angka
 しつもん	shitsumon	1	pertanyaan	n3	Pendidikan
 すみません	sumimasen	1	permisi / maaf	n5n4	Sehari-hari
@@ -379,37 +379,37 @@
 せんせい	sensei	1	guru	n3	Pendidikan
 せんたく	sentaku	1	mencuci pakaian	n5n4	Aktivitas
 たくさん	takusan	1	banyak	n5n4	Angka
-てんき	tenki	1	cuaca
+てんき	tenki	1	cuaca	n5n4	Waktu
 にほん	nihon	1	dua batang	n5n4	Angka
-ふとん	futon	1	kasur lipat
-へん	hen	1	aneh
+ふとん	futon	1	kasur lipat	n5n4	Rumah
+へん	hen	1	aneh	n5n4	Sehari-hari
 ほん	hon	1	buku	n5n4	Sehari-hari
 ほんとう	hontou	1	benar	n3	Komunikasi
 みかん	mikan	1	jeruk mandarin	n5n4	Makanan
 みんな	minna	1	semuanya	n5n4	Keluarga
-もん	mon	1	gerbang
+もん	mon	1	gerbang	n5n4	Perjalanan
 よにん	yonin	1	empat orang	n5n4	Angka
 らいねん	rainen	1	tahun depan	n5n4	Waktu
-れもん	remon	1	lemon
+れもん	remon	1	lemon	n5n4	Makanan
 れんらく	renraku	1	kontak / hubungi	n3	Komunikasi
 ありがとう	arigatou	1	terima kasih	n5n4	Sehari-hari
 いちご	ichigo	1	stroberi	n5n4	Makanan
-うさぎ	usagi	1	kelinci
+うさぎ	usagi	1	kelinci	n5n4	Hewan
 えいが	eiga	1	film	n5n4	Aktivitas
 おにぎり	onigiri	1	onigiri / nasi kepal	n5n4	Makanan
-おねがい	onegai	1	tolong
+おねがい	onegai	1	tolong	n5n4	Sehari-hari
 おみやげ	omiyage	1	oleh-oleh	n3	Perjalanan
 およぐ	oyogu	1	berenang	n5n4	Aktivitas
 かがく	kagaku	1	sains	n3	Pendidikan
-かがみ	kagami	1	cermin
+かがみ	kagami	1	cermin	n5n4	Rumah
 かぎ	kagi	1	kunci	n5n4	Sehari-hari
-がいこく	gaikoku	1	luar negeri
+がいこく	gaikoku	1	luar negeri	n5n4	Perjalanan
 がくせい	gakusei	1	pelajar	n3	Pendidikan
 がくひ	gakuhi	1	biaya sekolah	n3	Pendidikan
 がっこう	gakkou	1	sekolah	n3	Pendidikan
 ぎんこう	ginkou	1	bank	n3	Pekerjaan
-ぐあい	guai	1	kondisi
-ぐみ	gumi	1	permen buah
+ぐあい	guai	1	kondisi	n5n4	Kesehatan
+ぐみ	gumi	1	permen buah	n5n4	Makanan
 げんき	genki	1	sehat / bersemangat	n5n4	Sehari-hari
 げんご	gengo	1	bahasa	n3	Pendidikan
 ご	go	1	lima	n5n4	Angka
@@ -418,9 +418,9 @@
 ごご	gogo	1	siang/sore (PM)	n5n4	Waktu
 ごちそうさま	gochisousama	1	terima kasih atas makanannya	n5n4	Sehari-hari
 ごはん	gohan	1	nasi / makan	n5n4	Makanan
-ごめん	gomen	1	maaf
+ごめん	gomen	1	maaf	n5n4	Sehari-hari
 しごと	shigoto	1	pekerjaan	n3	Pekerjaan
-すごい	sugoi	1	hebat
+すごい	sugoi	1	hebat	n5n4	Sehari-hari
 たまご	tamago	1	telur	n5n4	Makanan
 てがみ	tegami	1	surat	n5n4	Sehari-hari
 ながい	nagai	1	panjang	n5n4	Sehari-hari
@@ -431,31 +431,31 @@
 みぎ	migi	1	kanan	n3	Perjalanan
 めがね	megane	1	kacamata	n5n4	Sehari-hari
 りんご	ringo	1	apel	n5n4	Makanan
-あじ	aji	1	rasa
+あじ	aji	1	rasa	n5n4	Makanan
 いちじ	ichiji	1	jam satu	n5n4	Waktu
 かぜ	kaze	1	angin	n5n4	Sehari-hari
 かぞく	kazoku	1	keluarga	n5n4	Keluarga
 かんじ	kanji	1	huruf kanji	n3	Pendidikan
-くじら	kujira	1	paus
+くじら	kujira	1	paus	n5n4	Hewan
 ごぜん	gozen	1	pagi (AM)	n5n4	Waktu
 ざせき	zaseki	1	tempat duduk	n3	Perjalanan
 ざっし	zasshi	1	majalah	n3	Komunikasi
-ざる	zaru	1	saringan
+ざる	zaru	1	saringan	n5n4	Rumah
 しちじ	shichiji	1	jam tujuh	n5n4	Waktu
 じかん	jikan	1	waktu / jam	n5n4	Waktu
-すずめ	suzume	1	burung pipit
-ずかん	zukan	1	ensiklopedia
-ずっと	zutto	1	terus-menerus
+すずめ	suzume	1	burung pipit	n5n4	Hewan
+ずかん	zukan	1	ensiklopedia	n5n4	Pendidikan
+ずっと	zutto	1	terus-menerus	n5n4	Sehari-hari
 ずつう	zutsuu	1	sakit kepala	n3	Kesehatan
 そうじ	souji	1	bersih-bersih	n5n4	Aktivitas
-ぞう	zou	1	gajah
+ぞう	zou	1	gajah	n5n4	Hewan
 ちず	chizu	1	peta	n3	Perjalanan
 にじ	niji	1	jam dua	n5n4	Waktu
 にんじん	ninjin	1	wortel	n5n4	Makanan
-ねずみ	nezumi	1	tikus
+ねずみ	nezumi	1	tikus	n5n4	Hewan
 はじめ	hajime	1	awal	n5n4	Waktu
 はじめまして	hajimemashite	1	salam kenal	n5n4	Sehari-hari
-ひつじ	hitsuji	1	domba
+ひつじ	hitsuji	1	domba	n5n4	Hewan
 みじかい	mijikai	1	pendek	n5n4	Sehari-hari
 みず	mizu	1	air	n5n4	Makanan
 むずかしい	muzukashii	1	sulit	n5n4	Sehari-hari
@@ -463,17 +463,17 @@
 うで	ude	1	lengan	n3	Kesehatan
 うどん	udon	1	udon	n5n4	Makanan
 おどる	odoru	1	menari	n5n4	Aktivitas
-おめでとう	omedetou	1	selamat
+おめでとう	omedetou	1	selamat	n5n4	Sehari-hari
 からだ	karada	1	tubuh	n3	Kesehatan
 ください	kudasai	1	tolong berikan	n5n4	Sehari-hari
 こども	kodomo	1	anak	n5n4	Keluarga
 ただいま	tadaima	1	aku pulang	n5n4	Sehari-hari
 だいがく	daigaku	1	universitas	n3	Pendidikan
-だから	dakara	1	karena itu
+だから	dakara	1	karena itu	n5n4	Sehari-hari
 だれ	dare	1	siapa	n5n4	Sehari-hari
-つづく	tsuzuku	1	berlanjut
-でぐち	deguchi	1	pintu keluar
-でも	demo	1	tetapi
+つづく	tsuzuku	1	berlanjut	n5n4	Sehari-hari
+でぐち	deguchi	1	pintu keluar	n5n4	Perjalanan
+でも	demo	1	tetapi	n5n4	Sehari-hari
 でんわ	denwa	1	telepon	n5n4	Sehari-hari
 ともだち	tomodachi	1	teman	n5n4	Keluarga
 どう	dou	1	bagaimana	n5n4	Sehari-hari
@@ -481,17 +481,17 @@
 どこ	doko	1	di mana	n5n4	Sehari-hari
 どれ	dore	1	yang mana	n5n4	Sehari-hari
 のど	nodo	1	tenggorokan	n3	Kesehatan
-はなぢ	hanaji	1	mimisan
+はなぢ	hanaji	1	mimisan	n5n4	Tubuh
 ひだり	hidari	1	kiri	n3	Perjalanan
-ふで	fude	1	kuas
+ふで	fude	1	kuas	n5n4	Rumah
 まだ	mada	1	belum	n5n4	Waktu
-まで	made	1	sampai
+まで	made	1	sampai	n5n4	Sehari-hari
 まど	mado	1	jendela	n5n4	Sehari-hari
 みどり	midori	1	hijau	n5n4	Sehari-hari
 もどる	modoru	1	kembali	n5n4	Aktivitas
-らくだ	rakuda	1	unta
+らくだ	rakuda	1	unta	n5n4	Hewan
 あそぶ	asobu	1	bermain	n5n4	Aktivitas
-えび	ebi	1	udang
+えび	ebi	1	udang	n5n4	Makanan
 おばけ	obake	1	hantu	n5n4	Keluarga
 おぼえる	oboeru	1	mengingat / menghafal	n5n4	Aktivitas
 かばん	kaban	1	tas	n5n4	Sehari-hari
@@ -501,7 +501,7 @@
 きんようび	kinyoubi	1	hari Jumat	n5n4	Waktu
 げつようび	getsuyoubi	1	hari Senin	n5n4	Waktu
 ことば	kotoba	1	kata / bahasa	n3	Komunikasi
-こんばんは	konbanwa	1	selamat malam
+こんばんは	konbanwa	1	selamat malam	n5n4	Waktu
 さくぶん	sakubun	1	karangan	n3	Pendidikan
 さんぼん	sanbon	1	tiga batang	n5n4	Angka
 しんぶん	shinbun	1	koran	n3	Komunikasi
@@ -510,18 +510,18 @@
 そば	soba	1	soba	n5n4	Makanan
 たべもの	tabemono	1	makanan	n5n4	Makanan
 たべる	taberu	1	makan	n5n4	Aktivitas
-とんぼ	tonbo	1	capung
-どうぶつ	doubutsu	1	hewan
+とんぼ	tonbo	1	capung	n5n4	Hewan
+どうぶつ	doubutsu	1	hewan	n5n4	Hewan
 どようび	doyoubi	1	hari Sabtu	n5n4	Waktu
 にちようび	nichiyoubi	1	hari Minggu	n5n4	Waktu
 はんばい	hanbai	1	penjualan	n3	Pekerjaan
-ばか	baka	1	bodoh
-ばなな	banana	1	pisang
-ばら	bara	1	mawar
-ぶた	buta	1	babi
+ばか	baka	1	bodoh	n5n4	Sehari-hari
+ばなな	banana	1	pisang	n5n4	Makanan
+ばら	bara	1	mawar	n5n4	Alam
+ぶた	buta	1	babi	n5n4	Hewan
 ぶどう	budou	1	anggur	n5n4	Makanan
 ぶんがく	bungaku	1	sastra	n3	Pendidikan
-へび	hebi	1	ular
+へび	hebi	1	ular	n5n4	Hewan
 べんり	benri	1	praktis	n5n4	Sehari-hari
 ぼうし	boushi	1	topi	n5n4	Sehari-hari
 ぼく	boku	1	aku (laki-laki)	n5n4	Keluarga
@@ -538,14 +538,14 @@
 すっぱい	suppai	1	asam	n5n4	Makanan
 てんぷら	tenpura	1	tempura	n5n4	Makanan
 でんぽう	denpou	1	telegram	n3	Komunikasi
-ぱん	pan	1	roti
-ぴあの	piano	1	piano
+ぱん	pan	1	roti	n5n4	Makanan
+ぴあの	piano	1	piano	n5n4	Aktivitas
 ぶんぽう	bunpou	1	tata bahasa	n3	Pendidikan
-ぷりん	purin	1	puding
-ぷーる	puuru	1	kolam renang
-ぺんぎん	pengin	1	penguin
-ぽけっと	poketto	1	saku
-きゃく	kyaku	1	tamu
+ぷりん	purin	1	puding	n5n4	Makanan
+ぷーる	puuru	1	kolam renang	n5n4	Aktivitas
+ぺんぎん	pengin	1	penguin	n5n4	Hewan
+ぽけっと	poketto	1	saku	n5n4	Pakaian
+きゃく	kyaku	1	tamu	n5n4	Keluarga
 きゅう	kyuu	1	sembilan	n5n4	Angka
 きゅうか	kyuuka	1	cuti	n3	Pekerjaan
 きょう	kyou	1	hari ini	n5n4	Waktu
@@ -569,7 +569,7 @@
 しゅっきん	shukkin	1	berangkat kerja	n3	Pekerjaan
 しゅみ	shumi	1	hobi	n5n4	Aktivitas
 しょうゆ	shouyu	1	kecap asin	n5n4	Makanan
-しょくじ	shokuji	1	makan
+しょくじ	shokuji	1	makan	n5n4	Makanan
 じしょ	jisho	1	kamus	n5n4	Sehari-hari
 じてんしゃ	jitensha	1	sepeda	n5n4	Sehari-hari
 たいしょく	taishoku	1	berhenti kerja	n3	Pekerjaan
@@ -580,23 +580,23 @@
 らいしゅう	raishuu	1	minggu depan	n5n4	Waktu
 あかちゃん	akachan	1	bayi	n5n4	Keluarga
 おちゃ	ocha	1	teh	n5n4	Makanan
-おもちゃ	omocha	1	mainan
+おもちゃ	omocha	1	mainan	n5n4	Rumah
 かちょう	kachou	1	kepala seksi	n3	Pekerjaan
 こうちゃ	koucha	1	teh hitam	n5n4	Makanan
 しゃちょう	shachou	1	direktur utama	n3	Pekerjaan
 しゅっちょう	shutchou	1	dinas luar	n3	Pekerjaan
-ちゃいろ	chairo	1	cokelat
-ちゃわん	chawan	1	mangkuk
+ちゃいろ	chairo	1	cokelat	n5n4	Makanan
+ちゃわん	chawan	1	mangkuk	n5n4	Rumah
 ちゅうい	chuui	1	perhatian	n3	Komunikasi
 ちゅうがっこう	chuugakkou	1	SMP	n3	Pendidikan
 ちゅうしゃ	chuusha	1	suntikan	n3	Kesehatan
-ちょう	chou	1	kupu-kupu
+ちょう	chou	1	kupu-kupu	n5n4	Hewan
 ちょうせい	chousei	1	penyesuaian	n3	Pekerjaan
-ちょうちょ	chouchou	1	kupu-kupu
-ちょうど	choudo	1	tepat
-ちょっと	chotto	1	sedikit
+ちょうちょ	chouchou	1	kupu-kupu	n5n4	Hewan
+ちょうど	choudo	1	tepat	n5n4	Sehari-hari
+ちょっと	chotto	1	sedikit	n5n4	Sehari-hari
 ぶちょう	buchou	1	kepala divisi	n3	Pekerjaan
-こんにゃく	konnyaku	1	konnyaku
+こんにゃく	konnyaku	1	konnyaku	n5n4	Makanan
 しゅうにゅう	shuunyuu	1	pendapatan	n3	Pekerjaan
 にゅういん	nyuuin	1	rawat inap	n3	Kesehatan
 にゅうがく	nyuugaku	1	masuk sekolah	n3	Pendidikan
@@ -604,16 +604,16 @@
 にひゃく	nihyaku	1	dua ratus	n5n4	Angka
 ひゃく	hyaku	1	seratus	n5n4	Angka
 ひゃくえん	hyakuen	1	seratus yen	n5n4	Angka
-ひょう	hyou	1	macan tutul
+ひょう	hyou	1	macan tutul	n5n4	Hewan
 ひょうげん	hyougen	1	ungkapan	n3	Komunikasi
 もくひょう	mokuhyou	1	target	n3	Pekerjaan
-みゃく	myaku	1	denyut nadi
-みょうじ	myouji	1	nama keluarga
+みゃく	myaku	1	denyut nadi	n5n4	Tubuh
+みょうじ	myouji	1	nama keluarga	n5n4	Keluarga
 きゅうりょう	kyuuryou	1	gaji	n3	Pekerjaan
 しりょう	shiryou	1	dokumen / bahan	n3	Pekerjaan
 どうりょう	douryou	1	rekan kerja	n3	Pekerjaan
 のうりょく	nouryoku	1	kemampuan	n3	Pekerjaan
-りゃく	ryaku	1	singkatan
+りゃく	ryaku	1	singkatan	n3	Pendidikan
 りゅうがく	ryuugaku	1	belajar ke luar negeri	n3	Pendidikan
 りゅうがくせい	ryuugakusei	1	pelajar asing	n3	Pendidikan
 りょうがえ	ryougae	1	penukaran uang	n3	Perjalanan
@@ -623,7 +623,7 @@
 りょかん	ryokan	1	penginapan tradisional	n3	Perjalanan
 りょけん	ryoken	1	izin perjalanan	n3	Perjalanan
 りょこう	ryokou	1	perjalanan wisata	n5n4	Aktivitas
-ぎゃく	gyaku	1	kebalikan
+ぎゃく	gyaku	1	kebalikan	n5n4	Sehari-hari
 ぎゅうどん	gyuudon	1	mangkuk nasi daging sapi	n5n4	Makanan
 ぎゅうにく	gyuuniku	1	daging sapi	n5n4	Makanan
 ぎゅうにゅう	gyuunyuu	1	susu	n5n4	Makanan
@@ -646,16 +646,16 @@
 じゃがいも	jagaimo	1	kentang	n5n4	Makanan
 じゅう	juu	1	sepuluh	n5n4	Angka
 じゅういち	juuichi	1	sebelas	n5n4	Angka
-じゅうしょ	juusho	1	alamat
+じゅうしょ	juusho	1	alamat	n5n4	Perjalanan
 じゅぎょう	jugyou	1	pelajaran	n3	Pendidikan
 じゅけん	juken	1	ujian masuk	n3	Pendidikan
 じょうし	joushi	1	atasan	n3	Pekerjaan
 じょうず	jouzu	1	pandai	n5n4	Sehari-hari
 じょうだん	joudan	1	candaan	n3	Komunikasi
-だいじょうぶ	daijoubu	1	baik-baik saja
+だいじょうぶ	daijoubu	1	baik-baik saja	n5n4	Sehari-hari
 とうじょう	toujou	1	naik pesawat	n3	Perjalanan
 にじゅう	nijuu	1	dua puluh	n5n4	Angka
-びじゅつ	bijutsu	1	seni rupa
+びじゅつ	bijutsu	1	seni rupa	n3	Pendidikan
 よんじゅう	yonjuu	1	empat puluh	n5n4	Angka
 ろくじゅう	rokujuu	1	enam puluh	n5n4	Angka
 さんびゃく	sanbyaku	1	tiga ratus	n5n4	Angka
@@ -663,306 +663,306 @@
 びょうき	byouki	1	penyakit	n3	Kesehatan
 びょうにん	byounin	1	orang sakit	n3	Kesehatan
 はっぴゃく	happyaku	1	delapan ratus	n5n4	Angka
-エア	ea	1	udara
-キウイ	kiui	1	kiwi
-クッキー	kukkii	1	kue kering
+エア	ea	1	udara	n5n4	Alam
+キウイ	kiui	1	kiwi	n5n4	Makanan
+クッキー	kukkii	1	kue kering	n5n4	Makanan
 ケーキ	keeki	1	kue	n5n4	Makanan
-ココア	kokoa	1	cokelat panas
-アイス	aisu	1	es krim
+ココア	kokoa	1	cokelat panas	n5n4	Makanan
+アイス	aisu	1	es krim	n5n4	Makanan
 サッカー	sakkaa	1	sepak bola	n5n4	Aktivitas
-スイス	suisu	1	Swiss
-スキー	sukii	1	ski
-ソース	soosu	1	saus
-アート	aato	1	seni
-コート	kooto	1	mantel
-スカート	sukaato	1	rok
-スケート	sukeeto	1	seluncur es
-スタート	sutaato	1	mulai
+スイス	suisu	1	Swiss	n5n4	Perjalanan
+スキー	sukii	1	ski	n5n4	Aktivitas
+ソース	soosu	1	saus	n5n4	Makanan
+アート	aato	1	seni	n3	Pendidikan
+コート	kooto	1	mantel	n5n4	Pakaian
+スカート	sukaato	1	rok	n5n4	Pakaian
+スケート	sukeeto	1	seluncur es	n5n4	Aktivitas
+スタート	sutaato	1	mulai	n5n4	Aktivitas
 ステーキ	suteeki	1	steik	n5n4	Makanan
 スーツケース	suutsukeesu	1	koper	n3	Perjalanan
-セーター	seetaa	1	sweter
-タイ	tai	1	Thailand
+セーター	seetaa	1	sweter	n5n4	Pakaian
+タイ	tai	1	Thailand	n5n4	Perjalanan
 タクシー	takushii	1	taksi	n3	Perjalanan
-チケット	chiketto	1	tiket
+チケット	chiketto	1	tiket	n5n4	Perjalanan
 ツアー	tsuaa	1	tur	n3	Perjalanan
-ツー	tsuu	1	dua
+ツー	tsuu	1	dua	n5n4	Angka
 テスト	tesuto	1	tes	n3	Pendidikan
 カタカナ	katakana	1	katakana	n3	Pendidikan
-ケニア	kenia	1	Kenya
-ココナッツ	kokonattsu	1	kelapa
+ケニア	kenia	1	Kenya	n5n4	Perjalanan
+ココナッツ	kokonattsu	1	kelapa	n5n4	Makanan
 テニス	tenisu	1	tenis	n5n4	Aktivitas
-ナッツ	nattsu	1	kacang
-ネクタイ	nekutai	1	dasi
+ナッツ	nattsu	1	kacang	n5n4	Makanan
+ネクタイ	nekutai	1	dasi	n5n4	Pakaian
 ネット	netto	1	internet (singkat)	n3	Komunikasi
 ノート	nooto	1	buku catatan	n5n4	Sehari-hari
 コーヒー	koohii	1	kopi	n5n4	Makanan
-ナイフ	naifu	1	pisau
-ヒーター	hiitaa	1	pemanas
-ホッチキス	hocchikisu	1	stapler
-アニメ	anime	1	anime
+ナイフ	naifu	1	pisau	n5n4	Rumah
+ヒーター	hiitaa	1	pemanas	n5n4	Rumah
+ホッチキス	hocchikisu	1	stapler	n5n4	Rumah
+アニメ	anime	1	anime	n5n4	Aktivitas
 スマホ	sumaho	1	ponsel pintar	n3	Komunikasi
-チーム	chiimu	1	tim
+チーム	chiimu	1	tim	n5n4	Pekerjaan
 トマト	tomato	1	tomat	n5n4	Makanan
-ハム	hamu	1	ham
-ホーム	hoomu	1	peron
-マウス	mausu	1	tetikus
+ハム	hamu	1	ham	n5n4	Makanan
+ホーム	hoomu	1	peron	n5n4	Perjalanan
+マウス	mausu	1	tetikus	n5n4	Rumah
 マスク	masuku	1	masker	n3	Kesehatan
-マット	matto	1	keset
-メキシコ	mekishiko	1	Meksiko
-タイヤ	taiya	1	ban
+マット	matto	1	keset	n5n4	Rumah
+メキシコ	mekishiko	1	Meksiko	n5n4	Perjalanan
+タイヤ	taiya	1	ban	n5n4	Perjalanan
 アイスクリーム	aisukuriimu	1	es krim	n5n4	Makanan
-アフリカ	afurika	1	Afrika
-アメリカ	amerika	1	Amerika
-イタリア	itaria	1	Italia
-ウイルス	uirusu	1	virus
-エスカレーター	esukareetaa	1	eskalator
+アフリカ	afurika	1	Afrika	n5n4	Perjalanan
+アメリカ	amerika	1	Amerika	n5n4	Perjalanan
+イタリア	itaria	1	Italia	n5n4	Perjalanan
+ウイルス	uirusu	1	virus	n5n4	Kesehatan
+エスカレーター	esukareetaa	1	eskalator	n5n4	Perjalanan
 カメラ	kamera	1	kamera	n5n4	Sehari-hari
-カラー	karaa	1	warna
+カラー	karaa	1	warna	n5n4	Sehari-hari
 カレー	karee	1	kari	n5n4	Makanan
 クラス	kurasu	1	kelas	n3	Pendidikan
-クリスマス	kurisumasu	1	Natal
+クリスマス	kurisumasu	1	Natal	n5n4	Waktu
 クリック	kurikku	1	klik	n3	Komunikasi
-クリーム	kuriimu	1	krim
-コアラ	koara	1	koala
-コーラ	koora	1	cola
-スタイル	sutairu	1	gaya
-ストロー	sutoroo	1	sedotan
-タオル	taoru	1	handuk
-トイレ	toire	1	toilet
-トラック	torakku	1	truk
-トルコ	toruko	1	Turki
-ヒーロー	hiiroo	1	pahlawan
-ヘルメット	herumetto	1	helm
+クリーム	kuriimu	1	krim	n5n4	Makanan
+コアラ	koara	1	koala	n5n4	Hewan
+コーラ	koora	1	cola	n5n4	Makanan
+スタイル	sutairu	1	gaya	n5n4	Sehari-hari
+ストロー	sutoroo	1	sedotan	n5n4	Rumah
+タオル	taoru	1	handuk	n5n4	Rumah
+トイレ	toire	1	toilet	n5n4	Rumah
+トラック	torakku	1	truk	n5n4	Perjalanan
+トルコ	toruko	1	Turki	n5n4	Perjalanan
+ヒーロー	hiiroo	1	pahlawan	n5n4	Aktivitas
+ヘルメット	herumetto	1	helm	n5n4	Pakaian
 ホテル	hoteru	1	hotel	n3	Perjalanan
-ホラー	horaa	1	horor
-マフラー	mafuraa	1	syal
-マレーシア	mareeshia	1	Malaysia
-ミルク	miruku	1	susu
+ホラー	horaa	1	horor	n5n4	Aktivitas
+マフラー	mafuraa	1	syal	n5n4	Pakaian
+マレーシア	mareeshia	1	Malaysia	n5n4	Perjalanan
+ミルク	miruku	1	susu	n5n4	Makanan
 メール	meeru	1	surel	n3	Komunikasi
-ライト	raito	1	lampu
-ルール	ruuru	1	aturan
-ロケット	roketto	1	roket
-ロシア	roshia	1	Rusia
-ローマ	rooma	1	Roma
-ハワイ	hawai	1	Hawaii
-ホワイト	howaito	1	putih
+ライト	raito	1	lampu	n5n4	Rumah
+ルール	ruuru	1	aturan	n5n4	Sehari-hari
+ロケット	roketto	1	roket	n5n4	Perjalanan
+ロシア	roshia	1	Rusia	n5n4	Perjalanan
+ローマ	rooma	1	Roma	n5n4	Perjalanan
+ハワイ	hawai	1	Hawaii	n5n4	Perjalanan
+ホワイト	howaito	1	putih	n5n4	Sehari-hari
 アンケート	ankeeto	1	angket	n3	Komunikasi
-インク	inku	1	tinta
+インク	inku	1	tinta	n5n4	Rumah
 インターネット	intaanetto	1	internet	n3	Komunikasi
-エアコン	eakon	1	AC
-カーテン	kaaten	1	gorden
-キッチン	kicchin	1	dapur
-コンサート	konsaato	1	konser
-サンタ	santa	1	Sinterklas
-テント	tento	1	tenda
-トンネル	tonneru	1	terowongan
-ハンカチ	hankachi	1	saputangan
-ハンマー	hanmaa	1	palu
-ヒント	hinto	1	petunjuk
-マラソン	marason	1	maraton
-メロン	meron	1	melon
-ライオン	raion	1	singa
-ランチ	ranchi	1	makan siang
+エアコン	eakon	1	AC	n5n4	Rumah
+カーテン	kaaten	1	gorden	n5n4	Rumah
+キッチン	kicchin	1	dapur	n5n4	Rumah
+コンサート	konsaato	1	konser	n5n4	Aktivitas
+サンタ	santa	1	Sinterklas	n5n4	Waktu
+テント	tento	1	tenda	n5n4	Perjalanan
+トンネル	tonneru	1	terowongan	n5n4	Perjalanan
+ハンカチ	hankachi	1	saputangan	n5n4	Pakaian
+ハンマー	hanmaa	1	palu	n5n4	Rumah
+ヒント	hinto	1	petunjuk	n5n4	Sehari-hari
+マラソン	marason	1	maraton	n5n4	Aktivitas
+メロン	meron	1	melon	n5n4	Makanan
+ライオン	raion	1	singa	n5n4	Hewan
+ランチ	ranchi	1	makan siang	n5n4	Makanan
 ラーメン	raamen	1	ramen	n5n4	Makanan
 レストラン	resutoran	1	restoran	n5n4	Makanan
-レモン	remon	1	lemon
-ワイン	wain	1	anggur / wine
-ワン	wan	1	satu
+レモン	remon	1	lemon	n5n4	Makanan
+ワイン	wain	1	anggur / wine	n5n4	Makanan
+ワン	wan	1	satu	n5n4	Angka
 アレルギー	arerugii	1	alergi	n3	Kesehatan
-エネルギー	enerugii	1	energi
-カンガルー	kangaruu	1	kanguru
-ガス	gasu	1	gas
+エネルギー	enerugii	1	energi	n3	Pekerjaan
+カンガルー	kangaruu	1	kanguru	n5n4	Hewan
+ガス	gasu	1	gas	n5n4	Rumah
 ガソリン	gasorin	1	bensin	n3	Perjalanan
-ガム	gamu	1	permen karet
+ガム	gamu	1	permen karet	n5n4	Makanan
 ギター	gitaa	1	gitar	n5n4	Aktivitas
-グラス	gurasu	1	gelas
-グリーン	guriin	1	hijau
+グラス	gurasu	1	gelas	n5n4	Rumah
+グリーン	guriin	1	hijau	n5n4	Sehari-hari
 ゲーム	geemu	1	permainan	n5n4	Aktivitas
-ゴミ	gomi	1	sampah
-ゴリラ	gorira	1	gorila
-ゴルフ	gorufu	1	golf
-ゴール	gooru	1	gol
-ハイキング	haikingu	1	mendaki
-ハンガー	hangaa	1	gantungan baju
-マンガ	manga	1	komik Jepang
-マンゴー	mangoo	1	mangga
-ヨガ	yoga	1	yoga
-ヨーグルト	yooguruto	1	yoghurt
-アジア	ajia	1	Asia
+ゴミ	gomi	1	sampah	n5n4	Sehari-hari
+ゴリラ	gorira	1	gorila	n5n4	Hewan
+ゴルフ	gorufu	1	golf	n5n4	Aktivitas
+ゴール	gooru	1	gol	n5n4	Aktivitas
+ハイキング	haikingu	1	mendaki	n5n4	Aktivitas
+ハンガー	hangaa	1	gantungan baju	n5n4	Rumah
+マンガ	manga	1	komik Jepang	n5n4	Aktivitas
+マンゴー	mangoo	1	mangga	n5n4	Makanan
+ヨガ	yoga	1	yoga	n5n4	Aktivitas
+ヨーグルト	yooguruto	1	yoghurt	n5n4	Makanan
+アジア	ajia	1	Asia	n5n4	Perjalanan
 エンジニア	enjinia	1	insinyur	n3	Pekerjaan
-エンジン	enjin	1	mesin
-オレンジ	orenji	1	jeruk
-ガレージ	gareeji	1	garasi
-サイズ	saizu	1	ukuran
-ジーンズ	jiinzu	1	jeans
+エンジン	enjin	1	mesin	n3	Pekerjaan
+オレンジ	orenji	1	jeruk	n5n4	Makanan
+ガレージ	gareeji	1	garasi	n5n4	Rumah
+サイズ	saizu	1	ukuran	n5n4	Sehari-hari
+ジーンズ	jiinzu	1	jeans	n5n4	Pakaian
 ゼミ	zemi	1	seminar	n3	Pendidikan
 ゼロ	zero	1	nol	n5n4	Angka
-ソーセージ	sooseeji	1	sosis
-ゾーン	zoon	1	zona
-チーズ	chiizu	1	keju
-ネジ	neji	1	sekrup
-マッサージ	massaaji	1	pijat
+ソーセージ	sooseeji	1	sosis	n5n4	Makanan
+ゾーン	zoon	1	zona	n5n4	Perjalanan
+チーズ	chiizu	1	keju	n5n4	Makanan
+ネジ	neji	1	sekrup	n5n4	Rumah
+マッサージ	massaaji	1	pijat	n5n4	Kesehatan
 メッセージ	messeeji	1	pesan	n3	Komunikasi
 ユーザー	yuuzaa	1	pengguna	n3	Komunikasi
-ラジオ	rajio	1	radio
-アイデア	aidea	1	ide
-アイドル	aidoru	1	idola
+ラジオ	rajio	1	radio	n5n4	Rumah
+アイデア	aidea	1	ide	n5n4	Sehari-hari
+アイドル	aidoru	1	idola	n5n4	Sehari-hari
 アドレス	adoresu	1	alamat	n3	Komunikasi
-インド	indo	1	India
-インドネシア	indoneshia	1	Indonesia
-オランダ	oranda	1	Belanda
-カナダ	kanada	1	Kanada
-カード	kaado	1	kartu
+インド	indo	1	India	n5n4	Perjalanan
+インドネシア	indoneshia	1	Indonesia	n5n4	Perjalanan
+オランダ	oranda	1	Belanda	n5n4	Perjalanan
+カナダ	kanada	1	Kanada	n5n4	Perjalanan
+カード	kaado	1	kartu	n5n4	Sehari-hari
 ガイド	gaido	1	pemandu	n3	Perjalanan
-ゴールド	goorudo	1	emas
+ゴールド	goorudo	1	emas	n5n4	Sehari-hari
 サラダ	sarada	1	salad	n5n4	Makanan
-サンダル	sandaru	1	sandal
+サンダル	sandaru	1	sandal	n5n4	Pakaian
 サンドイッチ	sandoicchi	1	sandwich	n5n4	Makanan
-ソーダ	sooda	1	soda
+ソーダ	sooda	1	soda	n5n4	Makanan
 ダイエット	daietto	1	diet	n3	Kesehatan
 ダウンロード	daunroodo	1	unduh	n3	Komunikasi
 ダンス	dansu	1	dansa / tari	n5n4	Aktivitas
 デザイナー	dezainaa	1	desainer	n3	Pekerjaan
-デザイン	dezain	1	desain
+デザイン	dezain	1	desain	n5n4	Sehari-hari
 ドア	doa	1	pintu	n5n4	Sehari-hari
-ドイツ	doitsu	1	Jerman
-ドラマ	dorama	1	drama
-ドラム	doramu	1	drum
-ドリンク	dorinku	1	minuman
-ドローン	doroon	1	drone
-ドーナツ	doonatsu	1	donat
-ヌードル	nuudoru	1	mi
-ハンドル	handoru	1	setir
-ホットドッグ	hottodoggu	1	hot dog
-モデル	moderu	1	model
-レッド	reddo	1	merah
-ロンドン	rondon	1	London
-アドバイス	adobaisu	1	saran
+ドイツ	doitsu	1	Jerman	n5n4	Perjalanan
+ドラマ	dorama	1	drama	n5n4	Aktivitas
+ドラム	doramu	1	drum	n5n4	Aktivitas
+ドリンク	dorinku	1	minuman	n5n4	Makanan
+ドローン	doroon	1	drone	n5n4	Aktivitas
+ドーナツ	doonatsu	1	donat	n5n4	Makanan
+ヌードル	nuudoru	1	mi	n5n4	Makanan
+ハンドル	handoru	1	setir	n5n4	Perjalanan
+ホットドッグ	hottodoggu	1	hot dog	n5n4	Makanan
+モデル	moderu	1	model	n5n4	Sehari-hari
+レッド	reddo	1	merah	n5n4	Sehari-hari
+ロンドン	rondon	1	London	n5n4	Perjalanan
+アドバイス	adobaisu	1	saran	n5n4	Sehari-hari
 アルバイト	arubaito	1	kerja paruh waktu	n3	Pekerjaan
-イベント	ibento	1	acara
-エレベーター	erebeetaa	1	lift
-カンボジア	kanbojia	1	Kamboja
-キーボード	kiiboodo	1	papan ketik
-グローブ	guroobu	1	sarung tangan
-ケーブル	keeburu	1	kabel
-コンビニ	konbini	1	minimarket
-サービス	saabisu	1	layanan
-シルバー	shirubaa	1	perak
-スラバヤ	surabaya	1	Surabaya
-ズボン	zubon	1	celana
+イベント	ibento	1	acara	n5n4	Waktu
+エレベーター	erebeetaa	1	lift	n5n4	Perjalanan
+カンボジア	kanbojia	1	Kamboja	n5n4	Perjalanan
+キーボード	kiiboodo	1	papan ketik	n5n4	Rumah
+グローブ	guroobu	1	sarung tangan	n5n4	Pakaian
+ケーブル	keeburu	1	kabel	n5n4	Rumah
+コンビニ	konbini	1	minimarket	n5n4	Sehari-hari
+サービス	saabisu	1	layanan	n5n4	Sehari-hari
+シルバー	shirubaa	1	perak	n5n4	Sehari-hari
+スラバヤ	surabaya	1	Surabaya	n5n4	Perjalanan
+ズボン	zubon	1	celana	n5n4	Pakaian
 テレビ	terebi	1	televisi	n5n4	Sehari-hari
-テーブル	teeburu	1	meja
-トラブル	toraburu	1	masalah
-ドライバー	doraibaa	1	obeng / pengemudi
+テーブル	teeburu	1	meja	n5n4	Rumah
+トラブル	toraburu	1	masalah	n5n4	Sehari-hari
+ドライバー	doraibaa	1	obeng / pengemudi	n5n4	Perjalanan
 ドライブ	doraibu	1	berkendara santai	n5n4	Aktivitas
-ナンバー	nanbaa	1	nomor
+ナンバー	nanbaa	1	nomor	n5n4	Sehari-hari
 ハンバーガー	hanbaagaa	1	hamburger	n5n4	Makanan
-バイオリン	baiorin	1	biola
-バイク	baiku	1	sepeda motor
+バイオリン	baiorin	1	biola	n5n4	Aktivitas
+バイク	baiku	1	sepeda motor	n5n4	Perjalanan
 バス	basu	1	bus	n5n4	Sehari-hari
-バスケット	basuketto	1	basket
-バター	bataa	1	mentega
-バッグ	baggu	1	tas
-バッテリー	batterii	1	baterai
+バスケット	basuketto	1	basket	n5n4	Aktivitas
+バター	bataa	1	mentega	n5n4	Makanan
+バッグ	baggu	1	tas	n5n4	Sehari-hari
+バッテリー	batterii	1	baterai	n5n4	Rumah
 バナナ	banana	1	pisang	n5n4	Makanan
-バリ	bari	1	Bali
-バレンタイン	barentain	1	Valentine
-バレーボール	bareebooru	1	bola voli
-バンドン	bandon	1	Bandung
+バリ	bari	1	Bali	n5n4	Perjalanan
+バレンタイン	barentain	1	Valentine	n5n4	Waktu
+バレーボール	bareebooru	1	bola voli	n5n4	Aktivitas
+バンドン	bandon	1	Bandung	n5n4	Perjalanan
 ビザ	biza	1	visa	n3	Perjalanan
-ビスケット	bisuketto	1	biskuit
-ビル	biru	1	gedung
-ビーチ	biichi	1	pantai
+ビスケット	bisuketto	1	biskuit	n5n4	Makanan
+ビル	biru	1	gedung	n5n4	Rumah
+ビーチ	biichi	1	pantai	n5n4	Perjalanan
 ビール	biiru	1	bir	n5n4	Makanan
-ブラシ	burashi	1	sikat
-ブラジル	burajiru	1	Brasil
-ブラック	burakku	1	hitam
-ブルー	buruu	1	biru
-ブレーキ	bureeki	1	rem
+ブラシ	burashi	1	sikat	n5n4	Rumah
+ブラジル	burajiru	1	Brasil	n5n4	Perjalanan
+ブラック	burakku	1	hitam	n5n4	Sehari-hari
+ブルー	buruu	1	biru	n5n4	Sehari-hari
+ブレーキ	bureeki	1	rem	n5n4	Perjalanan
 ブログ	burogu	1	blog	n3	Komunikasi
-ブーツ	buutsu	1	sepatu bot
-ベッド	beddo	1	tempat tidur
-ベトナム	betonamu	1	Vietnam
-ベルト	beruto	1	ikat pinggang
-ベルリン	berurin	1	Berlin
-ボクシング	bokushingu	1	tinju
-ボタン	botan	1	kancing
-ボトル	botoru	1	botol
+ブーツ	buutsu	1	sepatu bot	n5n4	Pakaian
+ベッド	beddo	1	tempat tidur	n5n4	Rumah
+ベトナム	betonamu	1	Vietnam	n5n4	Perjalanan
+ベルト	beruto	1	ikat pinggang	n5n4	Pakaian
+ベルリン	berurin	1	Berlin	n5n4	Perjalanan
+ボクシング	bokushingu	1	tinju	n5n4	Aktivitas
+ボタン	botan	1	kancing	n5n4	Pakaian
+ボトル	botoru	1	botol	n5n4	Rumah
 ボーナス	boonasu	1	bonus	n3	Pekerjaan
-ボール	booru	1	bola
-ムービー	muubii	1	film
-ラグビー	ragubii	1	rugbi
-リボン	ribon	1	pita
-ロボット	robotto	1	robot
+ボール	booru	1	bola	n5n4	Aktivitas
+ムービー	muubii	1	film	n5n4	Aktivitas
+ラグビー	ragubii	1	rugbi	n5n4	Aktivitas
+リボン	ribon	1	pita	n5n4	Rumah
+ロボット	robotto	1	robot	n5n4	Aktivitas
 アプリ	apuri	1	aplikasi	n3	Komunikasi
-エジプト	ejiputo	1	Mesir
-カップ	kappu	1	cangkir
-コップ	koppu	1	gelas
-シンガポール	shingapooru	1	Singapura
+エジプト	ejiputo	1	Mesir	n5n4	Perjalanan
+カップ	kappu	1	cangkir	n5n4	Rumah
+コップ	koppu	1	gelas	n5n4	Rumah
+シンガポール	shingapooru	1	Singapura	n5n4	Perjalanan
 スピーチ	supiichi	1	pidato	n3	Komunikasi
-スピード	supiido	1	kecepatan
-スプーン	supuun	1	sendok
-スペイン	supein	1	Spanyol
+スピード	supiido	1	kecepatan	n5n4	Sehari-hari
+スプーン	supuun	1	sendok	n5n4	Rumah
+スペイン	supein	1	Spanyol	n5n4	Perjalanan
 スポーツ	supootsu	1	olahraga	n5n4	Aktivitas
-スーパー	suupaa	1	supermarket
+スーパー	suupaa	1	supermarket	n5n4	Sehari-hari
 スープ	suupu	1	sup	n5n4	Makanan
-テープ	teepu	1	selotip
-デパート	depaato	1	mal
-ネパール	nepaaru	1	Nepal
-パスタ	pasuta	1	pasta
+テープ	teepu	1	selotip	n5n4	Rumah
+デパート	depaato	1	mal	n5n4	Sehari-hari
+ネパール	nepaaru	1	Nepal	n5n4	Perjalanan
+パスタ	pasuta	1	pasta	n5n4	Makanan
 パスポート	pasupooto	1	paspor	n3	Perjalanan
 パスワード	pasuwaado	1	kata sandi	n3	Komunikasi
 パソコン	pasokon	1	komputer	n3	Komunikasi
-パリ	pari	1	Paris
-パワー	pawaa	1	tenaga
+パリ	pari	1	Paris	n5n4	Perjalanan
+パワー	pawaa	1	tenaga	n3	Pekerjaan
 パン	pan	1	roti	n5n4	Makanan
-パンケーキ	pankeeki	1	panekuk
-パンダ	panda	1	panda
-パーク	paaku	1	taman
+パンケーキ	pankeeki	1	panekuk	n5n4	Makanan
+パンダ	panda	1	panda	n5n4	Hewan
+パーク	paaku	1	taman	n5n4	Perjalanan
 ピアノ	piano	1	piano	n5n4	Aktivitas
-ピクニック	pikunikku	1	piknik
+ピクニック	pikunikku	1	piknik	n5n4	Aktivitas
 ピザ	piza	1	pizza	n5n4	Makanan
-ピンク	pinku	1	merah muda
-プリンター	purintaa	1	printer
-プレゼント	purezento	1	hadiah
-プール	puuru	1	kolam renang
+ピンク	pinku	1	merah muda	n5n4	Sehari-hari
+プリンター	purintaa	1	printer	n5n4	Rumah
+プレゼント	purezento	1	hadiah	n5n4	Sehari-hari
+プール	puuru	1	kolam renang	n5n4	Aktivitas
 ペット	petto	1	hewan peliharaan	n5n4	Keluarga
-ペルー	peruu	1	Peru
+ペルー	peruu	1	Peru	n5n4	Perjalanan
 ペン	pen	1	pena	n5n4	Sehari-hari
-ペンキ	penki	1	cat
-ページ	peeji	1	halaman
-ボールペン	boorupen	1	bolpoin
-ポイント	pointo	1	poin
-ポスター	posutaa	1	poster
-ポスト	posuto	1	kotak pos
-ポップコーン	poppukoon	1	popcorn
-ポテト	poteto	1	kentang goreng
-ポルトガル	porutogaru	1	Portugal
-ヨーロッパ	yooroppa	1	Eropa
-ランプ	ranpu	1	lampu
-ロープ	roopu	1	tali
-キャンプ	kyanpu	1	berkemah
-ギリシャ	girisha	1	Yunani
-シャツ	shatsu	1	kemeja
-シャワー	shawaa	1	shower
-シャンプー	shanpuu	1	sampo
-ショッピング	shoppingu	1	belanja
+ペンキ	penki	1	cat	n5n4	Rumah
+ページ	peeji	1	halaman	n5n4	Sehari-hari
+ボールペン	boorupen	1	bolpoin	n5n4	Rumah
+ポイント	pointo	1	poin	n5n4	Sehari-hari
+ポスター	posutaa	1	poster	n5n4	Rumah
+ポスト	posuto	1	kotak pos	n5n4	Perjalanan
+ポップコーン	poppukoon	1	popcorn	n5n4	Makanan
+ポテト	poteto	1	kentang goreng	n5n4	Makanan
+ポルトガル	porutogaru	1	Portugal	n5n4	Perjalanan
+ヨーロッパ	yooroppa	1	Eropa	n5n4	Perjalanan
+ランプ	ranpu	1	lampu	n5n4	Rumah
+ロープ	roopu	1	tali	n5n4	Rumah
+キャンプ	kyanpu	1	berkemah	n5n4	Aktivitas
+ギリシャ	girisha	1	Yunani	n5n4	Perjalanan
+シャツ	shatsu	1	kemeja	n5n4	Pakaian
+シャワー	shawaa	1	shower	n5n4	Rumah
+シャンプー	shanpuu	1	sampo	n5n4	Rumah
+ショッピング	shoppingu	1	belanja	n5n4	Aktivitas
 チャット	chatto	1	obrolan daring	n3	Komunikasi
-チャンス	chansu	1	kesempatan
-チョコ	choko	1	cokelat
+チャンス	chansu	1	kesempatan	n5n4	Sehari-hari
+チョコ	choko	1	cokelat	n5n4	Makanan
 チョコレート	chokoreeto	1	cokelat	n5n4	Makanan
 ニュース	nyuusu	1	berita	n3	Komunikasi
-ニューヨーク	nyuuyooku	1	New York
-メニュー	menyuu	1	menu
-ミュージック	myuujikku	1	musik
-リュック	ryukku	1	ransel
-ギャグ	gyagu	1	lelucon
-ジャカルタ	jakaruta	1	Jakarta
-ジャム	jamu	1	selai
-ジャワ	jawa	1	Jawa
+ニューヨーク	nyuuyooku	1	New York	n5n4	Perjalanan
+メニュー	menyuu	1	menu	n5n4	Makanan
+ミュージック	myuujikku	1	musik	n5n4	Aktivitas
+リュック	ryukku	1	ransel	n5n4	Sehari-hari
+ギャグ	gyagu	1	lelucon	n5n4	Aktivitas
+ジャカルタ	jakaruta	1	Jakarta	n5n4	Perjalanan
+ジャム	jamu	1	selai	n5n4	Makanan
+ジャワ	jawa	1	Jawa	n5n4	Perjalanan
 ジュース	juusu	1	jus	n5n4	Makanan
-ジョギング	jogingu	1	jogging
-コンピューター	konpyuutaa	1	komputer
+ジョギング	jogingu	1	jogging	n5n4	Aktivitas
+コンピューター	konpyuutaa	1	komputer	n3	Pekerjaan
 ごめんなさい	gomennasai	1	maafkan saya	n5n4	Sehari-hari
 いってきます	ittekimasu	1	aku berangkat	n5n4	Sehari-hari
 いってらっしゃい	itterasshai	1	hati-hati di jalan	n5n4	Sehari-hari

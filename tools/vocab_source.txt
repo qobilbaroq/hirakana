@@ -125,6 +125,92 @@
 ひま|senggang
 じょうず|pandai
 へた|kurang pandai
+あい|cinta
+あお|biru
+いう|berkata
+うえ|atas
+おおい|banyak
+あか|merah
+せかい|dunia
+こえ|suara
+こと|hal
+した|bawah
+そして|lalu
+そと|luar
+なか|dalam
+ふとい|tebal
+ほか|lainnya
+とても|sangat
+また|lagi
+みせ|toko
+もっと|lebih
+もの|benda
+ゆめ|mimpi
+よこ|samping
+ある|ada (benda)
+いる|ada (makhluk hidup)
+から|dari
+しろ|putih
+ちから|kekuatan
+ところ|tempat
+となり|sebelah
+るす|tidak di rumah
+かわいい|imut
+しあわせ|bahagia
+わかい|muda
+こんにちは|halo
+へん|aneh
+おねがい|tolong
+ごめん|maaf
+すごい|hebat
+ずっと|terus-menerus
+おめでとう|selamat
+だから|karena itu
+つづく|berlanjut
+でも|tetapi
+まで|sampai
+ばか|bodoh
+ちょうど|tepat
+ちょっと|sedikit
+ぎゃく|kebalikan
+だいじょうぶ|baik-baik saja
+カラー|warna
+スタイル|gaya
+ルール|aturan
+ホワイト|putih
+グリーン|hijau
+ゴミ|sampah
+サイズ|ukuran
+アイデア|ide
+アイドル|idola
+カード|kartu
+ゴールド|emas
+デザイン|desain
+シルバー|perak
+モデル|model
+レッド|merah
+トラブル|masalah
+ナンバー|nomor
+バッグ|tas
+ブラック|hitam
+ブルー|biru
+スピード|kecepatan
+スーパー|supermarket
+デパート|mal
+ピンク|merah muda
+プレゼント|hadiah
+ページ|halaman
+ポイント|poin
+チャンス|kesempatan
+リュック|ransel
+けいたい|ponsel
+かたな|pedang
+ぬの|kain
+さいふ|dompet
+ヒント|petunjuk
+アドバイス|saran
+サービス|layanan
+コンビニ|minimarket
 
 ## n5n4 | Angka
 いち|satu
@@ -195,6 +281,9 @@
 ぜんぜん|sama sekali
 たくさん|banyak
 すこし|sedikit
+し|empat
+ツー|dua
+ワン|satu
 
 ## n5n4 | Waktu
 いま|sekarang
@@ -282,6 +371,15 @@
 まだ|belum
 はじめ|awal
 おわり|akhir
+むかし|dahulu
+やすみ|libur
+まつり|festival
+てんき|cuaca
+クリスマス|Natal
+サンタ|Sinterklas
+イベント|acara
+バレンタイン|Valentine
+こんばんは|selamat malam
 
 ## n5n4 | Keluarga
 かぞく|keluarga
@@ -336,6 +434,8 @@
 としうえ|lebih tua
 ペット|hewan peliharaan
 おばけ|hantu
+きゃく|tamu
+みょうじ|nama keluarga
 
 ## n5n4 | Makanan
 ごはん|nasi / makan
@@ -415,6 +515,60 @@
 のどがかわく|haus
 ひとくち|satu suap
 おかわり|tambah porsi
+かき|kesemek
+さけ|sake
+なし|pir
+はし|sumpit
+さしみ|sashimi
+まめ|kacang
+めし|nasi
+もち|mochi
+やきとり|yakitori
+ぐみ|permen buah
+あじ|rasa
+れもん|lemon
+しょくじ|makan
+ちゃいろ|cokelat
+こんにゃく|konnyaku
+キウイ|kiwi
+クッキー|kue kering
+ココア|cokelat panas
+アイス|es krim
+ソース|saus
+ハム|ham
+クリーム|krim
+コーラ|cola
+ミルク|susu
+メロン|melon
+ランチ|makan siang
+レモン|lemon
+ワイン|anggur / wine
+ガム|permen karet
+ココナッツ|kelapa
+ナッツ|kacang
+マンゴー|mangga
+ヨーグルト|yoghurt
+オレンジ|jeruk
+ソーセージ|sosis
+チーズ|keju
+ドリンク|minuman
+ドーナツ|donat
+ヌードル|mi
+ホットドッグ|hot dog
+バター|mentega
+ビスケット|biskuit
+ソーダ|soda
+パスタ|pasta
+パンケーキ|panekuk
+ポップコーン|popcorn
+ポテト|kentang goreng
+チョコ|cokelat
+メニュー|menu
+ジャム|selai
+ばなな|pisang
+ぱん|roti
+ぷりん|puding
+えび|udang
 
 ## n5n4 | Aktivitas
 たべる|makan
@@ -508,6 +662,40 @@
 うんてん|mengemudi
 しゃしん|foto
 えいがかん|bioskop
+する|melakukan
+ぴあの|piano
+ぷーる|kolam renang
+スキー|ski
+スケート|seluncur es
+スタート|mulai
+アニメ|anime
+コンサート|konser
+マラソン|maraton
+ゴルフ|golf
+ゴール|gol
+ハイキング|mendaki
+マンガ|komik Jepang
+ヨガ|yoga
+ドラマ|drama
+ドラム|drum
+バイオリン|biola
+バスケット|basket
+バレーボール|bola voli
+ボクシング|tinju
+ボール|bola
+ムービー|film
+ラグビー|rugbi
+ロボット|robot
+ピクニック|piknik
+キャンプ|berkemah
+ショッピング|belanja
+ミュージック|musik
+ギャグ|lelucon
+ジョギング|jogging
+プール|kolam renang
+ヒーロー|pahlawan
+ホラー|horor
+ドローン|drone
 
 ## n3 | Pekerjaan
 しごと|pekerjaan
@@ -589,6 +777,10 @@
 しゅっきん|berangkat kerja
 たいきん|pulang kerja
 ちこく|terlambat
+エネルギー|energi
+エンジン|mesin
+パワー|tenaga
+コンピューター|komputer
 
 ## n3 | Perjalanan
 かんこう|wisata
@@ -806,6 +998,9 @@
 じびき|mencari di kamus
 ものさし|penggaris
 こくばん|papan tulis
+りゃく|singkatan
+びじゅつ|seni rupa
+アート|seni
 
 ## n3 | Komunikasi
 メール|surel
@@ -883,3 +1078,238 @@
 つうわ|percakapan telepon
 るすばん|menjaga rumah
 でんわばんごう|nomor telepon
+
+## n5n4 | Rumah
+いえ|rumah
+うち|rumah
+たな|rak
+はこ|kotak
+かみ|kertas
+たたみ|tikar tatami
+ろうそく|lilin
+おふろ|bak mandi
+ふとん|kasur lipat
+まくら|bantal
+ざる|saringan
+はさみ|gunting
+ふで|kuas
+ちゃわん|mangkuk
+おもちゃ|mainan
+トイレ|toilet
+キッチン|dapur
+カーテン|gorden
+ライト|lampu
+ランプ|lampu
+エアコン|AC
+ヒーター|pemanas
+ホッチキス|stapler
+マウス|tetikus
+マット|keset
+ストロー|sedotan
+タオル|handuk
+インク|tinta
+ガレージ|garasi
+ネジ|sekrup
+ラジオ|radio
+キーボード|papan ketik
+ケーブル|kabel
+テーブル|meja
+バッテリー|baterai
+ビル|gedung
+ブラシ|sikat
+ベッド|tempat tidur
+ボトル|botol
+カップ|cangkir
+コップ|gelas
+スプーン|sendok
+テープ|selotip
+ペンキ|cat
+ボールペン|bolpoin
+ポスター|poster
+ロープ|tali
+シャワー|shower
+シャンプー|sampo
+プリンター|printer
+ガス|gas
+グラス|gelas
+ナイフ|pisau
+ハンマー|palu
+ハンガー|gantungan baju
+リボン|pita
+かがみ|cermin
+
+## n5n4 | Hewan
+いか|cumi-cumi
+かい|kerang
+えさ|pakan
+たこ|gurita
+いぬ|anjing
+かに|kepiting
+きつね|rubah
+たぬき|tanuki
+はと|merpati
+かめ|kura-kura
+くま|beruang
+さめ|hiu
+むし|serangga
+あり|semut
+からす|gagak
+ことり|burung kecil
+さる|monyet
+とら|harimau
+りす|tupai
+にわとり|ayam
+わに|buaya
+うさぎ|kelinci
+くじら|paus
+ぞう|gajah
+ねずみ|tikus
+ひつじ|domba
+らくだ|unta
+とんぼ|capung
+どうぶつ|hewan
+ぶた|babi
+へび|ular
+ぺんぎん|penguin
+ちょう|kupu-kupu
+ちょうちょ|kupu-kupu
+ひょう|macan tutul
+すずめ|burung pipit
+カンガルー|kanguru
+ゴリラ|gorila
+コアラ|koala
+ライオン|singa
+パンダ|panda
+
+## n5n4 | Alam
+いけ|kolam
+おか|bukit
+くき|batang
+いし|batu
+つき|bulan
+つち|tanah
+すな|pasir
+ひ|api
+ほし|bintang
+あめ|hujan
+くも|awan
+なみ|ombak
+ぬま|rawa
+たいよう|matahari
+はやし|hutan kecil
+かみなり|petir
+けむり|asap
+こおり|es
+さくら|sakura
+はれ|cerah
+ひかり|cahaya
+もり|hutan
+ばら|mawar
+エア|udara
+
+## n5n4 | Perjalanan
+えき|stasiun
+きた|utara
+いなか|desa
+まち|kota
+むら|desa
+こうえん|taman
+もん|gerbang
+がいこく|luar negeri
+じゅうしょ|alamat
+でぐち|pintu keluar
+ろうか|lorong
+アジア|Asia
+アフリカ|Afrika
+アメリカ|Amerika
+イタリア|Italia
+インド|India
+インドネシア|Indonesia
+エジプト|Mesir
+オランダ|Belanda
+カナダ|Kanada
+カンボジア|Kamboja
+ギリシャ|Yunani
+ケニア|Kenya
+シンガポール|Singapura
+ジャカルタ|Jakarta
+ジャワ|Jawa
+スイス|Swiss
+スペイン|Spanyol
+スラバヤ|Surabaya
+タイ|Thailand
+チケット|tiket
+ドイツ|Jerman
+ニューヨーク|New York
+ネパール|Nepal
+ハワイ|Hawaii
+バリ|Bali
+バンドン|Bandung
+パリ|Paris
+パーク|taman
+ビーチ|pantai
+ブラジル|Brasil
+ベトナム|Vietnam
+ベルリン|Berlin
+ペルー|Peru
+ポルトガル|Portugal
+マレーシア|Malaysia
+メキシコ|Meksiko
+ヨーロッパ|Eropa
+ロケット|roket
+ローマ|Roma
+ロンドン|London
+エスカレーター|eskalator
+エレベーター|lift
+テント|tenda
+トンネル|terowongan
+トラック|truk
+ドライバー|obeng / pengemudi
+バイク|sepeda motor
+ハンドル|setir
+ホーム|peron
+ポスト|kotak pos
+ブレーキ|rem
+ゾーン|zona
+タイヤ|ban
+トルコ|Turki
+ロシア|Rusia
+
+## n5n4 | Kesehatan
+ぐあい|kondisi
+ウイルス|virus
+マッサージ|pijat
+
+## n5n4 | Tubuh
+へそ|pusar
+ほね|tulang
+つめ|kuku
+むね|dada
+みゃく|denyut nadi
+はなぢ|mimisan
+
+## n5n4 | Pakaian
+きもの|kimono
+ゆかた|yukata
+ぽけっと|saku
+コート|mantel
+スカート|rok
+セーター|sweter
+ネクタイ|dasi
+ヘルメット|helm
+マフラー|syal
+ジーンズ|jeans
+サンダル|sandal
+グローブ|sarung tangan
+ズボン|celana
+ブーツ|sepatu bot
+ベルト|ikat pinggang
+ボタン|kancing
+シャツ|kemeja
+ハンカチ|saputangan
+
+## n5n4 | Pendidikan
+ずかん|ensiklopedia
+
+## n5n4 | Pekerjaan
+チーム|tim
