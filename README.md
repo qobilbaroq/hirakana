@@ -104,8 +104,8 @@ test/         unit dan widget test
 | Sumber | Dipakai untuk | Lisensi |
 | --- | --- | --- |
 | [KanjiVG](https://kanjivg.tagaini.net) | urutan goresan | CC BY-SA 3.0 |
-| HTS voice tohoku-f01, Tohoku University ICN Lab | suara huruf **dan** suara kata (sintesis Open JTalk) | CC BY 4.0 |
-| [veardk/just-gojuon](https://github.com/veardk/just-gojuon) | hanya suara huruf ぢ dan づ (tidak bisa disintesis) | MIT (asal rekaman tidak dijelaskan di repo sumbernya) |
+| [veardk/just-gojuon](https://github.com/veardk/just-gojuon) | rekaman suara huruf | MIT (asal rekaman tidak dijelaskan di repo sumbernya) |
+| HTS voice tohoku-f01, Tohoku University ICN Lab | suara kata (sintesis Open JTalk), termasuk kosakata N5–N4/N3 | CC BY 4.0 |
 
 Daftar kata (1.272 kata) adalah **karya sendiri** — ditulis tangan untuk app ini, tanpa impor dari
 kamus pihak ketiga, jadi tidak ada kewajiban lisensi data.

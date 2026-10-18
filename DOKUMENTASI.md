@@ -269,19 +269,8 @@ assets/
 Ukuran kira-kira: audio 20 MB (kata 16 MB), data 0,1 MB, goresan 48 KB. Pakai
 `flutter build apk --split-per-abi` supaya APK per arsitektur lebih kecil.
 
-**Suara huruf**: berkas `<romaji>.mp3` (`ka.mp3`, `kya.mp3`, ...) dan `slow/<romaji>.mp3`. Sekarang
-juga sintesis Open JTalk dengan suara **tohoku-f01**, sama seperti suara kata — jadi seluruh suara app
-berasal dari satu sumber. Setiap huruf diberi vokal 「あ」 di belakang (`か` → `かあ`), sebab huruf tunggal
-hasil sintesis hanya ~0,28 detik dan terlalu pendek untuk kartu huruf. Laju bicara dikurangi
-(`atempo=0.75` normal, `0.58` lambat) dan jeda ujung diperpanjang, sehingga durasinya 0,81–1,02 detik
-(normal) dan 0,94–1,44 detik (lambat). Sumber data + teks TTS ada di `tools/letter_audio_source.tsv`,
-dibuat dengan `tools/generate_letter_audio.py`.
-
-Dua pengecualian, `ぢ` dan `づ`: kamus naist-jdic **tidak punya** pembacaan "di"/"du" untuk kana tunggal
-(hanya "ji"/"zu"), dan tidak ada ejaan lain yang memaksa — katakana pun sama. Kamus yang sama tahu
-"di"/"du" di dalam kata (`うちこむ`, `つづける`), tapi frontend tidak memilihnya untuk kana tunggal. Supaya
-tidak mengajari bunyi yang salah, dua huruf ini **mempertahankan rekaman manusia** yang lama.
-Perlu kamus NAIST yang lebih baru untuk menyelesaikannya.
+**Suara huruf**: berkas `<romaji>.mp3` (`ka.mp3`, `kya.mp3`, ...); rekaman penutur asli dari
+`veardk/just-gojuon`, volume diseragamkan, versi lambat dibuat dengan `atempo=0.65`.
 
 **Suara kata**: `<cara-baca>.mp3` dan `<cara-baca>_slow.mp3`, sintesis offline Open JTalk dengan suara
 tohoku-f01. Kolom ketiga `words.tsv` (0/1) menandai kata yang punya rekaman utuh.
@@ -313,8 +302,8 @@ Di Practice > Words ada pilihan *All words / N5–N4 / N3*. Setiap kata punya ar
 | Berkas | Lisensi |
 | --- | --- |
 | `strokes/kana_strokes.json` (KanjiVG) | CC BY-SA 3.0 |
-| `audio/*.mp3` + `audio/slow/` huruf (tohoku-f01) | CC BY 4.0 (atribusi) |
-| `audio/*.mp3` huruf `ぢ`, `づ` saja (just-gojuon) | MIT untuk repo; asal rekaman tidak dijelaskan, cek sebelum rilis publik |
+| `audio/*.mp3` huruf (just-gojuon) | MIT untuk repo; asal rekaman tidak dijelaskan, cek sebelum rilis publik |
+| `audio/words/` (tohoku-f01) | CC BY 4.0 (atribusi) |
 | `data/words.tsv` | **karya sendiri** — 1.272 kata kurasi ditulis tangan, tanpa sumber eksternal |
 
 ---
