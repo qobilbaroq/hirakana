@@ -155,7 +155,7 @@ Hasil: `build/app/outputs/flutter-apk/` dan `build/app/outputs/bundle/release/`.
 - App tidak meminta permission apa pun dan tidak mengirim data ke mana pun. Itu memudahkan isian
   "Data safety" (tidak ada data yang dikumpulkan atau dibagikan).
 - Kredit pihak ketiga yang perlu dipertahankan (sudah tampil di Settings dan layar Practice):
-  KanjiVG (CC BY-SA 3.0), suara huruf `veardk/just-gojuon` (MIT), suara kata HTS voice tohoku-f01 (CC BY 4.0).
+  KanjiVG (CC BY-SA 3.0), suara huruf dan kata HTS voice tohoku-f01 (CC BY 4.0).
   Daftar kata adalah karya sendiri (729 kata kurasi), jadi tidak ada kewajiban lisensi data.
 - Lisensi rekaman suara huruf asalnya tidak dijelaskan di repo sumbernya. Untuk rilis publik,
   sebaiknya pastikan status lisensinya, atau ganti dengan rekaman milikmu sendiri

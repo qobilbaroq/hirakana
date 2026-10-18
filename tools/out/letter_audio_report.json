@@ -1,0 +1,13 @@
+{
+  "jumlah_berhasil": 102,
+  "jumlah_dilewati": 0,
+  "gagal": [],
+  "huruf_ditahan_rekaman_lama": [
+    "di",
+    "du"
+  ],
+  "kolom_dipakai": "tts_input",
+  "rata2_durasi_normal_detik": 0.881,
+  "min_durasi_detik": 0.81,
+  "max_durasi_detik": 1.019
+}

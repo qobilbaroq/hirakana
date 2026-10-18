@@ -145,7 +145,7 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 'Stroke order data: KanjiVG (CC BY-SA 3.0), kanjivg.tagaini.net\n'
-                'Letter voice clips: veardk/just-gojuon (MIT)\n'
+                'Letter voice: HTS voice tohoku-f01 (CC BY 4.0)\n'
                 'Word voice: HTS voice tohoku-f01, Tohoku University ICN Lab (CC BY 4.0)\n'
                 'Word list: written for this app, no external source',
                 style: AppText.muted,
