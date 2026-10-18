@@ -257,7 +257,8 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     if (!_answered) return const SizedBox(height: 24);
     final ok = _picked == q.answer;
     final meaning = q.word?.meaning ?? '';
-    final showMeaning = ok && AppSettings.instance.showMeaning && meaning.isNotEmpty;
+    final showMeaning =
+        ok && q.word != null && AppSettings.instance.showMeaning && meaning.isNotEmpty;
     return Column(
       children: [
         Row(
@@ -285,13 +286,14 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
         ),
         if (showMeaning) ...[
           const SizedBox(height: AppSpacing.xs),
-          Text(meaning, textAlign: TextAlign.center, style: AppText.muted),
+          Text('Arti: $meaning',
+              textAlign: TextAlign.center, style: AppText.muted),
         ],
         if (q.word != null && q.word!.level.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: AppSpacing.xs),
             child: Text(
-              '${vocabLevelLabel(q.word!.level)} · ${q.word!.category}',
+              vocabLevelLabel(q.word!.level),
               textAlign: TextAlign.center,
               style: AppText.muted,
             ),
