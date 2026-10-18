@@ -25,6 +25,20 @@ Tanpa akun, tanpa iklan, tanpa hukuman kalau kamu melewatkan sehari. Semua fitur
 
 ## Catatan rilis
 
+### 1.4.0 (kode build 5)
+- **Kosakata 1.272 kata kurasi, semuanya punya arti Bahasa Indonesia.** Sebelumnya 9.356 kata tapi cuma
+  733 (7%) yang ber arti, jadi sebagian besar soal latihan baca muncul tanpa penjelasan apa pun.
+- **Kosakata berkelompok per tingkat**: N5–N4 (900 kata) dan N3 (372 kata), 16 kategori. Di Practice →
+  Words bisa memilih *All words / N5–N4 / N3*. Tingkat dan kategori muncul di bawah arti setelah
+  jawaban benar.
+- **Semua kata punya rekaman utuh** (versi normal dan lambat) dari HTS voice tohoku-f01: 1.028 file baru.
+- **Latihan baca 100% soal kata sungguhan.** Dihapus soal rangkaian huruf acak dan soal satu huruf:
+  keduanya bukan kosakata dan bunyinya cuma satu huruf demi satu huruf. Kalau huruf aktif masih
+  sedikit sehingga kata kurang, kata diulang sampai sesi penuh.
+- 0 kata duplikat. 5 pasang homograf (lemon, pisang, roti, piano, kolam renang) sengaja disimpan karena
+  itu kata berbeda yang sah di Jepang.
+- Daftar kata sekarang karya sendiri, tanpa impor kamus pihak ketiga.
+
 ### 1.3.0 (kode build 4)
 - Panjang sesi bisa diatur di Settings (10 sampai 60; minimal 10). Huruf diulang kalau huruf aktif lebih sedikit.
 - Latihan baca dirombak: **setiap soal adalah kata sungguhan** dengan rekaman utuh; tidak lagi ada soal
