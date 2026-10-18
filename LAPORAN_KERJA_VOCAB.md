@@ -194,13 +194,11 @@ Tidak ada bug kompilasi di kode Dart paket — semua 90 test langsung lulus begi
    dan `flutter test` tetap hijau. Memangkas repo hanya menghemat ruang git, **tidak** mengurangi
    ukuran APK — APK hanya memuat asset yang dirujuk, dan `flutter build` sudah tidak mengikutsertakan
    file yang tidak terpakai.
-2. **8 kata cuma 1 kana masih ada**, termasuk yang bermasalah secara ajar: `に` = "dua", `し` = "empat",
-   `ご` = "lima", `ツー` = "dua". Itu pembacaan **kanji**, bukan cara baca kana — berbahaya bagi
-   pemula yang mengira `に` itu angka. Rencana semula membuang 4 angka itu, tapi paket ini
-   memasukkan 307 baris baru, sehingga pembuangannya perlu diulang. Anda belum memutuskan.
-3. **412 kata sudah punya arti tapi belum dapat tingkat/kategori.** 860 dari 1.272 kata sudah
-   berkelompok; sisanya 412 masih tanpa label `n5n4`/`n3`, jadi tidak muncul saat tingkat difilter.
-   Menambahkan labelnya berarti menulis 412 baris baru di `tools/vocab_source.txt`.
+2. ~~**8 kata cuma 1 kana masih ada**~~ — **DIPUTUSKAN Anda untuk dibiarkan.** Jumlahnya kini 10
+   (paket menambah `ち` = darah dan `は` = gigi). Semuanya punya arti dan rekaman, jadi tetap dipakai.
+3. ~~**412 kata sudah punya arti tapi belum dapat tingkat/kategori.**~~ — **SELESAI** di commit
+   `e80c35f`. Semua 1.272 kata kini punya arti, tingkat, dan kategori (N5–N4 900, N3 372).
+   Lima kategori baru diperkenalkan: Hewan, Alam, Tubuh, Pakaian, Rumah.
 4. **Suara belum didengarkan satu per satu.** README paket menyatakan hanya pemeriksaan otomatis
    (Open JTalk membaca `は` sebagai partikel, jadi 3 kata dibuat ulang lewat tulisan katakana).
    1.028 mp3 baru belum didengar manusia — ini yang paling tidak bisa diverifikasi di sini.
@@ -216,7 +214,9 @@ Tidak ada bug kompilasi di kode Dart paket — semua 90 test langsung lulus begi
 
 - `e80df4e` — "Kembalikan kosakata ke daftar kurasi 729 kata" (sebelum paket, sudah ada sebelumnya)
 - `65a654a` — "Kosakata berkelompok N5-N4/N3 (860 kata), arti Indonesia, suara tohoku-f01, filter tingkat"
-- `<commit ini>` — "Laporan kerja update kosakata"
+- `e80c35f` — "Tingkatkan 412 kata yang belum punya label; audit duplikat dan suara"
+- `3f5d99c` — "Laporan kerja update kosakata"
+- `<commit terakhir>` — "Perbarui laporan setelah tingkatkan semua kata"
 
 **Konfirmasi: tidak ada `git push`.** Semua pekerjaan hanya di commit lokal. Branch `develop-v02`
 tidak ter-push; `origin/develop-v02` masih menunjuk ke `ee203cb`.
