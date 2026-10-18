@@ -14,6 +14,7 @@ import '../../core/widgets/session_header.dart';
 import '../../data/repositories/kana_repository.dart';
 import '../../data/repositories/word_repository.dart';
 import '../../data/seed/kana_data.dart';
+import '../../data/seed/word_data.dart';
 import '../learn/session_controller.dart';
 import 'word_questions.dart';
 
@@ -60,6 +61,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     _questions.addAll(await buildReadingSession(
       type: widget.args.type,
       size: AppSettings.instance.sessionSize,
+      vocabLevel: widget.args.vocabLevel,
     ));
     _sessionId = await _repo.startSession('words', widget.args.type);
     _clock.start();
@@ -285,6 +287,15 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
           const SizedBox(height: AppSpacing.xs),
           Text(meaning, textAlign: TextAlign.center, style: AppText.muted),
         ],
+        if (q.word != null && q.word!.level.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.xs),
+            child: Text(
+              '${vocabLevelLabel(q.word!.level)} · ${q.word!.category}',
+              textAlign: TextAlign.center,
+              style: AppText.muted,
+            ),
+          ),
         TextButton.icon(
           onPressed: () => _hear(q),
           icon: const Icon(Icons.volume_up_outlined, size: 20),

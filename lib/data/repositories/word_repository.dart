@@ -121,17 +121,20 @@ class WordRepository {
   }
 
   /// Kata yang SEMUA hurufnya ada di huruf aktif. [type]: hiragana | katakana | mixed.
-  Future<List<Word>> available(String type) async {
+  Future<List<Word>> available(String type, {String? level}) async {
     final words = await WordBank.instance.load();
     final active = await KanaRepository.instance.activeIds();
-    return filterAvailable(words, active, type);
+    return filterAvailable(words, active, type, level: level);
   }
 
   /// Dipisah dari [available] supaya bisa diuji tanpa database.
+  /// [level] (n5n4 | n3) membatasi ke kosakata kelompok itu; null = semua kata.
   static List<Word> filterAvailable(
-      List<Word> words, Set<String> active, String type) {
+      List<Word> words, Set<String> active, String type,
+      {String? level}) {
     final result = <Word>[];
     for (final w in words) {
+      if (level != null && w.level != level) continue;
       final pieces = parse(w.text);
       if (pieces == null) continue;
       final letters = [for (final p in pieces) if (p.kana != null) p.kana!];

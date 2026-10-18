@@ -94,9 +94,13 @@ List<Kana> _scriptPool(List<Kana> active, String script) =>
 /// paling lama tidak muncul), 25% rangkaian 2-3 huruf acak, 15% satu huruf.
 /// Kalau kata yang cocok sedikit, sisanya diisi rangkaian huruf, jadi sesi
 /// selalu penuh dan tidak ada soal yang itu-itu saja.
+///
+/// [vocabLevel] (n5n4 | n3) membatasi kata ke kosakata kelompok itu; kalau
+/// dipilih, porsi kata dinaikkan jadi sekitar 85% (sisanya huruf/rangkaian).
 Future<List<ReadQuestion>> buildReadingSession({
   required String type,
   required int size,
+  String? vocabLevel,
   Random? rng,
 }) async {
   final r = rng ?? Random();
@@ -112,10 +116,13 @@ Future<List<ReadQuestion>> buildReadingSession({
       if (_scriptPool(active, s).length >= WordRepository.minLetters) s,
   ];
 
-  final pool = await words.available(type);
-  var wordCount = min((size * 0.6).round(), pool.length);
-  final chunkCount = scripts.isEmpty ? 0 : (size * 0.25).round();
-  final singleCount = scripts.isEmpty ? 0 : (size * 0.15).round();
+  final pool = await words.available(type, level: vocabLevel);
+  final byLevel = vocabLevel != null;
+  var wordCount = min((size * (byLevel ? 0.85 : 0.6)).round(), pool.length);
+  final chunkCount =
+      scripts.isEmpty ? 0 : (size * (byLevel ? 0.10 : 0.25)).round();
+  final singleCount =
+      scripts.isEmpty ? 0 : (size * (byLevel ? 0.05 : 0.15)).round();
   if (scripts.isEmpty) wordCount = min(size, pool.length);
   // Selisihnya diisi rangkaian huruf supaya sesi penuh.
   var chunkTotal = chunkCount + (size - wordCount - chunkCount - singleCount);

@@ -6,11 +6,17 @@ import '../../data/repositories/kana_repository.dart';
 import 'quiz_question.dart';
 
 class SessionArgs {
-  const SessionArgs({this.type = 'hiragana', this.quick = false, this.quizKind});
+  const SessionArgs({
+    this.type = 'hiragana',
+    this.quick = false,
+    this.quizKind,
+    this.vocabLevel,
+  });
 
   final String type; // hiragana | katakana | mixed
   final bool quick;
   final QuizKind? quizKind; // null = campur semua tipe kuis
+  final String? vocabLevel; // latihan baca: n5n4 | n3, null = semua kata
 }
 
 class SessionResult {

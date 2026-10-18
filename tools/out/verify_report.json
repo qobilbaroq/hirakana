@@ -1,0 +1,24 @@
+{
+  "total_baris_words_tsv": 1272,
+  "kata_kurasi": 860,
+  "per_tingkat": {
+    "N5–N4": 495,
+    "N3": 365
+  },
+  "per_kategori": {
+    "N5–N4 / Aktivitas": 91,
+    "N5–N4 / Sehari-hari": 122,
+    "N5–N4 / Waktu": 85,
+    "N5–N4 / Angka": 68,
+    "N3 / Kesehatan": 69,
+    "N3 / Pekerjaan": 79,
+    "N3 / Perjalanan": 68,
+    "N3 / Pendidikan": 74,
+    "N3 / Komunikasi": 75,
+    "N5–N4 / Makanan": 77,
+    "N5–N4 / Keluarga": 52
+  },
+  "file_audio_kata": 4404,
+  "ukuran_audio_kata_mb": 16.0,
+  "masalah": []
+}

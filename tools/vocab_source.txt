@@ -1,0 +1,885 @@
+# Kosakata kurasi Kana Quest (ditulis tangan, hanya kana).
+# Format: kana|arti Indonesia. Header: ## <level> | <Kategori>
+# level: n5n4 (N5-N4) atau n3. Cara baca (romaji) dihitung otomatis oleh build_vocab.py.
+
+## n5n4 | Sehari-hari
+おはよう|selamat pagi
+ありがとう|terima kasih
+すみません|permisi / maaf
+ごめんなさい|maafkan saya
+さようなら|selamat tinggal
+おやすみ|selamat tidur
+いただきます|selamat makan (sebelum makan)
+ごちそうさま|terima kasih atas makanannya
+ただいま|aku pulang
+おかえり|selamat datang kembali
+いってきます|aku berangkat
+いってらっしゃい|hati-hati di jalan
+はじめまして|salam kenal
+よろしく|mohon bantuannya
+はい|ya
+いいえ|tidak
+ください|tolong berikan
+どうぞ|silakan
+いくら|berapa harganya
+これ|ini
+それ|itu
+あれ|itu (yang jauh)
+ここ|di sini
+そこ|di situ
+あそこ|di sana
+どこ|di mana
+だれ|siapa
+なに|apa
+いつ|kapan
+どれ|yang mana
+どう|bagaimana
+なぜ|mengapa
+おかね|uang
+かぎ|kunci
+かさ|payung
+かばん|tas
+くつ|sepatu
+ふく|pakaian
+ぼうし|topi
+めがね|kacamata
+とけい|jam
+でんわ|telepon
+テレビ|televisi
+カメラ|kamera
+いす|kursi
+つくえ|meja
+ドア|pintu
+まど|jendela
+へや|kamar
+にわ|halaman
+みち|jalan
+くるま|mobil
+じてんしゃ|sepeda
+でんしゃ|kereta listrik
+バス|bus
+ほん|buku
+じしょ|kamus
+ペン|pena
+えんぴつ|pensil
+ノート|buku catatan
+てがみ|surat
+はな|bunga / hidung
+き|pohon
+ねこ|kucing
+とり|burung
+うま|kuda
+ゆき|salju
+かぜ|angin
+そら|langit
+うみ|laut
+やま|gunung
+かわ|sungai
+おおきい|besar
+ちいさい|kecil
+あたらしい|baru
+ふるい|lama / tua
+たかい|tinggi / mahal
+やすい|murah
+ひくい|rendah
+ながい|panjang
+みじかい|pendek
+はやい|cepat
+おそい|lambat
+いい|bagus
+わるい|buruk
+あつい|panas
+さむい|dingin
+すずしい|sejuk
+あたたかい|hangat
+あかるい|terang
+くらい|gelap
+ひろい|luas
+せまい|sempit
+おもい|berat
+かるい|ringan
+つよい|kuat
+よわい|lemah
+しろい|putih
+くろい|hitam
+あかい|merah
+あおい|biru
+きいろ|kuning
+みどり|hijau
+ちかい|dekat
+とおい|jauh
+たのしい|menyenangkan
+うれしい|senang
+かなしい|sedih
+いそがしい|sibuk
+むずかしい|sulit
+やさしい|mudah / baik hati
+すき|suka
+きらい|tidak suka
+げんき|sehat / bersemangat
+しずか|tenang
+にぎやか|ramai
+きれい|cantik / bersih
+ゆうめい|terkenal
+べんり|praktis
+ひま|senggang
+じょうず|pandai
+へた|kurang pandai
+
+## n5n4 | Angka
+いち|satu
+に|dua
+さん|tiga
+よん|empat
+ご|lima
+ろく|enam
+なな|tujuh
+はち|delapan
+きゅう|sembilan
+じゅう|sepuluh
+ゼロ|nol
+れい|nol
+じゅういち|sebelas
+じゅうに|dua belas
+にじゅう|dua puluh
+さんじゅう|tiga puluh
+よんじゅう|empat puluh
+ごじゅう|lima puluh
+ろくじゅう|enam puluh
+ななじゅう|tujuh puluh
+はちじゅう|delapan puluh
+きゅうじゅう|sembilan puluh
+ひゃく|seratus
+にひゃく|dua ratus
+さんびゃく|tiga ratus
+ろっぴゃく|enam ratus
+はっぴゃく|delapan ratus
+せん|seribu
+さんぜん|tiga ribu
+はっせん|delapan ribu
+まん|sepuluh ribu
+いちまん|sepuluh ribu
+ひゃくえん|seratus yen
+せんえん|seribu yen
+ひとつ|satu (buah)
+ふたつ|dua (buah)
+みっつ|tiga (buah)
+よっつ|empat (buah)
+いつつ|lima (buah)
+むっつ|enam (buah)
+ななつ|tujuh (buah)
+やっつ|delapan (buah)
+ここのつ|sembilan (buah)
+とお|sepuluh (buah)
+いくつ|berapa buah
+ひとり|satu orang
+ふたり|dua orang
+さんにん|tiga orang
+よにん|empat orang
+なんにん|berapa orang
+いっぽん|satu batang
+にほん|dua batang
+さんぼん|tiga batang
+いっぴき|satu ekor
+にひき|dua ekor
+さんびき|tiga ekor
+いっさつ|satu buku
+いちまい|satu lembar
+いっかい|lantai satu / satu kali
+さんがい|lantai tiga
+いっぱい|satu gelas / penuh
+ぜんぶ|semuanya
+はんぶん|setengah
+ばんごう|nomor
+ばい|kali lipat
+ぜんぜん|sama sekali
+たくさん|banyak
+すこし|sedikit
+
+## n5n4 | Waktu
+いま|sekarang
+きょう|hari ini
+あした|besok
+きのう|kemarin
+あさって|lusa
+おととい|kemarin dulu
+あさ|pagi
+ひる|siang
+ゆうがた|sore
+ばん|malam
+よる|malam hari
+ごぜん|pagi (AM)
+ごご|siang/sore (PM)
+まいにち|setiap hari
+まいあさ|setiap pagi
+まいばん|setiap malam
+けさ|pagi ini
+こんばん|malam ini
+こんしゅう|minggu ini
+らいしゅう|minggu depan
+せんしゅう|minggu lalu
+こんげつ|bulan ini
+らいげつ|bulan depan
+せんげつ|bulan lalu
+ことし|tahun ini
+らいねん|tahun depan
+きょねん|tahun lalu
+じかん|waktu / jam
+いちじ|jam satu
+にじ|jam dua
+さんじ|jam tiga
+よじ|jam empat
+ごじ|jam lima
+ろくじ|jam enam
+しちじ|jam tujuh
+はちじ|jam delapan
+くじ|jam sembilan
+じゅうじ|jam sepuluh
+はん|setengah
+いちがつ|Januari
+にがつ|Februari
+さんがつ|Maret
+しがつ|April
+ごがつ|Mei
+ろくがつ|Juni
+しちがつ|Juli
+はちがつ|Agustus
+くがつ|September
+じゅうがつ|Oktober
+じゅういちがつ|November
+じゅうにがつ|Desember
+ついたち|tanggal 1
+ふつか|tanggal 2
+みっか|tanggal 3
+よっか|tanggal 4
+いつか|tanggal 5
+むいか|tanggal 6
+なのか|tanggal 7
+ようか|tanggal 8
+ここのか|tanggal 9
+とおか|tanggal 10
+はつか|tanggal 20
+にちようび|hari Minggu
+げつようび|hari Senin
+かようび|hari Selasa
+すいようび|hari Rabu
+もくようび|hari Kamis
+きんようび|hari Jumat
+どようび|hari Sabtu
+しゅうまつ|akhir pekan
+へいじつ|hari kerja
+はる|musim semi
+なつ|musim panas
+あき|musim gugur
+ふゆ|musim dingin
+まえ|sebelum / depan
+あと|sesudah
+さっき|tadi
+いつも|selalu
+ときどき|kadang-kadang
+すぐ|segera
+もう|sudah
+まだ|belum
+はじめ|awal
+おわり|akhir
+
+## n5n4 | Keluarga
+かぞく|keluarga
+りょうしん|orang tua
+ちち|ayah (saya)
+はは|ibu (saya)
+おとうさん|ayah
+おかあさん|ibu
+あに|kakak laki-laki (saya)
+あね|kakak perempuan (saya)
+おにいさん|kakak laki-laki
+おねえさん|kakak perempuan
+おとうと|adik laki-laki
+いもうと|adik perempuan
+きょうだい|saudara kandung
+そふ|kakek (saya)
+そぼ|nenek (saya)
+おじいさん|kakek / pria tua
+おばあさん|nenek / wanita tua
+おじ|paman (saya)
+おば|bibi (saya)
+おじさん|paman
+おばさん|bibi
+いとこ|sepupu
+こども|anak
+あかちゃん|bayi
+むすこ|putra
+むすめ|putri
+まご|cucu
+おっと|suami (saya)
+つま|istri (saya)
+しゅじん|suami
+おとこ|laki-laki
+おんな|perempuan
+おとこのこ|anak laki-laki
+おんなのこ|anak perempuan
+ともだち|teman
+ひと|orang
+みんな|semuanya
+わたし|saya
+あなた|kamu
+かれ|dia (laki-laki)
+かのじょ|dia (perempuan) / pacar
+わたしたち|kami / kita
+ぼく|aku (laki-laki)
+おやこ|orang tua dan anak
+ふうふ|suami istri
+しんせき|kerabat
+りょうほう|keduanya
+ひとびと|orang-orang
+なまえ|nama
+としうえ|lebih tua
+ペット|hewan peliharaan
+おばけ|hantu
+
+## n5n4 | Makanan
+ごはん|nasi / makan
+パン|roti
+たまご|telur
+にく|daging
+さかな|ikan
+やさい|sayur
+くだもの|buah
+りんご|apel
+みかん|jeruk mandarin
+バナナ|pisang
+いちご|stroberi
+ぶどう|anggur
+すいか|semangka
+もも|persik
+トマト|tomat
+じゃがいも|kentang
+たまねぎ|bawang bombai
+にんじん|wortel
+きのこ|jamur
+ぎゅうにく|daging sapi
+ぶたにく|daging babi
+とりにく|daging ayam
+ぎゅうにゅう|susu
+みず|air
+おちゃ|teh
+コーヒー|kopi
+こうちゃ|teh hitam
+ジュース|jus
+ビール|bir
+おさけ|minuman keras / sake
+さとう|gula
+しお|garam
+しょうゆ|kecap asin
+みそ|miso
+すし|sushi
+てんぷら|tempura
+ラーメン|ramen
+うどん|udon
+そば|soba
+カレー|kari
+サラダ|salad
+スープ|sup
+ケーキ|kue
+アイスクリーム|es krim
+チョコレート|cokelat
+おかし|camilan / kue
+あさごはん|sarapan
+ひるごはん|makan siang
+ばんごはん|makan malam
+べんとう|bekal
+りょうり|masakan
+たべもの|makanan
+のみもの|minuman
+レストラン|restoran
+ハンバーガー|hamburger
+ステーキ|steik
+サンドイッチ|sandwich
+ピザ|pizza
+おにぎり|onigiri / nasi kepal
+ぎゅうどん|mangkuk nasi daging sapi
+ぎょうざ|pangsit goreng
+とうふ|tahu
+なっとう|natto
+のり|rumput laut kering
+こめ|beras
+あまい|manis
+からい|pedas
+すっぱい|asam
+にがい|pahit
+しょっぱい|asin
+おいしい|enak
+まずい|tidak enak
+おなか|perut
+おなかがすく|lapar
+のどがかわく|haus
+ひとくち|satu suap
+おかわり|tambah porsi
+
+## n5n4 | Aktivitas
+たべる|makan
+のむ|minum
+みる|melihat
+きく|mendengar / bertanya
+よむ|membaca
+かく|menulis
+はなす|berbicara
+いく|pergi
+くる|datang
+かえる|pulang
+はいる|masuk
+でる|keluar
+あう|bertemu
+かう|membeli
+うる|menjual
+つかう|menggunakan
+つくる|membuat
+あそぶ|bermain
+およぐ|berenang
+はしる|berlari
+あるく|berjalan
+あらう|mencuci
+おきる|bangun
+ねる|tidur
+すわる|duduk
+たつ|berdiri
+まつ|menunggu
+もつ|membawa / memegang
+とる|mengambil
+あける|membuka
+しめる|menutup
+つける|menyalakan
+けす|mematikan
+おしえる|mengajar
+ならう|belajar (dari guru)
+うたう|bernyanyi
+おどる|menari
+わらう|tertawa
+なく|menangis
+わかる|mengerti
+しる|mengetahui
+おもう|berpikir / merasa
+かんがえる|memikirkan
+おぼえる|mengingat / menghafal
+わすれる|melupakan
+あげる|memberi
+もらう|menerima
+かす|meminjamkan
+かりる|meminjam
+もどる|kembali
+のる|naik (kendaraan)
+おりる|turun
+とまる|berhenti
+とぶ|terbang
+うまれる|lahir
+すむ|tinggal
+はたらく|bekerja
+やすむ|beristirahat
+あびる|mandi (shower)
+きる|memakai / memotong
+ぬぐ|melepas (pakaian)
+はく|memakai (sepatu/celana)
+かぶる|memakai (topi)
+おす|menekan / mendorong
+ひく|menarik
+なる|menjadi
+べんきょう|belajar
+さんぽ|jalan-jalan
+かいもの|belanja
+そうじ|bersih-bersih
+せんたく|mencuci pakaian
+うんどう|olahraga / gerak badan
+しゅみ|hobi
+スポーツ|olahraga
+サッカー|sepak bola
+やきゅう|bisbol
+テニス|tenis
+すいえい|renang
+ゲーム|permainan
+ピアノ|piano
+ギター|gitar
+えいが|film
+おんがく|musik
+うた|lagu
+りょこう|perjalanan wisata
+つり|memancing
+ダンス|dansa / tari
+ドライブ|berkendara santai
+うんてん|mengemudi
+しゃしん|foto
+えいがかん|bioskop
+
+## n3 | Pekerjaan
+しごと|pekerjaan
+かいしゃ|perusahaan
+しゃいん|karyawan
+しゃちょう|direktur utama
+ぶちょう|kepala divisi
+かちょう|kepala seksi
+どうりょう|rekan kerja
+じょうし|atasan
+ぶか|bawahan
+きゅうりょう|gaji
+ボーナス|bonus
+かいぎ|rapat
+かいぎしつ|ruang rapat
+しりょう|dokumen / bahan
+めいし|kartu nama
+しゅっちょう|dinas luar
+ざんぎょう|lembur
+きゅうか|cuti
+たいしょく|berhenti kerja
+しゅうしょく|mencari / mendapat kerja
+めんせつ|wawancara
+りれきしょ|CV / riwayat hidup
+けいやく|kontrak
+しょるい|berkas
+てつづき|prosedur
+しめきり|tenggat waktu
+やくそく|janji
+ていあん|usulan
+ちんぎん|upah
+しょくぎょう|profesi
+せきにん|tanggung jawab
+ぎょうむ|tugas kerja
+ぎょうせき|kinerja
+けいけん|pengalaman
+のうりょく|kemampuan
+ほうこく|laporan
+そうだん|konsultasi
+かくにん|pemeriksaan / konfirmasi
+たんとう|penanggung jawab
+うりあげ|penjualan
+りえき|keuntungan
+そんしつ|kerugian
+よさん|anggaran
+かかく|harga
+ねだん|harga
+けいえい|manajemen
+けいかく|rencana
+もくひょう|target
+せいひん|produk
+はんばい|penjualan
+てんいん|pegawai toko
+おきゃくさん|pelanggan / tamu
+ちゅうもん|pesanan
+こうじょう|pabrik
+ぎんこう|bank
+けいさつ|polisi
+しょうぼうし|petugas pemadam
+のうぎょう|pertanian
+エンジニア|insinyur
+デザイナー|desainer
+プログラマー|programmer
+アルバイト|kerja paruh waktu
+パート|kerja paruh waktu
+しゅうにゅう|pendapatan
+しはらい|pembayaran
+ふくぎょう|kerja sampingan
+てんきん|pindah tugas
+しんにゅうしゃいん|karyawan baru
+ていねん|usia pensiun
+かんりしょく|jabatan manajer
+きぼう|harapan / keinginan
+ちょうせい|penyesuaian
+じっし|pelaksanaan
+かいしゃいん|pegawai perusahaan
+こよう|perekrutan
+きんむ|jam kerja
+しゅっきん|berangkat kerja
+たいきん|pulang kerja
+ちこく|terlambat
+
+## n3 | Perjalanan
+かんこう|wisata
+かんこうきゃく|wisatawan
+ホテル|hotel
+りょかん|penginapan tradisional
+よやく|reservasi
+パスポート|paspor
+ビザ|visa
+くうこう|bandara
+ひこうき|pesawat
+ふね|kapal
+ちず|peta
+あんない|panduan
+ガイド|pemandu
+おみやげ|oleh-oleh
+しゅっぱつ|keberangkatan
+とうちゃく|kedatangan
+のりかえ|berpindah kendaraan
+きっぷ|tiket
+こうそくどうろ|jalan tol
+ちゅうしゃじょう|tempat parkir
+ガソリン|bensin
+こうつう|lalu lintas
+れっしゃ|kereta
+しんかんせん|kereta peluru
+ちかてつ|kereta bawah tanah
+タクシー|taksi
+かたみち|sekali jalan
+おうふく|pulang pergi
+ざせき|tempat duduk
+じこくひょう|jadwal
+おくれる|terlambat
+まにあう|keburu
+みなと|pelabuhan
+しま|pulau
+おんせん|pemandian air panas
+けしき|pemandangan
+ばしょ|tempat
+みぎ|kanan
+ひだり|kiri
+まっすぐ|lurus
+かど|sudut jalan
+こうさてん|persimpangan
+しんごう|lampu lalu lintas
+にもつ|barang bawaan
+スーツケース|koper
+かいがい|luar negeri
+ツアー|tur
+しゅくはく|menginap
+たいざい|menetap sementara
+ちかみち|jalan pintas
+まいご|tersesat
+じゅうたい|kemacetan
+きこく|pulang ke negara asal
+とうじょう|naik pesawat
+ぜいかん|bea cukai
+りょうがえ|penukaran uang
+りょけん|izin perjalanan
+うんちん|ongkos
+ほうこう|arah
+めいしょ|tempat terkenal
+いせき|situs bersejarah
+じんじゃ|kuil Shinto
+おてら|kuil Buddha
+おまつり|festival
+もよう|corak
+ふくざつ|rumit
+きんじょ|lingkungan sekitar
+とおまわり|memutar jauh
+
+## n3 | Kesehatan
+けんこう|kesehatan
+びょうき|penyakit
+びょういん|rumah sakit
+いしゃ|dokter
+かんごし|perawat
+はいしゃ|dokter gigi
+くすり|obat
+やっきょく|apotek
+ねつ|demam
+せき|batuk
+あたま|kepala
+のど|tenggorokan
+いたい|sakit
+けが|luka / cedera
+ちゅうしゃ|suntikan
+けんさ|pemeriksaan
+しんさつ|pemeriksaan dokter
+しゅじゅつ|operasi
+にゅういん|rawat inap
+たいいん|keluar rumah sakit
+びょうにん|orang sakit
+かんじゃ|pasien
+よぼう|pencegahan
+えいよう|gizi
+すいみん|tidur
+ストレス|stres
+ふくさよう|efek samping
+げり|diare
+ずつう|sakit kepala
+ふくつう|sakit perut
+めまい|pusing
+はきけ|mual
+さむけ|menggigil
+アレルギー|alergi
+マスク|masker
+たいおん|suhu tubuh
+たいじゅう|berat badan
+しんちょう|tinggi badan
+けつあつ|tekanan darah
+あせ|keringat
+なみだ|air mata
+ち|darah
+め|mata
+みみ|telinga
+くち|mulut
+は|gigi
+て|tangan
+あし|kaki
+かお|wajah
+くび|leher
+せなか|punggung
+こし|pinggang
+ゆび|jari
+ひざ|lutut
+かた|bahu
+うで|lengan
+はだ|kulit
+かみのけ|rambut
+からだ|tubuh
+こころ|hati / jiwa
+ようす|keadaan
+つかれる|lelah
+ねむい|mengantuk
+だるい|lesu
+ほうたい|perban
+たいちょう|kondisi tubuh
+ダイエット|diet
+せいけつ|bersih
+ふけつ|kotor
+
+## n3 | Pendidikan
+がっこう|sekolah
+だいがく|universitas
+しょうがっこう|sekolah dasar
+ちゅうがっこう|SMP
+こうこう|SMA
+きょうしつ|ruang kelas
+じゅぎょう|pelajaran
+きょうかしょ|buku pelajaran
+しけん|ujian
+テスト|tes
+しゅくだい|pekerjaan rumah
+せいせき|nilai
+ごうかく|lulus ujian
+ふごうかく|tidak lulus
+そつぎょう|kelulusan
+にゅうがく|masuk sekolah
+がくせい|pelajar
+せいと|murid
+せんせい|guru
+きょうじゅ|profesor
+けんきゅう|penelitian
+かがく|sains
+すうがく|matematika
+れきし|sejarah
+ちり|geografi
+ぶんがく|sastra
+げんご|bahasa
+えいご|bahasa Inggris
+にほんご|bahasa Jepang
+ぶんぽう|tata bahasa
+たんご|kosakata
+はつおん|pelafalan
+ふくしゅう|mengulang pelajaran
+よしゅう|mempelajari lebih dulu
+かいわ|percakapan
+ぶんしょう|kalimat / tulisan
+さくぶん|karangan
+ほうほう|cara
+がくひ|biaya sekolah
+しょうがくきん|beasiswa
+りゅうがく|belajar ke luar negeri
+りゅうがくせい|pelajar asing
+としょかん|perpustakaan
+クラス|kelas
+クラスメート|teman sekelas
+もんだい|soal / masalah
+こたえ|jawaban
+しつもん|pertanyaan
+せつめい|penjelasan
+ほんやく|terjemahan
+きょういく|pendidikan
+ちしき|pengetahuan
+じょうほう|informasi
+ぎじゅつ|teknologi
+がくしゅう|belajar
+じゅけん|ujian masuk
+たんにん|wali kelas
+こうぎ|kuliah
+ゼミ|seminar
+そつぎょうしき|upacara kelulusan
+ぶかつ|kegiatan klub
+えんそく|karyawisata
+うんどうかい|hari olahraga
+きまり|aturan
+きょうみ|ketertarikan
+じゅぎょうりょう|biaya kuliah
+とくい|jago
+にがて|kurang suka / lemah
+かんじ|huruf kanji
+ひらがな|hiragana
+カタカナ|katakana
+じびき|mencari di kamus
+ものさし|penggaris
+こくばん|papan tulis
+
+## n3 | Komunikasi
+メール|surel
+はがき|kartu pos
+ニュース|berita
+れんらく|kontak / hubungi
+へんじ|balasan
+つたえる|menyampaikan
+つたわる|tersampaikan
+あいさつ|salam
+しょうかい|perkenalan
+しょうたい|undangan
+ほうそう|siaran
+しんぶん|koran
+ざっし|majalah
+インターネット|internet
+ホームページ|laman web
+アドレス|alamat
+パソコン|komputer
+スマホ|ponsel pintar
+でんごん|pesan titipan
+でんぽう|telegram
+ゆうびん|pos
+ゆうびんきょく|kantor pos
+ふうとう|amplop
+きって|prangko
+ことば|kata / bahasa
+ごかい|salah paham
+りかい|pemahaman
+はつげん|pernyataan
+いけん|pendapat
+はんたい|penolakan
+さんせい|persetujuan
+おくる|mengirim
+うけとる|menerima
+しらせる|memberi tahu
+たずねる|bertanya / mengunjungi
+こたえる|menjawab
+あやまる|meminta maaf
+ほめる|memuji
+しかる|memarahi
+おこる|marah
+ことわる|menolak
+たのむ|meminta tolong
+うそ|bohong
+ほんとう|benar
+じょうだん|candaan
+ひみつ|rahasia
+うわさ|gosip
+ちゅうい|perhatian
+あいて|lawan bicara
+スピーチ|pidato
+プレゼン|presentasi
+アンケート|angket
+ネット|internet (singkat)
+ブログ|blog
+チャット|obrolan daring
+メッセージ|pesan
+アプリ|aplikasi
+ログイン|masuk akun
+パスワード|kata sandi
+ダウンロード|unduh
+クリック|klik
+ユーザー|pengguna
+しゃべる|mengobrol
+はなしあう|berdiskusi
+いいわけ|dalih
+ほうこくしょ|laporan tertulis
+ひょうげん|ungkapan
+かいとう|jawaban resmi
+へんしん|membalas
+つうやく|penerjemah lisan
+つうち|pemberitahuan
+れんらくさき|kontak tujuan
+つうわ|percakapan telepon
+るすばん|menjaga rumah
+でんわばんごう|nomor telepon

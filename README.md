@@ -23,13 +23,14 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Kuis** 5 jenis: kana ke bunyi, bunyi ke kana, ketik romaji, hiragana vs katakana,
   dan *look-alike drill* untuk huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi *Replay*, dan perbandingan hasil.
-- **Latihan baca**: tebak romaji dari 729 kata sungguhan (semua punya arti Bahasa Indonesia),
+- **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang **semuanya punya arti Bahasa Indonesia**,
   rangkaian 2-3 huruf, atau satu huruf. Kata yang belum pernah muncul diutamakan, jadi tidak itu-itu saja.
+- **Saring kosakata per tingkat**: Practice → Words, pilih *All words* / *N5–N4* / *N3*.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 
 **Suara (offline)**
 - Rekaman suara untuk setiap huruf, versi normal dan lambat.
-- Rekaman kata utuh untuk seluruh 729 kata, versi normal dan lambat.
+- Rekaman kata utuh untuk ribuan kata; kata lain dibunyikan huruf demi huruf.
 - Pola putar ulang: normal, normal, lambat (bisa diganti di Settings).
 
 **Kemajuan**
@@ -103,8 +104,10 @@ test/         unit dan widget test
 | --- | --- | --- |
 | [KanjiVG](https://kanjivg.tagaini.net) | urutan goresan | CC BY-SA 3.0 |
 | [veardk/just-gojuon](https://github.com/veardk/just-gojuon) | rekaman suara huruf | MIT (asal rekaman tidak dijelaskan di repo sumbernya) |
-| HTS voice tohoku-f01, Tohoku University ICN Lab | suara kata (sintesis Open JTalk) | CC BY 4.0 |
-| [JMdict](https://www.edrdg.org/jmdict/j_jmdict.html), EDRDG | daftar kata umum | CC BY-SA 4.0 |
+| HTS voice tohoku-f01, Tohoku University ICN Lab | suara kata (sintesis Open JTalk), termasuk kosakata N5–N4/N3 | CC BY 4.0 |
+
+Daftar kata (1.272 kata) adalah **karya sendiri** — ditulis tangan untuk app ini, tanpa impor dari
+kamus pihak ketiga, jadi tidak ada kewajiban lisensi data.
 
 Kredit ini juga tampil di dalam app (Settings dan layar Practice). Kalau kamu membagikan app ini
 secara publik, pertahankan kredit tersebut.
