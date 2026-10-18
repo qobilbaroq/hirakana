@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../app/router.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
+import '../../core/settings/app_settings.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/session_header.dart';
@@ -47,7 +48,12 @@ class _WritingScreenState extends State<WritingScreen>
 
   Future<void> _start() async {
     await StrokeRepository.instance.load();
-    _queue.addAll(await _repo.buildQueue(type: widget.args.type));
+    final size = AppSettings.instance.sessionSize;
+    _queue.addAll(await _repo.buildQueue(
+      type: widget.args.type,
+      size: size,
+      fillToSize: size > AppSettings.minSessionSize,
+    ));
     _sessionId = await _repo.startSession('writing', widget.args.type);
     _lastTick = DateTime.now();
     if (!mounted) return;

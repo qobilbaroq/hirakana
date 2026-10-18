@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
+import '../../data/seed/word_data.dart';
 import '../learn/quiz_question.dart';
 import '../learn/session_controller.dart';
 import '../learn/session_launcher.dart';
@@ -16,6 +17,7 @@ class PracticeScreen extends StatefulWidget {
 
 class _PracticeScreenState extends State<PracticeScreen> {
   String _type = 'hiragana';
+  String? _vocabLevel; // null = semua kata
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +64,34 @@ class _PracticeScreenState extends State<PracticeScreen> {
           const SizedBox(height: AppSpacing.sm),
           _PracticeTile(
             icon: Icons.menu_book_outlined,
-            title: 'Read words',
-            subtitle: 'Real words made from your chosen letters.',
+            title: 'Reading practice',
+            subtitle: 'Words and letter groups. Pick the romaji.',
             onTap: () => launchSession(context,
-                mode: 'words', args: SessionArgs(type: _type)),
+                mode: 'words',
+                args: SessionArgs(type: _type, vocabLevel: _vocabLevel)),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Wrap(
+            spacing: AppSpacing.sm,
+            children: [
+              for (final l in <(String?, String)>[
+                (null, 'All words'),
+                for (final v in vocabLevels) (v.$1, v.$2),
+              ])
+                ChoiceChip(
+                  label: Text(l.$2),
+                  selected: _vocabLevel == l.$1,
+                  selectedColor: AppColors.sage.withValues(alpha: 0.35),
+                  backgroundColor: AppColors.sand,
+                  side: BorderSide.none,
+                  onSelected: (_) => setState(() => _vocabLevel = l.$1),
+                ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            'Kosakata N5–N4 / N3 muncul kalau semua hurufnya sudah kamu pilih.',
+            style: AppText.muted,
           ),
           const SizedBox(height: AppSpacing.lg),
           Text('Recognition', style: AppText.section),

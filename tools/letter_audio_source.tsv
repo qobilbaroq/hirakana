@@ -1,0 +1,130 @@
+# Data sumber suara HURUF - Open JTalk + htsvoice-tohoku-f01
+# 104 huruf. Satu berkas audio dipakai bersama oleh hiragana dan katakana,
+# jadi TIDAK perlu 208 file: cukup 104 nama berkas.
+#
+# Kolom:
+#   romaji    : nama berkas -> assets/audio/<romaji>.mp3 dan <romaji>_slow.mp3
+#   grup      : grup huruf di app (vowels, k, s, ... yoon-p)
+#   hiragana  : huruf versi hiragana
+#   katakana  : huruf versi katakana (pakai berkas yang sama)
+#   tts_input : TEKS UNTUK Open JTalk - WAJIB kana, jangan romaji
+#   tts_alt   : alternatif pakai jeda (paling aman, tidak mungkin bentrok)
+#   catatan   : "aman" atau peringatan kalau perlu didengar langsung
+#
+# MASALAH YANG DIATASI: huruf tunggal hasil sintesis cuma ~0,4 detik dan
+# sulit terdengar (file kata terpendek yang ada 0,63 detik). Karena itu
+# setiap huruf diberi vokal あ di belakang -> jadi ~0,8-1,0 detik.
+#
+# CARA PAKAI:
+#   1. Samakan dengan tools/generate_audio.py:
+#        normal : silenceremove(-50dB) + adelay=120 + apad 0.12,
+#                 volume peak ~-1,5 dB, -ar 22050 -ac 1 libmp3lame -b:a 32k
+#        lambat : sama + atempo=0.75
+#   2. Jalankan open-jtalk dengan teks pada kolom tts_input.
+#   3. Dengarkan baris yang catatannya bukan "aman".
+#
+# romaji	grup	hiragana	katakana	tts_input	tts_alt	catatan
+a	vowels	あ	ア	ああ	あ、あ	ああ = seruan "aa" (bukan 2 suku kata)
+i	vowels	い	イ	いあ	い、い	aman
+u	vowels	う	ウ	うあ	う、う	aman
+e	vowels	え	エ	えあ	え、え	aman
+o	vowels	お	オ	おあ	お、お	aman
+ka	k	か	カ	かあ	か、か	aman
+ki	k	き	キ	きあ	き、き	aman
+ku	k	く	ク	くあ	く、く	aman
+ke	k	け	ケ	けあ	け、け	aman
+ko	k	こ	コ	こあ	こ、こ	aman
+sa	s	さ	サ	さあ	さ、さ	aman
+shi	s	し	シ	しあ	し、し	aman
+su	s	す	ス	すあ	す、す	aman
+se	s	せ	セ	せあ	せ、せ	aman
+so	s	そ	ソ	そあ	そ、そ	aman
+ta	t	た	タ	たあ	た、た	aman
+chi	t	ち	チ	ちあ	ち、ち	aman
+tsu	t	つ	ツ	つあ	つ、つ	aman
+te	t	て	テ	てあ	て、て	aman
+to	t	と	ト	とあ	と、と	aman
+na	n	な	ナ	なあ	な、な	aman
+ni	n	に	ニ	にあ	に、に	aman
+nu	n	ぬ	ヌ	ぬあ	ぬ、ぬ	aman
+ne	n	ね	ネ	ねあ	ね、ね	aman
+no	n	の	ノ	のあ	の、の	aman
+ha	h	は	ハ	はあ	は、は	はあ = "haa" (bisa jadi kata, dengar dulu)
+hi	h	ひ	ヒ	ひあ	ひ、ひ	aman
+fu	h	ふ	フ	ふあ	ふ、ふ	aman
+he	h	へ	ヘ	へあ	へ、へ	aman
+ho	h	ほ	ホ	ほあ	ほ、ほ	aman
+ma	m	ま	マ	まあ	ま、ま	まあ = kata "maa" (bisa jadi kata, dengar dulu)
+mi	m	み	ミ	みあ	み、み	aman
+mu	m	む	ム	むあ	む、む	aman
+me	m	め	メ	めあ	め、め	aman
+mo	m	も	モ	もあ	も、も	aman
+ya	y	や	ヤ	やあ	や、や	やあ = "yaa" (bisa jadi kata, dengar dulu)
+yu	y	ゆ	ユ	ゆあ	ゆ、ゆ	aman
+yo	y	よ	ヨ	よあ	よ、よ	aman
+ra	r	ら	ラ	らあ	ら、ら	aman
+ri	r	り	リ	りあ	り、り	aman
+ru	r	る	ル	るあ	る、る	aman
+re	r	れ	レ	れあ	れ、れ	aman
+ro	r	ろ	ロ	ろあ	ろ、ろ	aman
+wa	w	わ	ワ	わあ	わ、わ	わあ = "waa" (bisa jadi kata, dengar dulu)
+wo	w	を	ヲ	をお	を、を	KHUSUS: を adalah partikel, dibaca "o". をお = "o-o"
+n	n-final	ん	ン	あん	あん、あん	KHUSUS: ん tidak bisa ditambah vokal. あん (a-n) dipakai karena ん diucapkan sebagai mora akhir setelah vokal
+ga	dakuten-k	が	ガ	があ	が、が	aman
+gi	dakuten-k	ぎ	ギ	ぎあ	ぎ、ぎ	aman
+gu	dakuten-k	ぐ	グ	ぐあ	ぐ、ぐ	aman
+ge	dakuten-k	げ	ゲ	げあ	げ、げ	aman
+go	dakuten-k	ご	ゴ	ごあ	ご、ご	aman
+za	dakuten-s	ざ	ザ	ざあ	ざ、ざ	aman
+ji	dakuten-s	じ	ジ	じあ	じ、じ	aman
+zu	dakuten-s	ず	ズ	ずあ	ず、ず	aman
+ze	dakuten-s	ぜ	ゼ	ぜあ	ぜ、ぜ	aman
+zo	dakuten-s	ぞ	ゾ	ぞあ	ぞ、ぞ	aman
+da	dakuten-t	だ	ダ	だあ	だ、だ	aman
+di	dakuten-t	ぢ	ヂ	ぢあ	ぢ、ぢ	aman
+du	dakuten-t	づ	ヅ	づあ	づ、づ	aman
+de	dakuten-t	で	デ	であ	で、で	aman
+do	dakuten-t	ど	ド	どあ	ど、ど	aman
+ba	dakuten-h	ば	バ	ばあ	ば、ば	aman
+bi	dakuten-h	び	ビ	びあ	び、び	aman
+bu	dakuten-h	ぶ	ブ	ぶあ	ぶ、ぶ	aman
+be	dakuten-h	べ	ベ	べあ	べ、べ	aman
+bo	dakuten-h	ぼ	ボ	ぼあ	ぼ、ぼ	aman
+pa	handakuten	ぱ	パ	ぱあ	ぱ、ぱ	aman
+pi	handakuten	ぴ	ピ	ぴあ	ぴ、ぴ	aman
+pu	handakuten	ぷ	プ	ぷあ	ぷ、ぷ	aman
+pe	handakuten	ぺ	ペ	ぺあ	ぺ、ぺ	aman
+po	handakuten	ぽ	ポ	ぽあ	ぽ、ぽ	aman
+kya	yoon-k	きゃ	キャ	きゃあ	きゃ、きゃ	aman
+kyu	yoon-k	きゅ	キュ	きゅあ	きゅ、きゅ	aman
+kyo	yoon-k	きょ	キョ	きょあ	きょ、きょ	aman
+sha	yoon-s	しゃ	シャ	しゃあ	しゃ、しゃ	aman
+shu	yoon-s	しゅ	シュ	しゅあ	しゅ、しゅ	aman
+sho	yoon-s	しょ	ショ	しょあ	しょ、しょ	aman
+cha	yoon-t	ちゃ	チャ	ちゃあ	ちゃ、ちゃ	aman
+chu	yoon-t	ちゅ	チュ	ちゅあ	ちゅ、ちゅ	aman
+cho	yoon-t	ちょ	チョ	ちょあ	ちょ、ちょ	aman
+nya	yoon-n	にゃ	ニャ	にゃあ	にゃ、にゃ	aman
+nyu	yoon-n	にゅ	ニュ	にゅあ	にゅ、にゅ	aman
+nyo	yoon-n	にょ	ニョ	にょあ	にょ、にょ	aman
+hya	yoon-h	ひゃ	ヒャ	ひゃあ	ひゃ、ひゃ	aman
+hyu	yoon-h	ひゅ	ヒュ	ひゅあ	ひゅ、ひゅ	aman
+hyo	yoon-h	ひょ	ヒョ	ひょあ	ひょ、ひょ	aman
+mya	yoon-m	みゃ	ミャ	みゃあ	みゃ、みゃ	aman
+myu	yoon-m	みゅ	ミュ	みゅあ	みゅ、みゅ	aman
+myo	yoon-m	みょ	ミョ	みょあ	みょ、みょ	aman
+rya	yoon-r	りゃ	リャ	りゃあ	りゃ、りゃ	aman
+ryu	yoon-r	りゅ	リュ	りゅあ	りゅ、りゅ	aman
+ryo	yoon-r	りょ	リョ	りょあ	りょ、りょ	aman
+gya	yoon-g	ぎゃ	ギャ	ぎゃあ	ぎゃ、ぎゃ	aman
+gyu	yoon-g	ぎゅ	ギュ	ぎゅあ	ぎゅ、ぎゅ	aman
+gyo	yoon-g	ぎょ	ギョ	ぎょあ	ぎょ、ぎょ	aman
+ja	yoon-j	じゃ	ジャ	じゃあ	じゃ、じゃ	じゃあ = partikel "ja" (1 suku kata - HARUS dicek, kemungkinan salah)
+ju	yoon-j	じゅ	ジュ	じゅあ	じゅ、じゅ	aman
+jo	yoon-j	じょ	ジョ	じょあ	じょ、じょ	aman
+bya	yoon-b	びゃ	ビャ	びゃあ	びゃ、びゃ	aman
+byu	yoon-b	びゅ	ビュ	びゅあ	びゅ、びゅ	aman
+byo	yoon-b	びょ	ビョ	びょあ	びょ、びょ	aman
+pya	yoon-p	ぴゃ	ピャ	ぴゃあ	ぴゃ、ぴゃ	aman
+pyu	yoon-p	ぴゅ	ピュ	ぴゅあ	ぴゅ、ぴゅ	aman
+pyo	yoon-p	ぴょ	ピョ	ぴょあ	ぴょ、ぴょ	aman

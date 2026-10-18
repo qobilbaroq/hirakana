@@ -69,8 +69,10 @@ class PrimaryButton extends StatelessWidget {
           style: FilledButton.styleFrom(
             minimumSize: size,
             shape: shape,
-            disabledBackgroundColor: AppColors.ink.withValues(alpha: 0.25),
-            disabledForegroundColor: AppColors.white.withValues(alpha: 0.8),
+            backgroundColor: AppColors.action,
+            foregroundColor: AppColors.onAction,
+            disabledBackgroundColor: AppColors.action.withValues(alpha: 0.35),
+            disabledForegroundColor: AppColors.onAction.withValues(alpha: 0.7),
           ),
           child: child,
         );

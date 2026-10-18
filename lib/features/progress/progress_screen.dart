@@ -5,6 +5,7 @@ import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/utils/format.dart';
 import '../../core/widgets/kana_character.dart';
+import '../../core/widgets/kana_group_row.dart';
 import '../../core/widgets/mastery_indicator.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/progress_bar.dart';
@@ -192,13 +193,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 ],
               ),
               const SizedBox(height: AppSpacing.sm),
-              Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.sm,
-                children: [
-                  for (final k in list)
-                    Container(
-                      width: 56,
+              // Tabel gojuon selebar layar: tiap baris mengisi lebar penuh.
+              for (final group in groupKana(list))
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                  child: kanaGroupRow(
+                    group,
+                    (k) => Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
                         color: AppColors.white,
@@ -206,14 +207,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       ),
                       child: Column(
                         children: [
-                          KanaCharacter(k.character, size: 22),
+                          KanaCharacter(k.character,
+                              size: k.character.length > 1 ? 18 : 22),
                           const SizedBox(height: 4),
                           MasteryIndicator(level: s.levels[k.id] ?? 0),
                         ],
                       ),
                     ),
-                ],
-              ),
+                  ),
+                ),
               const SizedBox(height: AppSpacing.lg),
               Text('Recent sessions', style: AppText.section),
               const SizedBox(height: AppSpacing.sm),

@@ -1,15 +1,22 @@
 import 'dart:math';
 
+import '../../core/settings/app_settings.dart';
 import '../../data/models/kana.dart';
 import '../../data/repositories/kana_repository.dart';
 import 'quiz_question.dart';
 
 class SessionArgs {
-  const SessionArgs({this.type = 'hiragana', this.quick = false, this.quizKind});
+  const SessionArgs({
+    this.type = 'hiragana',
+    this.quick = false,
+    this.quizKind,
+    this.vocabLevel,
+  });
 
   final String type; // hiragana | katakana | mixed
   final bool quick;
   final QuizKind? quizKind; // null = campur semua tipe kuis
+  final String? vocabLevel; // latihan baca: n5n4 | n3, null = semua kata
 }
 
 class SessionResult {
@@ -51,8 +58,9 @@ class SessionController {
   final List<bool> _retryFlags = []; // sejajar dengan queue: true = ulangan
   final Set<String> _seen = {};
   final Set<String> _struggled = {};
-  final Set<String> _completed = {};
-  final Map<String, int> _retries = {};
+  final List<int> _slotIds = []; // sejajar dengan queue: nomor slot soal
+  final Map<int, int> _retries = {}; // slot -> berapa kali diulang
+  int _done = 0; // jumlah slot yang sudah selesai
 
   /// Huruf aktif untuk set ini (dipakai sebagai pilihan jawaban kuis).
   List<Kana> activePool = [];
@@ -71,12 +79,16 @@ class SessionController {
 
   Future<void> start() async {
     if (args.quizKind == QuizKind.lookalike) {
-      queue.addAll(await _repo.confusableQueue());
+      queue.addAll(
+          await _repo.confusableQueue(size: AppSettings.instance.sessionSize));
     } else {
       queue.addAll(await _repo.buildQueue(
         type: type,
         quick: args.quick,
         reviewedOnly: mode == 'quiz',
+        size: AppSettings.instance.sessionSize,
+        fillToSize:
+            AppSettings.instance.sessionSize > AppSettings.minSessionSize,
         // Pengenalan pertama pada flashcard tetap berurutan (あ い う え お)
         // supaya terasa natural. Selain itu urutannya diacak.
         shuffle: !(mode == 'flashcard' && await _allUnseen(type)),
@@ -84,6 +96,7 @@ class SessionController {
     }
     partners = await _repo.confusionPartners();
     _retryFlags.addAll(List.filled(queue.length, false));
+    _slotIds.addAll(List.generate(queue.length, (i) => i));
     total = queue.length;
     activePool = await _repo.activeKana(type);
     _sessionId = await _repo.startSession(mode, type);
@@ -106,7 +119,7 @@ class SessionController {
   bool get currentIsRetry => index < _retryFlags.length && _retryFlags[index];
 
   /// Huruf yang sudah selesai di sesi ini (benar, atau ulangan sudah habis).
-  int get completed => _completed.length;
+  int get completed => _done;
   int get position => min(completed + 1, max(total, 1));
   double get progress => total == 0 ? 0 : completed / total;
 
@@ -126,21 +139,23 @@ class SessionController {
     if (k == null || id == null) return;
 
     final isRetry = _retryFlags[index];
+    final slot = _slotIds[index];
     answered++;
     _seen.add(k.id);
     if (ok) {
       correct++;
-      _completed.add(k.id);
+      _done++;
     } else {
       _struggled.add(k.id);
-      final retries = _retries[k.id] ?? 0;
+      final retries = _retries[slot] ?? 0;
       if (retries < 2) {
-        _retries[k.id] = retries + 1;
+        _retries[slot] = retries + 1;
         final at = min(index + 3, queue.length);
         queue.insert(at, k);
         _retryFlags.insert(at, true);
+        _slotIds.insert(at, slot);
       } else {
-        _completed.add(k.id); // ulangan habis, lanjut saja
+        _done++; // ulangan habis, lanjut saja
       }
     }
     index++;

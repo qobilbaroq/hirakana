@@ -187,6 +187,10 @@ class KanaRepository extends ChangeNotifier {
     int size = sessionSize,
     bool shuffle = true,
     Random? rng,
+
+    /// true: kalau huruf yang tersedia lebih sedikit dari [size], huruf diulang
+    /// (dalam putaran acak) sampai jumlahnya [size].
+    bool fillToSize = false,
   }) async {
     final progress = await loadProgress();
     final active = await activeKana(type);
@@ -225,34 +229,58 @@ class KanaRepository extends ChangeNotifier {
 
     final chosen = [...due, ...fresh, ...rest].take(size).toList();
 
-    // Affiliative rule: huruf yang SAMA tidak boleh muncul dua kali berturut.
+    if (fillToSize && chosen.isNotEmpty && chosen.length < size) {
+      final base = [...chosen];
+      while (chosen.length < size) {
+        final round = [...base];
+        if (shuffle) round.shuffle(rng ?? Random());
+        chosen.addAll(round.take(size - chosen.length));
+      }
+    }
+
+    // Huruf yang SAMA tidak boleh muncul dua kali berturut.
     if (shuffle) _spreadNoRepeat(chosen, rng ?? Random());
     return chosen;
   }
 
-  /// Mengacak [items] tanpa pernah menyisipkan nilai yang sama di sebelahnya.
+  /// Mengacak [items] dengan syarat huruf yang sama tidak bersebelahan (selama
+  /// masih mungkin). Tiap langkah memilih huruf yang sisanya paling banyak dan
+  /// berbeda dari yang barusan, dengan undian acak di antara yang seimbang.
+  /// Untuk daftar yang hurufnya unik, hasilnya permutasi acak biasa.
   void _spreadNoRepeat(List<Kana> items, Random rng) {
     if (items.length < 2) return;
     items.shuffle(rng);
-    for (var pass = 0; pass < 12; pass++) {
-      var bad = false;
-      for (var i = 1; i < items.length; i++) {
-        if (items[i].id != items[i - 1].id) continue;
-        bad = true;
-        // Cari posisi lain yang tidak bersebelahan dengan elemen yang sama.
-        for (var j = items.length - 1; j > 0; j--) {
-          if (items[j].id != items[i].id) continue;
-          final clash = (j - 1 >= 0 && items[j - 1].id == items[i].id) ||
-              (j + 1 < items.length && items[j + 1].id == items[i].id);
-          if (clash) continue;
-          final tmp = items[i];
-          items[i] = items[j];
-          items[j] = tmp;
-          break;
+
+    final remaining = <String, List<Kana>>{};
+    for (final k in items) {
+      remaining.putIfAbsent(k.id, () => []).add(k);
+    }
+
+    final out = <Kana>[];
+    String? last;
+    while (out.length < items.length) {
+      var best = <String>[];
+      var bestCount = 0;
+      for (final e in remaining.entries) {
+        if (e.value.isEmpty || e.key == last) continue;
+        if (e.value.length > bestCount) {
+          best = [e.key];
+          bestCount = e.value.length;
+        } else if (e.value.length == bestCount) {
+          best.add(e.key);
         }
       }
-      if (!bad) return;
+      if (best.isEmpty) {
+        // Tinggal satu jenis huruf: tidak bisa dihindari.
+        best = [remaining.entries.firstWhere((e) => e.value.isNotEmpty).key];
+      }
+      final id = best[rng.nextInt(best.length)];
+      out.add(remaining[id]!.removeLast());
+      last = id;
     }
+    items
+      ..clear()
+      ..addAll(out);
   }
 
   /// Mencatat satu jawaban. [fast] = terlalu cepat, jadi tidak dihitung

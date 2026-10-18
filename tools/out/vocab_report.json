@@ -1,0 +1,43 @@
+{
+  "total_curated": 1272,
+  "added_new_rows": 0,
+  "updated_existing_rows": 1272,
+  "by_level": {
+    "n5n4": 900,
+    "n3": 372
+  },
+  "by_category": {
+    "n5n4 / Sehari-hari": 208,
+    "n5n4 / Angka": 71,
+    "n5n4 / Waktu": 94,
+    "n5n4 / Keluarga": 54,
+    "n5n4 / Makanan": 131,
+    "n5n4 / Aktivitas": 125,
+    "n3 / Pekerjaan": 83,
+    "n3 / Perjalanan": 68,
+    "n3 / Kesehatan": 69,
+    "n3 / Pendidikan": 77,
+    "n3 / Komunikasi": 75,
+    "n5n4 / Rumah": 57,
+    "n5n4 / Hewan": 41,
+    "n5n4 / Alam": 24,
+    "n5n4 / Perjalanan": 66,
+    "n5n4 / Kesehatan": 3,
+    "n5n4 / Tubuh": 6,
+    "n5n4 / Pakaian": 18,
+    "n5n4 / Pendidikan": 1,
+    "n5n4 / Pekerjaan": 1
+  },
+  "meaning_overridden": [],
+  "readings_needing_audio": 0,
+  "problems": [
+    "cara baca lama dipertahankan: こんにちは konnichiwa (hitungan app: konnichiha)",
+    "cara baca lama dipertahankan: つづく tsuzuku (hitungan app: tsuduku)",
+    "cara baca lama dipertahankan: こんばんは konbanwa (hitungan app: konbanha)",
+    "cara baca lama dipertahankan: サンドイッチ sandoicchi (hitungan app: sandoitchi)",
+    "cara baca lama dipertahankan: キッチン kicchin (hitungan app: kitchin)",
+    "cara baca lama dipertahankan: ホッチキス hocchikisu (hitungan app: hotchikisu)",
+    "cara baca lama dipertahankan: ちょうちょ chouchou (hitungan app: choucho)",
+    "cara baca lama dipertahankan: はなぢ hanaji (hitungan app: hanadi)"
+  ]
+}
