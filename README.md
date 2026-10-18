@@ -23,13 +23,13 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Kuis** 5 jenis: kana ke bunyi, bunyi ke kana, ketik romaji, hiragana vs katakana,
   dan *look-alike drill* untuk huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi *Replay*, dan perbandingan hasil.
-- **Latihan baca**: tebak romaji dari kata sungguhan (sekitar 9 ribu kata), rangkaian 2-3 huruf,
-  atau satu huruf. Kata yang belum pernah muncul diutamakan, jadi tidak itu-itu saja.
+- **Latihan baca**: tebak romaji dari 729 kata sungguhan (semua punya arti Bahasa Indonesia),
+  rangkaian 2-3 huruf, atau satu huruf. Kata yang belum pernah muncul diutamakan, jadi tidak itu-itu saja.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 
 **Suara (offline)**
 - Rekaman suara untuk setiap huruf, versi normal dan lambat.
-- Rekaman kata utuh untuk ribuan kata; kata lain dibunyikan huruf demi huruf.
+- Rekaman kata utuh untuk seluruh 729 kata, versi normal dan lambat.
 - Pola putar ulang: normal, normal, lambat (bisa diganti di Settings).
 
 **Kemajuan**

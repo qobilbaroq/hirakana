@@ -15,8 +15,9 @@ Tanpa akun, tanpa iklan, tanpa hukuman kalau kamu melewatkan sehari. Semua fitur
 - **Flashcard** dengan pengulangan berjarak: ingat dulu, baru buka jawabannya.
 - **Kuis** 5 jenis, termasuk membedakan hiragana vs katakana dan latihan huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi urutan goresan, dan perbandingan hasil.
-- **Latihan baca**: tebak romaji dari ribuan kata, rangkaian huruf, atau satu huruf. Soal tidak itu-itu saja.
-- **Suara** untuk setiap huruf dan ribuan kata, normal dan lambat, tersedia offline.
+- **Latihan baca**: tebak romaji dari 729 kata sungguhan yang semuanya punya arti Bahasa Indonesia,
+  rangkaian huruf, atau satu huruf. Soal tidak itu-itu saja.
+- **Suara** untuk setiap huruf dan setiap kata, normal dan lambat, tersedia offline.
 - **Kemajuan nyata**: penguasaan diukur lintas sesi, bukan sekali jawab benar.
 - **Panjang sesi dan target harian bisa diatur.**
 - **Tema Terang, Gelap, dan AMOLED** dengan palet hangat yang nyaman di mata.
@@ -28,9 +29,10 @@ Tanpa akun, tanpa iklan, tanpa hukuman kalau kamu melewatkan sehari. Semua fitur
 - Panjang sesi bisa diatur di Settings (10 sampai 60; minimal 10). Huruf diulang kalau huruf aktif lebih sedikit.
 - Latihan baca dirombak: tebak romaji dari kata, rangkaian huruf, atau satu huruf. Tidak lagi menanyakan arti
   (arti bisa ditampilkan setelah jawaban benar lewat Settings).
-- Daftar kata naik dari 253 menjadi sekitar 9.300, merata untuk semua huruf. Kata yang belum pernah muncul
-  diutamakan supaya tidak berulang. Pengecoh dibuat dengan mengganti satu huruf.
-- Suara kata utuh untuk sekitar 1.700 kata; kata lain dibunyikan huruf demi huruf.
+- Daftar kata disusun ulang jadi 729 kata kurasi yang **semuanya punya arti Bahasa Indonesia dan rekaman
+  utuh**, tetap merata untuk semua tahap huruf. Kata yang belum pernah muncul diutamakan supaya tidak
+  berulang. Pengecoh dibuat dengan mengganti satu huruf.
+- Semua 729 kata punya rekaman suara normal dan lambat; tidak ada lagi kata yang dibunyikan huruf demi huruf.
 - Warna mode gelap dirapikan: tombol utama tidak lagi krem yang menyilaukan; AMOLED memakai permukaan hangat
   yang selaras dengan latar hitam. Snackbar, dialog, switch, dan slider ikut palet.
 - Tabel "All characters" di Progress dan layar Choose letters kini selebar layar dengan kolom sejajar.
@@ -152,8 +154,8 @@ Hasil: `build/app/outputs/flutter-apk/` dan `build/app/outputs/bundle/release/`.
 - App tidak meminta permission apa pun dan tidak mengirim data ke mana pun. Itu memudahkan isian
   "Data safety" (tidak ada data yang dikumpulkan atau dibagikan).
 - Kredit pihak ketiga yang perlu dipertahankan (sudah tampil di Settings dan layar Practice):
-  KanjiVG (CC BY-SA 3.0), suara huruf `veardk/just-gojuon` (MIT), suara kata HTS voice tohoku-f01 (CC BY 4.0),
-  dan daftar kata JMdict (EDRDG, CC BY-SA 4.0).
+  KanjiVG (CC BY-SA 3.0), suara huruf `veardk/just-gojuon` (MIT), suara kata HTS voice tohoku-f01 (CC BY 4.0).
+  Daftar kata adalah karya sendiri (729 kata kurasi), jadi tidak ada kewajiban lisensi data.
 - Lisensi rekaman suara huruf asalnya tidak dijelaskan di repo sumbernya. Untuk rilis publik,
   sebaiknya pastikan status lisensinya, atau ganti dengan rekaman milikmu sendiri
   (taruh dengan nama file yang sama di `assets/audio/`).

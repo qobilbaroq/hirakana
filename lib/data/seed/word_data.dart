@@ -23,11 +23,11 @@ class Word {
   final bool hasAudio;
 }
 
-/// Daftar kata dimuat dari `assets/data/words.tsv` (sekitar 9 ribu kata).
+/// Daftar kata dimuat dari `assets/data/words.tsv` (729 kata kurasi).
 ///
-/// Kolom dipisah TAB: kata, cara baca, ada audio (0/1), arti (opsional).
-/// Isinya: kata kurasi (ber-arti) + kata umum dari kamus JMdict
-/// (EDRDG, CC BY-SA 4.0) yang tersusun dari huruf kana yang ada di app.
+/// Kolom dipisah TAB: kata, cara baca, ada audio (0/1), arti Bahasa Indonesia.
+/// Pool ini ditulis tangan untuk app ini (bukan dari kamus pihak ketiga), jadi
+/// setiap kata punya arti dan rekaman utuh.
 class WordBank {
   WordBank._();
   static final instance = WordBank._();

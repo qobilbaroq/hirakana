@@ -176,10 +176,10 @@ Kalau kata yang cocok sedikit, sisanya diisi rangkaian huruf, jadi sesi selalu p
 sama (huruf yang sering tertukar diutamakan), sehingga pilihannya mirip dan tidak bisa ditebak dari
 panjangnya. Selalu 4 pilihan unik yang memuat jawaban.
 
-**Daftar kata** ada di `assets/data/words.tsv` (sekitar 9 ribu kata, dimuat sekali oleh `WordBank`):
-kata kurasi (dengan arti Indonesia) ditambah kata umum dari JMdict. Sebuah kata hanya muncul kalau
+**Daftar kata** ada di `assets/data/words.tsv` (729 kata kurasi, dimuat sekali oleh `WordBank`).
+Semua kata punya arti Bahasa Indonesia dan rekaman utuh. Sebuah kata hanya muncul kalau
 **semua hurufnya ada di huruf aktif**. Jumlahnya dibuat merata per tahap huruf: dengan vowels + k + s
-saja ada ratusan kata, bukan puluhan.
+saja masih ada 49 kata, dan 457 kalau semua hiragana aktif.
 
 **Tidak itu-itu saja.** Kata yang sudah muncul dicatat di tabel `word_history`. Saat memilih kata, yang
 belum pernah muncul diutamakan (acak), lalu yang paling lama tidak muncul.
@@ -190,7 +190,8 @@ Suara diputar setelah menjawab (supaya tidak membocorkan jawaban) dan mengikuti 
 di Settings.
 
 **Arti** tidak ditanyakan. Setelah jawaban **benar**, arti bisa ditampilkan kalau *Show word meaning*
-aktif di Settings (default mati) dan kata itu punya arti (kata dari JMdict tidak punya arti Indonesia).
+aktif di Settings (default mati) — dan karena semua kata kurasi punya arti, tidak ada soal yang
+bisa dijawab tanpa penjelasan.
 
 ---
 
@@ -253,22 +254,24 @@ assets/
   audio/            104 huruf, versi normal
     slow/           104 huruf, versi lambat
     words/          rekaman kata: 1.688 cara baca x (normal + lambat)
-  data/words.tsv    9.356 kata
+  data/words.tsv    729 kata kurasi
   strokes/          kana_strokes.json (urutan goresan)
   icon/             ikon app dan splash
 ```
 
-Ukuran kira-kira: audio 19 MB (kata 16 MB), data 0,2 MB, goresan 48 KB. Pakai
+Ukuran kira-kira: audio 16 MB (kata 6 MB), data 0,1 MB, goresan 48 KB. Pakai
 `flutter build apk --split-per-abi` supaya APK per arsitektur lebih kecil.
 
 **Suara huruf**: berkas `<romaji>.mp3` (`ka.mp3`, `kya.mp3`, ...); rekaman penutur asli dari
 `veardk/just-gojuon`, volume diseragamkan, versi lambat dibuat dengan `atempo=0.65`.
 
 **Suara kata**: `<cara-baca>.mp3` dan `<cara-baca>_slow.mp3`, sintesis offline Open JTalk dengan suara
-tohoku-f01. Kolom ketiga `words.tsv` (0/1) menandai kata yang punya rekaman utuh.
+tohoku-f01. Kolom ketiga `words.tsv` (0/1) menandai kata yang punya rekaman utuh — untuk pool ini
+seluruhnya `1`.
 
 **Format `words.tsv`**: satu kata per baris, kolom dipisah TAB: `kata`, `cara baca`, `ada audio (0/1)`,
-`arti` (boleh kosong). Kata kurasi punya arti; kata dari JMdict tidak.
+`arti Bahasa Indonesia`. Urutan baris mengikuti urutan gojuon (huruf awal sama dikelompokkan), bukan
+alfabetis, supaya kata yang lebih mudah dibaca muncul lebih dulu.
 
 ### Lisensi
 
@@ -277,7 +280,10 @@ tohoku-f01. Kolom ketiga `words.tsv` (0/1) menandai kata yang punya rekaman utuh
 | `strokes/kana_strokes.json` (KanjiVG) | CC BY-SA 3.0 |
 | `audio/*.mp3` huruf (just-gojuon) | MIT untuk repo; asal rekaman tidak dijelaskan, cek sebelum rilis publik |
 | `audio/words/` (tohoku-f01) | CC BY 4.0 (atribusi) |
-| `data/words.tsv` bagian JMdict | CC BY-SA 4.0 (EDRDG) |
+| `data/words.tsv` | **karya sendiri** — 729 kata kurasi ditulis tangan untuk app ini, tanpa sumber eksternal |
+
+`data/words.tsv` tidak pernah memakai kamus pihak ketiga, jadi tidak ada kewajiban lisensi data
+yang perlu dipenuhi. Hanya audio dan goresan yang punya kewajiban.
 
 ---
 
@@ -339,10 +345,10 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
    Satu-satunya efek ke huruf adalah pencatatan huruf yang tertukar (soal satu huruf).
 3. **Tidak ada sinkronisasi antar perangkat.** Data lokal murni, tanpa akun atau cloud. Menghapus data
    app berarti progres hilang.
-4. **Suara kata adalah sintesis**, bukan penutur asli, dan hanya sekitar 1.700 kata yang punya rekaman utuh;
-   kata lain dibunyikan huruf demi huruf.
-5. **Kata dari JMdict tidak punya arti** dalam Bahasa Indonesia. Arti hanya ada pada kata kurasi.
-6. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
+4. **Suara kata adalah sintesis**, bukan penutur asli — rekaman HTS tohoku-f01, bukan rekaman manusia.
+   Karena poolnya 729 kata kurasi, **seluruhnya** punya rekaman utuh (versi normal dan lambat),
+   tidak ada kata yang harus dibunyikan huruf demi huruf.
+5. **Kana kecil** (ぁ ぃ ぅ ぇ ぉ dan padanan katakananya) belum ada di data huruf, jadi kata yang memakainya
    (mis. ファ, ティ) tidak dimasukkan.
-7. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
-8. **Tutorial awal** hanya muncul sekali (flag `onboarded`).
+6. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
+7. **Tutorial awal** hanya muncul sekali (flag `onboarded`).

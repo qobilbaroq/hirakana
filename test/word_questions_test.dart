@@ -23,9 +23,13 @@ void main() {
     WordBank.instance.debugSet(real);
   });
 
+  // Pool kata adalah daftar kurasi (729 kata) yang seluruhnya punya arti
+  // Bahasa Indonesia dan rekaman utuh. Jadi yang dijaga di sini bukan
+  // banyaknya, tapi kelengkapan: tidak boleh ada kata tanpa arti atau
+  // tanpa rekaman.
   group('data kata (assets/data/words.tsv)', () {
-    test('jumlahnya banyak dan setiap kata bisa dibaca app', () {
-      expect(real.length, greaterThan(5000));
+    test('jumlahnya cukup dan setiap kata bisa dibaca app', () {
+      expect(real.length, greaterThan(700));
       for (final w in real) {
         expect(WordRepository.parse(w.text), isNotNull,
             reason: 'karakter tak dikenal di "${w.text}"');
@@ -34,9 +38,20 @@ void main() {
       }
     });
 
+    test('setiap kata punya arti Bahasa Indonesia yang singkat', () {
+      for (final w in real) {
+        expect(w.meaning.trim(), isNotEmpty,
+            reason: 'kata tanpa arti: ${w.text}');
+        expect(w.meaning.length, lessThanOrEqualTo(40),
+            reason: 'arti terlalu panjang (${w.meaning.length} huruf): '
+                '${w.text} -> ${w.meaning}');
+      }
+    });
+
     test('kata ber-audio punya file normal dan lambat', () {
       final withAudio = real.where((w) => w.hasAudio).toList();
-      expect(withAudio.length, greaterThan(1000));
+      expect(withAudio.length, real.length,
+          reason: 'hanya ${withAudio.length}/${real.length} kata punya rekaman');
       for (final w in withAudio) {
         expect(File('assets/audio/words/${w.reading}.mp3').existsSync(), isTrue,
             reason: 'rekaman hilang: ${w.reading}');
@@ -45,7 +60,7 @@ void main() {
       }
     });
 
-    test('kata cukup banyak untuk setiap tahap huruf, bukan hanya vowels + k + s', () {
+    test('kata bertambah terus di setiap tahap huruf, bukan hanya vowels + k + s', () {
       final groups = <String>[];
       final seen = <String>{};
       for (final k in hiraganaList) {
@@ -64,23 +79,23 @@ void main() {
               reason: 'tahap ${groups[i]} tidak menambah kata');
         }
         if (i >= 2) {
-          expect(avail.length, greaterThanOrEqualTo(100),
+          expect(avail.length, greaterThanOrEqualTo(40),
               reason: 'hanya ${avail.length} kata sampai baris ${groups[i]}');
         }
       }
-      // Seluruh hiragana: ribuan kata.
+      // Seluruh hiragana: ratusan kata.
       final all = WordRepository.filterAvailable(
           real, hiraganaList.map((k) => k.id).toSet(), 'hiragana');
-      expect(all.length, greaterThan(3000));
+      expect(all.length, greaterThan(400));
       final allKata = WordRepository.filterAvailable(
           real, katakanaList.map((k) => k.id).toSet(), 'katakana');
-      expect(allKata.length, greaterThan(1000));
+      expect(allKata.length, greaterThan(250));
     });
 
-    test('vowels + k + s: ratusan kata, cukup untuk puluhan sesi', () {
+    test('vowels + k + s: beberapa puluh kata, tidak berulang terus', () {
       final avail = WordRepository.filterAvailable(
           real, idsOfGroups(['vowels', 'k', 's']), 'hiragana');
-      expect(avail.length, greaterThan(300));
+      expect(avail.length, greaterThan(40));
       expect(avail.map((w) => w.text).toSet().length, avail.length);
     });
   });
