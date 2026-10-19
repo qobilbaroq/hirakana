@@ -14,7 +14,6 @@ import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/session_header.dart';
 import '../../data/models/kana.dart';
 import '../../data/repositories/kana_repository.dart';
-import '../../data/seed/kana_data.dart';
 import 'quiz_question.dart';
 import 'session_controller.dart';
 
@@ -32,12 +31,9 @@ class _QuizScreenState extends State<QuizScreen> {
   static const _mixedKinds = [
     QuizKind.kanaToSound,
     QuizKind.soundToKana,
-    QuizKind.kanaToRomaji,
-    QuizKind.scriptDiff,
   ];
 
   final _rng = Random();
-  final _typed = TextEditingController();
   final _shown = Stopwatch();
   late final SessionController _session;
 
@@ -96,7 +92,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void dispose() {
-    _typed.dispose();
     _session.flush();
     super.dispose();
   }
@@ -116,7 +111,6 @@ class _QuizScreenState extends State<QuizScreen> {
     _answered = false;
     _wasCorrect = false;
     _pickedId = null;
-    _typed.clear();
     _shown
       ..reset()
       ..start();
@@ -158,11 +152,6 @@ class _QuizScreenState extends State<QuizScreen> {
     if (pickedId != null) {
       for (final k in q.options) {
         if (k.id == pickedId) picked = k;
-      }
-    } else if (q.isTyped) {
-      final typed = _typed.text.trim().toLowerCase();
-      for (final k in allKana) {
-        if (k.type == q.target.type && k.romaji == typed) picked = k;
       }
     }
     if (picked != null) KanaRepository.instance.recordConfusion(q.target, picked);
@@ -218,7 +207,7 @@ class _QuizScreenState extends State<QuizScreen> {
             size: q.target.character.length > 1 ? 72 : 96),
                       ],
                       const SizedBox(height: AppSpacing.lg),
-                      if (q.isTyped) _typedAnswer(q) else _choiceGrid(q),
+                      _choiceGrid(q),
                       const SizedBox(height: AppSpacing.md),
                       _feedback(q),
                     ],
@@ -230,11 +219,6 @@ class _QuizScreenState extends State<QuizScreen> {
                   label: _session.finished ? 'Finish' : 'Next',
                   trailing: Icons.arrow_forward,
                   onPressed: _next,
-                )
-              else if (q.isTyped)
-                PrimaryButton(
-                  label: 'Check',
-                  onPressed: () => _submit(q.accepts(_typed.text)),
                 )
               else
                 Text(
@@ -283,45 +267,6 @@ class _QuizScreenState extends State<QuizScreen> {
           Expanded(child: tile(o[3])),
         ]),
       ],
-    );
-  }
-
-  Widget _typedAnswer(QuizQuestion q) {
-    return TextField(
-      controller: _typed,
-      enabled: !_answered,
-      autofocus: true,
-      textAlign: TextAlign.center,
-      textCapitalization: TextCapitalization.none,
-      autocorrect: false,
-      enableSuggestions: false,
-      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-      onSubmitted: (v) => _submit(q.accepts(v)),
-      decoration: InputDecoration(
-        hintText: 'romaji',
-        filled: true,
-        fillColor: AppColors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          borderSide: BorderSide(
-            color: _answered
-                ? (_wasCorrect ? AppColors.sage : AppColors.clay)
-                : AppColors.sand,
-            width: _answered ? 2 : 1,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          borderSide: BorderSide(color: AppColors.sand),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          borderSide: BorderSide(
-            color: _wasCorrect ? AppColors.sage : AppColors.clay,
-            width: 2,
-          ),
-        ),
-      ),
     );
   }
 

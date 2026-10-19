@@ -10,7 +10,6 @@ import 'package:kana_quest/features/learn/session_controller.dart';
 import 'helpers/test_db.dart';
 
 const _screen = Size(360, 640); // HP kecil
-const _keyboardHeight = 290.0;
 
 Future<void> settle(WidgetTester tester, {int rounds = 4}) async {
   for (var i = 0; i < rounds; i++) {
@@ -48,51 +47,39 @@ void main() {
     print('--- mulai sesi ---');
 
     for (var q = 0; q < 12; q++) {
-      // Emulasikan keyboard: muncul kalau ada TextField (soal ketik romaji).
-      final isTyped = find.byType(TextField).evaluate().isNotEmpty;
-      tester.view.viewInsets = FakeViewPadding(
-          bottom: isTyped ? _keyboardHeight : 0);
-      await tester.pump();
-      final maxBottom = _screen.height - (isTyped ? _keyboardHeight : 0);
+      final maxBottom = _screen.height;
 
-      if (isTyped) {
-        await tester.enterText(find.byType(TextField), 'zzz');
-        await tester.tap(find.text('Check'));
-      } else {
-        final opts =
-            tester.widgetList<AnswerOption>(find.byType(AnswerOption)).toList();
-        if (opts.length != 4) {
-          problems.add('soal $q: jumlah pilihan = ${opts.length}');
-          break;
-        }
-        final texts = tester
-            .widgetList<Text>(find.byType(Text))
-            .map((t) => t.data)
-            .whereType<String>()
-            .toList();
-        // ignore: avoid_print
-        print('soal $q | ${texts.firstWhere((t) => t.contains('?') || t.contains('romaji'), orElse: () => '?')} '
-            '| pilihan=${opts.map((o) => o.label).toList()} | bawah=${maxBottom.toStringAsFixed(0)}');
-        // Kadang benar, kadang salah -> ikut menguji jalur retry/Again.
-        await tester.tap(find.byType(AnswerOption).at(rng.nextInt(4)));
+      final opts =
+          tester.widgetList<AnswerOption>(find.byType(AnswerOption)).toList();
+      if (opts.length != 4) {
+        problems.add('soal $q: jumlah pilihan = ${opts.length}');
+        break;
       }
+      final texts = tester
+          .widgetList<Text>(find.byType(Text))
+          .map((t) => t.data)
+          .whereType<String>()
+          .toList();
+      // ignore: avoid_print
+      print('soal $q | ${texts.firstWhere((t) => t.contains('?'), orElse: () => '?')} '
+          '| pilihan=${opts.map((o) => o.label).toList()} | bawah=${maxBottom.toStringAsFixed(0)}');
+      // Kadang benar, kadang salah -> ikut menguji jalur retry/Again.
+      await tester.tap(find.byType(AnswerOption).at(rng.nextInt(4)));
       await settle(tester);
 
-      if (!isTyped) {
-        final opts =
-            tester.widgetList<AnswerOption>(find.byType(AnswerOption)).toList();
-        final correct =
-            opts.where((o) => o.state == OptionState.correct).toList();
-        final labels = opts.map((o) => o.label).toList();
-        if (correct.length != 1) {
-          problems.add('soal $q: opsi benar = ${correct.length}, labels=$labels');
-        } else {
-          final idx = opts.indexOf(correct.first);
-          final r = tester.getRect(find.byType(AnswerOption).at(idx));
-          if (r.bottom > maxBottom || r.top < 0) {
-            problems.add('soal $q: "${correct.first.label}" TERPOTONG '
-                'rect=$r batasBawah=$maxBottom keyboard=$isTyped');
-          }
+      final afterAnswer =
+          tester.widgetList<AnswerOption>(find.byType(AnswerOption)).toList();
+      final correct =
+          afterAnswer.where((o) => o.state == OptionState.correct).toList();
+      final labels = afterAnswer.map((o) => o.label).toList();
+      if (correct.length != 1) {
+        problems.add('soal $q: opsi benar = ${correct.length}, labels=$labels');
+      } else {
+        final idx = afterAnswer.indexOf(correct.first);
+        final r = tester.getRect(find.byType(AnswerOption).at(idx));
+        if (r.bottom > maxBottom || r.top < 0) {
+          problems.add('soal $q: "${correct.first.label}" TERPOTONG '
+              'rect=$r batasBawah=$maxBottom');
         }
       }
 
@@ -104,8 +91,7 @@ void main() {
       await tester.tap(next);
       await settle(tester);
 
-      if (find.byType(AnswerOption).evaluate().isEmpty &&
-          find.byType(TextField).evaluate().isEmpty) {
+      if (find.byType(AnswerOption).evaluate().isEmpty) {
         break; // sesi habis
       }
     }
@@ -156,7 +142,7 @@ void main() {
 
       final after =
           tester.widgetList<AnswerOption>(find.byType(AnswerOption)).toList();
-      if (after.isEmpty && find.byType(TextField).evaluate().isEmpty) break;
+      if (after.isEmpty) break;
       if (after.isNotEmpty && after.length != 4) {
         problems.add('round $round: pilihan setelah triple-Next = ${after.length}');
       }
