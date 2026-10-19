@@ -59,18 +59,30 @@ class LocalDatabase {
     ''');
   }
 
+  /// Versi 4: hitung berapa kali kata dijawab benar / salah (latihan baca dan
+  /// tebak arti), dipakai menu riwayat kata untuk menyaring "sering salah"
+  /// dan "sudah hafal". Kata lama mulai dari 0.
+  static Future<void> _addWordHistoryResults(Database db) async {
+    await db.execute(
+        'ALTER TABLE word_history ADD COLUMN correct_count INTEGER NOT NULL DEFAULT 0');
+    await db.execute(
+        'ALTER TABLE word_history ADD COLUMN wrong_count INTEGER NOT NULL DEFAULT 0');
+  }
+
   Future<Database> _open() async {
     final path = _path ?? join(await getDatabasesPath(), 'kana_quest.db');
     return openDatabase(
       path,
-      version: 3,
+      version: 4,
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) await _createConfusions(db);
         if (oldVersion < 3) await _createWordHistory(db);
+        if (oldVersion < 4) await _addWordHistoryResults(db);
       },
       onCreate: (db, version) async {
         await _createConfusions(db);
         await _createWordHistory(db);
+        await _addWordHistoryResults(db);
         await db.execute('''
           CREATE TABLE kana_progress (
             kana_id TEXT PRIMARY KEY,

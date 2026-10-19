@@ -10,7 +10,7 @@ import 'session_controller.dart';
 /// Kuis hanya jalan kalau ada huruf pilihanmu yang sudah pernah dilihat.
 Future<void> launchSession(
   BuildContext context, {
-  required String mode, // flashcard | quiz | writing
+  required String mode, // flashcard | quiz | writing | words | meaning
   required SessionArgs args,
 }) async {
   final repo = KanaRepository.instance;
@@ -66,7 +66,7 @@ Future<void> launchSession(
     return;
   }
 
-  if (mode == 'words') {
+  if (mode == 'words' || mode == 'meaning') {
     if (!await WordRepository.instance.canRun(args.type)) {
       if (!context.mounted) return;
       final goChoose = await showDialog<bool>(
@@ -74,7 +74,7 @@ Future<void> launchSession(
         builder: (ctx) => AlertDialog(
           title: const Text('Choose a few more letters'),
           content: Text(
-            'Reading practice needs at least '
+            'This practice needs at least '
             '${WordRepository.minLetters} chosen letters in a script '
             'so it can make 4 answer choices.',
           ),
@@ -95,7 +95,9 @@ Future<void> launchSession(
       }
       return;
     }
-    navigator.pushNamed(AppRouter.words, arguments: args);
+    navigator.pushNamed(
+        mode == 'meaning' ? AppRouter.meaning : AppRouter.words,
+        arguments: args);
     return;
   }
 

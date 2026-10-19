@@ -26,6 +26,32 @@ class WordPiece {
   final bool isLong;
 }
 
+/// Satu baris riwayat kata: kata + berapa kali muncul, benar, dan salah.
+class WordRecord {
+  const WordRecord({
+    required this.word,
+    required this.seenCount,
+    required this.correctCount,
+    required this.wrongCount,
+    required this.lastAt,
+  });
+
+  final Word word;
+  final int seenCount;
+  final int correctCount;
+  final int wrongCount;
+  final DateTime lastAt;
+
+  /// Sering salah: salah minimal 2 kali dan tidak lebih sedikit dari benarnya.
+  bool get isStruggling => wrongCount >= 2 && wrongCount >= correctCount;
+
+  /// Baru dipelajari: baru muncul 1-2 kali.
+  bool get isNew => seenCount <= 2;
+
+  /// Sudah hafal: benar minimal 3 kali dan benarnya jauh lebih banyak.
+  bool get isMastered => correctCount >= 3 && correctCount >= wrongCount * 3;
+}
+
 /// Kata yang bisa dibaca dari huruf pilihan pengguna, plus riwayat kata yang
 /// sudah pernah muncul supaya latihan tidak itu-itu saja.
 class WordRepository {
@@ -175,6 +201,60 @@ class WordRepository {
       ..shuffle(rng)
       ..sort((a, b) => last[a.text]!.compareTo(last[b.text]!));
     return ([...unseen, ...seen].take(count).toList())..shuffle(rng);
+  }
+
+  /// Mencatat satu jawaban untuk [text]: menambah jumlah muncul dan jumlah
+  /// benar atau salah. Dipakai latihan baca dan tebak arti.
+  Future<void> recordResult(String text, {required bool correct}) async {
+    final db = await LocalDatabase.instance.database;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final column = correct ? 'correct_count' : 'wrong_count';
+    final updated = await db.rawUpdate(
+      'UPDATE word_history SET seen_count = seen_count + 1, '
+      '$column = $column + 1, last_at = ? WHERE text = ?',
+      [now, text],
+    );
+    if (updated == 0) {
+      await db.insert('word_history', {
+        'text': text,
+        'seen_count': 1,
+        'correct_count': correct ? 1 : 0,
+        'wrong_count': correct ? 0 : 1,
+        'last_at': now,
+      });
+    }
+  }
+
+  /// Semua kata yang pernah muncul, yang terbaru dulu. Kata yang sudah tidak
+  /// ada di daftar kata (misalnya daftar kata diperbarui) dilewati.
+  Future<List<WordRecord>> history() async {
+    final words = await WordBank.instance.load();
+    final byText = {for (final w in words) w.text: w};
+    final db = await LocalDatabase.instance.database;
+    final rows = await db.query('word_history', orderBy: 'last_at DESC');
+    return [
+      for (final r in rows)
+        if (byText[r['text'] as String] != null)
+          WordRecord(
+            word: byText[r['text'] as String]!,
+            seenCount: r['seen_count'] as int,
+            correctCount: r['correct_count'] as int,
+            wrongCount: r['wrong_count'] as int,
+            lastAt: DateTime.fromMillisecondsSinceEpoch(r['last_at'] as int),
+          ),
+    ];
+  }
+
+  /// Kata dari daftar kata untuk teks-teks [texts] (urutan mengikuti [texts]),
+  /// dipakai untuk mengulang kata dari riwayat. Kata yang tidak bisa dibaca
+  /// app dilewati.
+  Future<List<Word>> wordsFor(Iterable<String> texts) async {
+    final words = await WordBank.instance.load();
+    final byText = {for (final w in words) w.text: w};
+    return [
+      for (final t in texts)
+        if (byText[t] != null && parse(t) != null) byText[t]!,
+    ];
   }
 
   Future<void> markSeen(Iterable<String> texts) async {

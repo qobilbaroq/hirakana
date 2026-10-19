@@ -65,4 +65,78 @@ void main() {
       );
     });
   });
+
+  group('summarizeReleaseNotes', () {
+    test('mengambil bullet di bawah heading Ringkasan', () {
+      const body = '''
+Pembaruan yang lebih panjang sekali yang tidak boleh muncul di popup.
+
+## Ringkasan
+- Baru: Tebak arti kata dan riwayat kata
+- Diperbaiki: arti kata tidak lagi tertimpa kategori
+
+## Detail
+- Ini bagian panjang yang harus diabaikan
+''';
+      expect(summarizeReleaseNotes(body), [
+        'Baru: Tebak arti kata dan riwayat kata',
+        'Diperbaiki: arti kata tidak lagi tertimpa kategori',
+      ]);
+    });
+
+    test('heading Ringkasan boleh ### dan huruf besar', () {
+      const body = '''
+### RINGKASAN
+- Satu
+- Dua
+''';
+      expect(summarizeReleaseNotes(body), ['Satu', 'Dua']);
+    });
+
+    test('tanpa heading Ringkasan memakai bullet pertama', () {
+      const body = 'Halo dunia\n\n- Poin pertama\n- Poin kedua\n';
+      expect(summarizeReleaseNotes(body), ['Poin pertama']);
+    });
+
+    test('bullet kosong, format Markdown, dan tautan dirapikan', () {
+      const body = '''
+## Ringkasan
+-   **Tebal** dan `kode`
+- [teks tautan](https://contoh.example/halaman-panjang-sekali)
+- spasi   berlebih
+-
+''';
+      expect(summarizeReleaseNotes(body), [
+        'Tebal dan kode',
+        'teks tautan',
+        'spasi berlebih',
+      ]);
+    });
+
+    test('memotong poin lebih dari 80 karakter dengan elipsis', () {
+      final long = 'a' * 200;
+      final points = summarizeReleaseNotes('## Ringkasan\n- $long\n');
+      expect(points, hasLength(1));
+      expect(points.single.length, 80);
+      expect(points.single.endsWith('…'), isTrue);
+    });
+
+    test('maksimal maxItems poin', () {
+      final body = [
+        '## Ringkasan',
+        for (var i = 1; i <= 7; i++) '- Poin $i',
+      ].join('\n');
+      expect(summarizeReleaseNotes(body), ['Poin 1', 'Poin 2', 'Poin 3', 'Poin 4']);
+      expect(summarizeReleaseNotes(body, maxItems: 2), ['Poin 1', 'Poin 2']);
+    });
+
+    test('body kosong atau tanpa bullet menghasilkan daftar kosong', () {
+      expect(summarizeReleaseNotes(''), isEmpty);
+      expect(summarizeReleaseNotes('Hanya teks biasa tanpa bullet.'), isEmpty);
+      expect(
+        summarizeReleaseNotes('## Ringkasan\n\n## Detail\n- ada bullet di detail'),
+        isEmpty,
+      );
+    });
+  });
 }

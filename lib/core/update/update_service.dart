@@ -68,6 +68,75 @@ class UpdateException implements Exception {
   String toString() => message;
 }
 
+/// Ringkasan singkat catatan rilis untuk popup pembaruan.
+///
+/// Mencari heading Markdown yang menyebut "Ringkasan", lalu mengambil bullet di
+/// bawahnya. Kalau heading itu tidak ada, memakai bullet pertama di seluruh teks.
+/// Format Markdown dibuang dan tiap poin dipotong agar muat di dialog kecil.
+List<String> summarizeReleaseNotes(String body, {int maxItems = 4}) {
+  const maxLength = 80;
+  final bullet = RegExp(r'^[-*]\s+(.*)$');
+  final heading = RegExp(r'^#{1,6}\s*(.+)$');
+  final lines = body.split(RegExp(r'\r?\n'));
+
+  var afterRingkasan = -1;
+  for (var i = 0; i < lines.length; i++) {
+    final title = heading.firstMatch(lines[i].trim())?.group(1);
+    if (title != null && title.toLowerCase().contains('ringkasan')) {
+      afterRingkasan = i + 1;
+      break;
+    }
+  }
+
+  final picked = <String>[];
+  void collect(int from, int to) {
+    for (var i = from; i < to; i++) {
+      final line = lines[i].trim();
+      if (line.startsWith('#')) return; // berhenti di heading berikutnya
+      final text = bullet.firstMatch(line)?.group(1);
+      if (text != null) picked.add(text);
+    }
+  }
+
+  if (afterRingkasan >= 0) {
+    collect(afterRingkasan, lines.length);
+  } else {
+    // Tidak ada heading "Ringkasan": pakai bullet pertama di seluruh teks.
+    for (var i = 0; i < lines.length; i++) {
+      final text = bullet.firstMatch(lines[i].trim())?.group(1);
+      if (text != null) {
+        picked.add(text);
+        break;
+      }
+    }
+  }
+
+  final result = <String>[];
+  for (final raw in picked) {
+    if (result.length >= maxItems) break;
+    final text = _stripMarkdown(raw);
+    if (text.isEmpty) continue;
+    result.add(
+      text.length <= maxLength
+          ? text
+          : '${text.substring(0, maxLength - 1).trimRight()}…',
+    );
+  }
+  return result;
+}
+
+/// Buang penanda Markdown: `**tebal**`, `kode`, dan tautan `[teks](alamat)`.
+String _stripMarkdown(String input) {
+  // Catatan: String.replaceAll dengan StringReplacement tidak memakai $1,
+  // jadi tautan harus dikembalikan lewat replaceAllMapped.
+  var text = input.replaceAllMapped(
+    RegExp(r'\[([^\]]*)\]\([^)]*\)'),
+    (match) => match.group(1) ?? '',
+  );
+  text = text.replaceAll(RegExp(r'\*\*|__|`'), '');
+  return text.replaceAll(RegExp(r'\s+'), ' ').trim();
+}
+
 int compareAppVersions(String a, String b) {
   final aParts = _versionParts(a);
   final bParts = _versionParts(b);

@@ -11,12 +11,16 @@ class SessionArgs {
     this.quick = false,
     this.quizKind,
     this.vocabLevel,
+    this.onlyTexts,
   });
 
   final String type; // hiragana | katakana | mixed
   final bool quick;
   final QuizKind? quizKind; // null = campur semua tipe kuis
   final String? vocabLevel; // latihan baca: n5n4 | n3, null = semua kata
+  // Latihan baca / tebak arti: hanya kata-kata ini (mengulang dari riwayat).
+  // null = kata biasa dari huruf pilihan.
+  final List<String>? onlyTexts;
 }
 
 class SessionResult {

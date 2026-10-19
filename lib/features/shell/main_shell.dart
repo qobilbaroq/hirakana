@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/update/update_prompt.dart';
 import '../home/home_screen.dart';
 import '../learn/learn_screen.dart';
 import '../practice/practice_screen.dart';
@@ -16,12 +17,25 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _index = 0;
 
+  // Sekali per kali app dibuka, bukan tiap pindah tab.
+  static bool _checkedForUpdate = false;
+
   static const _pages = [
     HomeScreen(),
     LearnScreen(),
     PracticeScreen(),
     ProgressScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_checkedForUpdate) return;
+      _checkedForUpdate = true;
+      checkForUpdateAndPrompt(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
