@@ -142,8 +142,6 @@ yang sama), atau dipilih manual dari tab Practice:
 | --- | --- | --- |
 | `kanaToSound` | lihat huruf, pilih bunyinya | 4 pilihan romaji |
 | `soundToKana` | bunyi ("ku"), pilih hurufnya | 4 pilihan kana (tanpa romaji) |
-| `kanaToRomaji` | lihat huruf, ketik romaji | input teks (ejaan alternatif diterima: `si`, `tu`, `sya`, ...) |
-| `scriptDiff` | bunyi sama, script mana? | 4 pilihan: 2 bunyi x 2 script, tepat satu cocok bunyi **dan** script |
 | `lookalike` | huruf yang sering tertukar | 4 pilihan kana; sesi sendiri, tidak ikut acakan |
 
 Aturan keadilan: pilihan diambil dari huruf berscript sama, romaji tiap pilihan unik, jawaban benar
@@ -152,7 +150,7 @@ membocorkan jawaban. Kalau salah, jawaban benar ditampilkan dan diputar (kalau s
 
 ### Huruf yang sering tertukar
 
-Setiap jawaban salah di soal pilihan (atau ketik romaji, atau satu huruf di latihan baca) dicatat
+Setiap jawaban salah di soal pilihan (atau satu huruf di latihan baca) dicatat
 sebagai pasangan (tanpa arah: ぬ-め = め-ぬ) di tabel `confusions`. Pasangan yang tertukar **minimal 2 kali**
 tampil di Progress ("Often mixed up") dan menjadi bahan **Look-alike drill**. Pasangan ini juga
 dipakai sebagai pengecoh di kuis biasa.
@@ -211,7 +209,7 @@ dijawab tanpa penjelasan.
   menyetel kurangi animasi). Sisi belakang: huruf, romaji, dan contoh kata. Setelah terbuka, ketuk kartu
   atau ikon speaker untuk memutar suara lagi (normal, normal, lambat). *Again* / *Got it* baru aktif
   setelah reveal.
-- **Quiz**: grid 2x2 atau kolom ketik romaji; pilihan benar hijau, pilihanmu salah berwarna clay.
+- **Quiz**: grid 2x2; pilihan benar hijau, pilihanmu salah berwarna clay.
 - **Practice**: pilih Hiragana / Katakana / Mixed, lalu *Trace the character*, *Reading practice*, atau
   salah satu jenis kuis, termasuk *Look-alike drill*.
 - **Writing**: guide goresan bernomor dari KanjiVG, *Replay stroke order*, Undo/Clear, *Check*

@@ -20,7 +20,7 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Pilih sendiri huruf yang dipelajari.** Huruf baru tidak pernah masuk otomatis.
 - **Flashcard** dengan pengulangan berjarak (spaced repetition): jawaban disembunyikan dulu,
   nilai dengan *Again* / *Got it*.
-- **Kuis** 5 jenis: kana ke bunyi, bunyi ke kana, ketik romaji, hiragana vs katakana,
+- **Kuis** 3 jenis: kana ke bunyi, bunyi ke kana,
   dan *look-alike drill* untuk huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi *Replay*, dan perbandingan hasil.
 - **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang **semuanya punya arti Bahasa Indonesia**

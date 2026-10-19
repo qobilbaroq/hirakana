@@ -7,13 +7,27 @@ langkah rilis dan pembaruan APK (bagian 1-7).
 
 Salin dan sesuaikan untuk deskripsi GitHub Release.
 
+### Awali dengan bagian Ringkasan
+
+Popup pembaruan di dalam app hanya membaca bagian `## Ringkasan`, maksimal 4 poin,
+satu baris tiap poin. Bagian lain boleh panjang karena tidak ditampilkan di popup.
+
+```
+## Ringkasan
+- Baru: Tebak arti kata dan riwayat kata
+- Diperbaiki: arti kata tidak lagi tertimpa kategori
+- Penting: database naik ke versi 4, progres lama aman
+```
+
+Kalau `## Ringkasan` tidak ada, popup memakai bullet pertama di seluruh deskripsi.
+
 **Kana Quest: belajar Hiragana & Katakana dengan tenang.**
 Tanpa akun, tanpa iklan, tanpa hukuman kalau kamu melewatkan sehari. Fitur belajar bisa dipakai offline.
 
 - **208 huruf**: Hiragana dan Katakana lengkap (dasar, dakuten, handakuten, kombinasi).
 - **Pilih sendiri huruf yang dipelajari**, huruf baru tidak masuk otomatis.
 - **Flashcard** dengan pengulangan berjarak: ingat dulu, baru buka jawabannya.
-- **Kuis** 5 jenis, termasuk membedakan hiragana vs katakana dan latihan huruf yang sering tertukar.
+- **Kuis** 3 jenis, termasuk latihan huruf yang sering tertukar.
 - **Latihan menulis** dengan jari: panduan goresan bernomor, animasi urutan goresan, dan perbandingan hasil.
 - **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang semuanya punya arti Bahasa Indonesia dan
   rekaman utuh. Tiap soal adalah kata; kalau huruf aktif masih sedikit, kata diulang supaya sesi penuh.
