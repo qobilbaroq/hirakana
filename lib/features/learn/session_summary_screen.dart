@@ -28,6 +28,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
     final route = switch (result.mode) {
       'quiz' => AppRouter.quiz,
       'words' => AppRouter.words,
+      'meaning' => AppRouter.meaning,
       'writing' => AppRouter.writing,
       _ => AppRouter.flashcard,
     };
@@ -73,7 +74,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                       const SizedBox(height: AppSpacing.lg),
                       Row(
                         children: [
-                          _stat(result.mode == 'words' ? 'Words' : 'Characters', '${result.cards}'),
+                          _stat(result.mode == 'words' || result.mode == 'meaning' ? 'Words' : 'Characters', '${result.cards}'),
                           const SizedBox(width: AppSpacing.sm),
                           if (!isWriting) ...[
                             _stat('Correct',
@@ -128,7 +129,13 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                   child: Center(
-                      child: Text(_addedLabel!, style: AppText.muted)),
+                      child: Text(
+                        _addedLabel!,
+                        style: AppText.muted.copyWith(
+                          fontFamily: 'Noto Sans JP',
+                        ),
+                      ),
+                    ),
                 )
               else
                 Center(

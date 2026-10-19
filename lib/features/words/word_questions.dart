@@ -101,6 +101,7 @@ Future<List<ReadQuestion>> buildReadingSession({
   required String type,
   required int size,
   String? vocabLevel,
+  List<String>? onlyTexts,
   Random? rng,
 }) async {
   final r = rng ?? Random();
@@ -116,7 +117,11 @@ Future<List<ReadQuestion>> buildReadingSession({
       if (_scriptPool(active, s).length >= WordRepository.minLetters) s,
   ];
 
-  final pool = await words.available(type, level: vocabLevel);
+  // [onlyTexts] = mengulang kata dari riwayat: pakai kata-kata itu saja,
+  // tanpa menyaring huruf pilihan (kata sudah pernah dipelajari).
+  final pool = onlyTexts != null
+      ? await words.wordsFor(onlyTexts)
+      : await words.available(type, level: vocabLevel);
   // Setiap soal adalah KATA SUNGGUHAN dengan rekaman utuh - tidak ada soal
   // rangkaian huruf atau satu huruf lagi, karena yang seperti itu bukan
   // kosakata dan suaranya hanya bunyi per huruf.

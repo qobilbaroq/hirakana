@@ -7,6 +7,8 @@ import '../features/learn/session_controller.dart';
 import '../features/learn/session_summary_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/shell/main_shell.dart';
+import '../features/words/meaning_practice_screen.dart';
+import '../features/words/word_history_screen.dart';
 import '../features/words/word_practice_screen.dart';
 import '../features/writing/writing_screen.dart';
 
@@ -19,6 +21,8 @@ class AppRouter {
   static const chooseLetters = '/choose';
   static const settings = '/settings';
   static const words = '/words';
+  static const meaning = '/meaning';
+  static const wordHistory = '/word-history';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final Widget page;
@@ -35,6 +39,10 @@ class AppRouter {
         page = const SettingsScreen();
       case words:
         page = WordPracticeScreen(args: settings.arguments as SessionArgs);
+      case meaning:
+        page = MeaningPracticeScreen(args: settings.arguments as SessionArgs);
+      case wordHistory:
+        page = const WordHistoryScreen();
       case summary:
         page = SessionSummaryScreen(result: settings.arguments as SessionResult);
       default:

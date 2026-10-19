@@ -62,6 +62,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
       type: widget.args.type,
       size: AppSettings.instance.sessionSize,
       vocabLevel: widget.args.vocabLevel,
+      onlyTexts: widget.args.onlyTexts,
     ));
     _sessionId = await _repo.startSession('words', widget.args.type);
     _clock.start();
@@ -89,8 +90,9 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
       if (ok) _correct++;
     });
     if (q.kind == ReadKind.word) {
-      // Catat supaya kata ini tidak cepat muncul lagi.
-      WordRepository.instance.markSeen([q.text]);
+      // Catat supaya kata ini tidak cepat muncul lagi, dan hitung benar/salahnya
+      // untuk menu riwayat kata.
+      WordRepository.instance.recordResult(q.text, correct: ok);
     }
     if (!ok && q.kind == ReadKind.single) {
       // Huruf yang tertukar dicatat untuk "Often mixed up".

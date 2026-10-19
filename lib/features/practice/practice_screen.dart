@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
@@ -71,6 +72,15 @@ class _PracticeScreenState extends State<PracticeScreen> {
                 args: SessionArgs(type: _type, vocabLevel: _vocabLevel)),
           ),
           const SizedBox(height: AppSpacing.sm),
+          _PracticeTile(
+            icon: Icons.translate,
+            title: 'Meaning practice',
+            subtitle: 'See a word. Pick its meaning.',
+            onTap: () => launchSession(context,
+                mode: 'meaning',
+                args: SessionArgs(type: _type, vocabLevel: _vocabLevel)),
+          ),
+          const SizedBox(height: AppSpacing.sm),
           Wrap(
             spacing: AppSpacing.sm,
             children: [
@@ -93,13 +103,19 @@ class _PracticeScreenState extends State<PracticeScreen> {
             'Kosakata N5–N4 / N3 muncul kalau semua hurufnya sudah kamu pilih.',
             style: AppText.muted,
           ),
+          const SizedBox(height: AppSpacing.sm),
+          _PracticeTile(
+            icon: Icons.history,
+            title: 'Word history',
+            subtitle: 'Words you have met. Review the ones you miss.',
+            onTap: () => Navigator.pushNamed(context, AppRouter.wordHistory),
+          ),
           const SizedBox(height: AppSpacing.lg),
           Text('Recognition', style: AppText.section),
           const SizedBox(height: AppSpacing.sm),
           for (final kind in QuizKind.values) ...[
             _PracticeTile(
               icon: switch (kind) {
-                QuizKind.kanaToRomaji => Icons.keyboard_outlined,
                 QuizKind.lookalike => Icons.compare_arrows,
                 _ => Icons.quiz_outlined,
               },
