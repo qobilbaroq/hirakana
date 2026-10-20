@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
+import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/settings/app_settings.dart';
@@ -29,11 +30,12 @@ class _WritingScreenState extends State<WritingScreen>
   final _repo = KanaRepository.instance;
   final _tracing = TracingController();
   final List<Kana> _queue = [];
-  late final AnimationController _replay = AnimationController(vsync: this);
+  late final AnimationController _replay;
   bool _replayActive = false;
 
   bool _loaded = false;
   bool _comparing = false;
+  bool _revealed = false;
   bool _closed = false;
   int _index = 0;
   int _seconds = 0;
@@ -43,6 +45,7 @@ class _WritingScreenState extends State<WritingScreen>
   @override
   void initState() {
     super.initState();
+    _replay = AnimationController(vsync: this);
     _start();
   }
 
@@ -107,6 +110,7 @@ class _WritingScreenState extends State<WritingScreen>
     setState(() {
       _index++;
       _comparing = false;
+      _revealed = false;
       _replayActive = false;
     });
   }
@@ -153,6 +157,28 @@ class _WritingScreenState extends State<WritingScreen>
               const SizedBox(height: AppSpacing.md),
               Text('Trace the character', style: AppText.muted),
               KanaCharacter(kana.character, size: 36),
+              SizedBox(
+                height: 24,
+                child: Center(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 160),
+                    child: _revealed
+                        ? Text(
+                            kana.romaji,
+                            key: const ValueKey('romaji'),
+                            style: AppText.section.copyWith(
+                              fontSize: 18,
+                              color: AppColors.sage,
+                            ),
+                          )
+                        : Text(
+                            'Guess the reading',
+                            key: const ValueKey('guess'),
+                            style: AppText.muted,
+                          ),
+                  ),
+                ),
+              ),
               TextButton.icon(
                 onPressed: () => _playReplay(kana),
                 icon: const Icon(Icons.play_circle_outline, size: 20),
@@ -196,7 +222,10 @@ class _WritingScreenState extends State<WritingScreen>
                                 kind: ButtonKind.sage,
                                 onPressed: _tracing.isEmpty
                                     ? null
-                                    : () => setState(() => _comparing = true),
+                                    : () => setState(() {
+                                          _comparing = true;
+                                          _revealed = true;
+                                        }),
                               ),
                       ),
                     ],

@@ -213,7 +213,8 @@ dijawab tanpa penjelasan.
 - **Practice**: pilih Hiragana / Katakana / Mixed, lalu *Trace the character*, *Reading practice*, atau
   salah satu jenis kuis, termasuk *Look-alike drill*.
 - **Writing**: guide goresan bernomor dari KanjiVG, *Replay stroke order*, Undo/Clear, *Check*
-  menampilkan guide di atas tulisanmu untuk dibandingkan (tanpa skor).
+  menampilkan guide di atas tulisanmu untuk dibandingkan (tanpa skor). Romaji huruf contoh
+  disembunyikan sampai *Check*, supaya kamu bisa menebak cara bacanya sambil menulis.
 - **Summary**: jumlah karakter, benar, waktu, kotak *Needs another look*; tombol *Study again* dan *Done*.
 - **Progress**: *Known kana*, waktu belajar minggu ini, penguasaan per script, *Needs another look*,
   *Often mixed up*, **All characters** (tabel gojuon selebar layar, kolom sejajar), dan 5 sesi terakhir.
@@ -359,7 +360,8 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
 ## 12. Batasan yang perlu diketahui
 
 1. **Latihan Writing tidak dinilai dan tidak memengaruhi penguasaan.** *Check* hanya menampilkan
-   perbandingan visual. Sesi Writing tercatat dengan `correct = 0`. Tulisanmu tidak disimpan.
+   perbandingan visual dan membuka romaji huruf contoh. Sesi Writing tercatat dengan `correct = 0`.
+   Tulisanmu tidak disimpan.
 2. **Latihan baca tidak mengubah penguasaan huruf.** Sesinya tercatat, tetapi `kana_progress` tidak berubah.
    Satu-satunya efek ke huruf adalah pencatatan huruf yang tertukar (soal satu huruf).
 3. **Tidak ada sinkronisasi antar perangkat.** Data lokal murni, tanpa akun atau cloud. Menghapus data
