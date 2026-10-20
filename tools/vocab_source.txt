@@ -40,7 +40,6 @@
 かさ|payung
 かばん|tas
 くつ|sepatu
-ふく|pakaian
 ぼうし|topi
 めがね|kacamata
 とけい|jam
@@ -66,14 +65,7 @@
 てがみ|surat
 はな|bunga / hidung
 き|pohon
-ねこ|kucing
-とり|burung
-うま|kuda
-ゆき|salju
 かぜ|angin
-そら|langit
-うみ|laut
-やま|gunung
 かわ|sungai
 おおきい|besar
 ちいさい|kecil
@@ -196,7 +188,7 @@
 ブルー|biru
 スピード|kecepatan
 スーパー|supermarket
-デパート|mal
+デパート|toko serba ada
 ピンク|merah muda
 プレゼント|hadiah
 ページ|halaman
@@ -211,6 +203,113 @@
 アドバイス|saran
 サービス|layanan
 コンビニ|minimarket
+こんばんは|selamat malam
+みんな|semuanya
+わたし|saya
+あなた|kamu
+わたしたち|kami / kita
+ぼく|aku (laki-laki)
+りょうほう|keduanya
+おばけ|hantu
+ちゃいろ|cokelat
+
+## n5n4 | Pakaian
+ふく|pakaian
+きもの|kimono
+ゆかた|yukata
+ぽけっと|saku
+コート|mantel
+スカート|rok
+セーター|sweter
+ネクタイ|dasi
+ヘルメット|helm
+マフラー|syal
+ジーンズ|jeans
+サンダル|sandal
+グローブ|sarung tangan
+ズボン|celana
+ブーツ|sepatu bot
+ベルト|ikat pinggang
+ボタン|kancing
+シャツ|kemeja
+ハンカチ|saputangan
+
+## n5n4 | Hewan
+ねこ|kucing
+とり|burung
+うま|kuda
+ペット|hewan peliharaan
+いか|cumi-cumi
+かい|kerang
+えさ|pakan
+たこ|gurita
+いぬ|anjing
+かに|kepiting
+きつね|rubah
+たぬき|tanuki
+はと|merpati
+かめ|kura-kura
+くま|beruang
+さめ|hiu
+むし|serangga
+あり|semut
+からす|gagak
+ことり|burung kecil
+さる|monyet
+とら|harimau
+りす|tupai
+にわとり|ayam
+わに|buaya
+うさぎ|kelinci
+くじら|paus
+ぞう|gajah
+ねずみ|tikus
+ひつじ|domba
+らくだ|unta
+とんぼ|capung
+どうぶつ|hewan
+ぶた|babi
+へび|ular
+ぺんぎん|penguin
+ちょう|kupu-kupu
+ちょうちょ|kupu-kupu
+ひょう|macan tutul
+すずめ|burung pipit
+カンガルー|kanguru
+ゴリラ|gorila
+コアラ|koala
+ライオン|singa
+パンダ|panda
+
+## n5n4 | Alam
+ゆき|salju
+そら|langit
+うみ|laut
+やま|gunung
+いけ|kolam
+おか|bukit
+くき|batang
+いし|batu
+つき|bulan
+つち|tanah
+すな|pasir
+ひ|api
+ほし|bintang
+あめ|hujan
+くも|awan
+なみ|ombak
+ぬま|rawa
+たいよう|matahari
+はやし|hutan kecil
+かみなり|petir
+けむり|asap
+こおり|es
+さくら|sakura
+はれ|cerah
+ひかり|cahaya
+もり|hutan
+ばら|mawar
+エア|udara
 
 ## n5n4 | Angka
 いち|satu
@@ -379,7 +478,6 @@
 サンタ|Sinterklas
 イベント|acara
 バレンタイン|Valentine
-こんばんは|selamat malam
 
 ## n5n4 | Keluarga
 かぞく|keluarga
@@ -418,22 +516,14 @@
 おんなのこ|anak perempuan
 ともだち|teman
 ひと|orang
-みんな|semuanya
-わたし|saya
-あなた|kamu
 かれ|dia (laki-laki)
 かのじょ|dia (perempuan) / pacar
-わたしたち|kami / kita
-ぼく|aku (laki-laki)
 おやこ|orang tua dan anak
 ふうふ|suami istri
 しんせき|kerabat
-りょうほう|keduanya
 ひとびと|orang-orang
 なまえ|nama
 としうえ|lebih tua
-ペット|hewan peliharaan
-おばけ|hantu
 きゃく|tamu
 みょうじ|nama keluarga
 
@@ -493,7 +583,7 @@
 のみもの|minuman
 レストラン|restoran
 ハンバーガー|hamburger
-ステーキ|steik
+ステーキ|steak
 サンドイッチ|sandwich
 ピザ|pizza
 おにぎり|onigiri / nasi kepal
@@ -510,7 +600,6 @@
 しょっぱい|asin
 おいしい|enak
 まずい|tidak enak
-おなか|perut
 おなかがすく|lapar
 のどがかわく|haus
 ひとくち|satu suap
@@ -528,7 +617,6 @@
 あじ|rasa
 れもん|lemon
 しょくじ|makan
-ちゃいろ|cokelat
 こんにゃく|konnyaku
 キウイ|kiwi
 クッキー|kue kering
@@ -569,6 +657,15 @@
 ぱん|roti
 ぷりん|puding
 えび|udang
+
+## n5n4 | Tubuh
+おなか|perut
+へそ|pusar
+ほね|tulang
+つめ|kuku
+むね|dada
+みゃく|denyut nadi
+はなぢ|mimisan
 
 ## n5n4 | Aktivitas
 たべる|makan
@@ -737,7 +834,7 @@
 そうだん|konsultasi
 かくにん|pemeriksaan / konfirmasi
 たんとう|penanggung jawab
-うりあげ|penjualan
+うりあげ|omzet penjualan
 りえき|keuntungan
 そんしつ|kerugian
 よさん|anggaran
@@ -772,8 +869,8 @@
 ちょうせい|penyesuaian
 じっし|pelaksanaan
 かいしゃいん|pegawai perusahaan
-こよう|perekrutan
-きんむ|jam kerja
+こよう|ketenagakerjaan / mempekerjakan
+きんむ|bekerja / dinas kerja
 しゅっきん|berangkat kerja
 たいきん|pulang kerja
 ちこく|terlambat
@@ -839,7 +936,7 @@
 とうじょう|naik pesawat
 ぜいかん|bea cukai
 りょうがえ|penukaran uang
-りょけん|izin perjalanan
+りょけん|paspor
 うんちん|ongkos
 ほうこう|arah
 めいしょ|tempat terkenal
@@ -847,10 +944,13 @@
 じんじゃ|kuil Shinto
 おてら|kuil Buddha
 おまつり|festival
-もよう|corak
-ふくざつ|rumit
 きんじょ|lingkungan sekitar
 とおまわり|memutar jauh
+
+## n3 | Sehari-hari
+もよう|corak
+ふくざつ|rumit
+ようす|keadaan
 
 ## n3 | Kesehatan
 けんこう|kesehatan
@@ -913,7 +1013,6 @@
 かみのけ|rambut
 からだ|tubuh
 こころ|hati / jiwa
-ようす|keadaan
 つかれる|lelah
 ねむい|mengantuk
 だるい|lesu
@@ -991,7 +1090,7 @@
 きょうみ|ketertarikan
 じゅぎょうりょう|biaya kuliah
 とくい|jago
-にがて|kurang suka / lemah
+にがて|kurang mahir / kurang suka
 かんじ|huruf kanji
 ひらがな|hiragana
 カタカナ|katakana
@@ -1003,7 +1102,7 @@
 アート|seni
 
 ## n3 | Komunikasi
-メール|surel
+メール|email / surel
 はがき|kartu pos
 ニュース|berita
 れんらく|kontak / hubungi
@@ -1032,7 +1131,7 @@
 りかい|pemahaman
 はつげん|pernyataan
 いけん|pendapat
-はんたい|penolakan
+はんたい|menentang / berlawanan
 さんせい|persetujuan
 おくる|mengirim
 うけとる|menerima
@@ -1051,7 +1150,7 @@
 ひみつ|rahasia
 うわさ|gosip
 ちゅうい|perhatian
-あいて|lawan bicara
+あいて|lawan bicara / mitra
 スピーチ|pidato
 プレゼン|presentasi
 アンケート|angket
@@ -1074,7 +1173,7 @@
 へんしん|membalas
 つうやく|penerjemah lisan
 つうち|pemberitahuan
-れんらくさき|kontak tujuan
+れんらくさき|informasi kontak
 つうわ|percakapan telepon
 るすばん|menjaga rumah
 でんわばんごう|nomor telepon
@@ -1137,75 +1236,6 @@
 ハンガー|gantungan baju
 リボン|pita
 かがみ|cermin
-
-## n5n4 | Hewan
-いか|cumi-cumi
-かい|kerang
-えさ|pakan
-たこ|gurita
-いぬ|anjing
-かに|kepiting
-きつね|rubah
-たぬき|tanuki
-はと|merpati
-かめ|kura-kura
-くま|beruang
-さめ|hiu
-むし|serangga
-あり|semut
-からす|gagak
-ことり|burung kecil
-さる|monyet
-とら|harimau
-りす|tupai
-にわとり|ayam
-わに|buaya
-うさぎ|kelinci
-くじら|paus
-ぞう|gajah
-ねずみ|tikus
-ひつじ|domba
-らくだ|unta
-とんぼ|capung
-どうぶつ|hewan
-ぶた|babi
-へび|ular
-ぺんぎん|penguin
-ちょう|kupu-kupu
-ちょうちょ|kupu-kupu
-ひょう|macan tutul
-すずめ|burung pipit
-カンガルー|kanguru
-ゴリラ|gorila
-コアラ|koala
-ライオン|singa
-パンダ|panda
-
-## n5n4 | Alam
-いけ|kolam
-おか|bukit
-くき|batang
-いし|batu
-つき|bulan
-つち|tanah
-すな|pasir
-ひ|api
-ほし|bintang
-あめ|hujan
-くも|awan
-なみ|ombak
-ぬま|rawa
-たいよう|matahari
-はやし|hutan kecil
-かみなり|petir
-けむり|asap
-こおり|es
-さくら|sakura
-はれ|cerah
-ひかり|cahaya
-もり|hutan
-ばら|mawar
-エア|udara
 
 ## n5n4 | Perjalanan
 えき|stasiun
@@ -1279,34 +1309,6 @@
 ぐあい|kondisi
 ウイルス|virus
 マッサージ|pijat
-
-## n5n4 | Tubuh
-へそ|pusar
-ほね|tulang
-つめ|kuku
-むね|dada
-みゃく|denyut nadi
-はなぢ|mimisan
-
-## n5n4 | Pakaian
-きもの|kimono
-ゆかた|yukata
-ぽけっと|saku
-コート|mantel
-スカート|rok
-セーター|sweter
-ネクタイ|dasi
-ヘルメット|helm
-マフラー|syal
-ジーンズ|jeans
-サンダル|sandal
-グローブ|sarung tangan
-ズボン|celana
-ブーツ|sepatu bot
-ベルト|ikat pinggang
-ボタン|kancing
-シャツ|kemeja
-ハンカチ|saputangan
 
 ## n5n4 | Pendidikan
 ずかん|ensiklopedia
