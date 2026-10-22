@@ -17,7 +17,8 @@ class MainShell extends StatefulWidget {
   State<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _MainShellState extends State<MainShell>
+    with SingleTickerProviderStateMixin {
   int _index = 0;
 
   // Sekali per kali app dibuka, bukan tiap pindah tab.
@@ -30,14 +31,32 @@ class _MainShellState extends State<MainShell> {
     ProfileScreen(onOpenTab: _openTab),
   ];
 
+  late final AnimationController _pageController;
+  late final Animation<double> _pageOpacity;
+  late final Animation<Offset> _pageOffset;
+
   void _openTab(int index) {
-    if (!mounted) return;
+    if (!mounted || index == _index) return;
     setState(() => _index = index);
+    _pageController.forward(from: 0);
   }
 
   @override
   void initState() {
     super.initState();
+    _pageController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 240),
+      value: 1,
+    );
+    _pageOpacity = CurvedAnimation(
+      parent: _pageController,
+      curve: Curves.easeOutCubic,
+    );
+    _pageOffset = Tween<Offset>(
+      begin: const Offset(0, 0.018),
+      end: Offset.zero,
+    ).animate(_pageOpacity);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_checkedForUpdate) return;
       _checkedForUpdate = true;
@@ -46,11 +65,23 @@ class _MainShellState extends State<MainShell> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.transparent,
-      body: IndexedStack(index: _index, children: _pages),
+      body: FadeTransition(
+        opacity: _pageOpacity,
+        child: SlideTransition(
+          position: _pageOffset,
+          child: IndexedStack(index: _index, children: _pages),
+        ),
+      ),
       bottomNavigationBar: _FloatingNav(index: _index, onSelected: _openTab),
     );
   }
@@ -74,13 +105,13 @@ class _FloatingNav extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
         child: Container(
-          height: 76,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          height: 70,
+          padding: const EdgeInsets.symmetric(horizontal: 6),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(26),
             border: Border.all(
               color: AppColors.line.withValues(alpha: 0.9),
               width: 0.8,
@@ -90,8 +121,8 @@ class _FloatingNav extends StatelessWidget {
                 color: Colors.black.withValues(
                   alpha: AppColors.isDark ? 0.32 : 0.10,
                 ),
-                blurRadius: 24,
-                offset: const Offset(0, 10),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
@@ -152,25 +183,30 @@ class _NavButton extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               curve: Curves.easeOutCubic,
-              width: selected ? 58 : 46,
-              height: 46,
+              width: selected ? 54 : 42,
+              height: 42,
               decoration: BoxDecoration(
                 color: selected ? AppColors.active : Colors.transparent,
                 borderRadius: BorderRadius.circular(AppRadius.pill),
               ),
               child: Center(
-                child: item.glyph != null
-                    ? Text(
-                        item.glyph!,
-                        style: TextStyle(
-                          fontFamily: 'Noto Sans JP',
-                          fontSize: 21,
-                          height: 1,
-                          fontWeight: FontWeight.w500,
-                          color: fg,
-                        ),
-                      )
-                    : Icon(item.icon, size: 22, color: fg),
+                child: AnimatedScale(
+                  scale: selected ? 1 : 0.94,
+                  duration: const Duration(milliseconds: 180),
+                  curve: Curves.easeOutCubic,
+                  child: item.glyph != null
+                      ? Text(
+                          item.glyph!,
+                          style: TextStyle(
+                            fontFamily: 'Noto Sans JP',
+                            fontSize: 19,
+                            height: 1,
+                            fontWeight: FontWeight.w500,
+                            color: fg,
+                          ),
+                        )
+                      : Icon(item.icon, size: 20, color: fg),
+                ),
               ),
             ),
           ),

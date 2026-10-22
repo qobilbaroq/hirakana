@@ -56,9 +56,15 @@ Dokumen ini untuk melanjutkan pekerjaan di sesi OpenCode baru. Baca juga
   #181818 → #151414 → #111111` dicampur 60% dengan paper agar teks tetap
   terbaca; di terang tetap `#F8F8F4 → #E8E8E2`. Scaffold/AppBar transparan.
 - Navigasi bawah kembali ke pill mengambang **solid** (tanpa lengkung, tanpa
-  `BackdropFilter`): latar `AppColors.white`, border tipis, radius 28, bayangan
-  lembut. Ikon: `あ` (Kana), grid 4 kotak (Practice), buku (Words), person
-  (Profile). Pill terpilih memakai `AppColors.active` solid di kedua tema.
+  `BackdropFilter`): latar `AppColors.white`, border tipis, radius 26, tinggi 70,
+  margin samping 20, bayangan lembut. Tombol terpilih 54×42 dan yang lain 42×42;
+  ikon 20 px (glyph 19 px). Ikon: `あ` (Kana), grid 4 kotak (Practice), buku
+  (Words), person (Profile). Pill terpilih memakai `AppColors.active` solid di
+  kedua tema.
+- Animasi dibuat halus dan singkat: transisi halaman fade + geser tipis lewat
+  `AppPageTransitionsBuilder`; pindah tab memudarkan/menggeser isi `IndexedStack`
+  240 ms tanpa kehilangan state; kartu menu (`ModeCard`) masuk dengan fade +
+  geser 240 ms; ikon navigasi terpilih membesar 180 ms.
 - Mastery kana memakai 4 pip kaca (bukan tiga titik / badge `M`):
   - huruf aktif yang belum pernah benar: kaca sangat tipis;
   - langkah 1–3: isi kaca makin kuat;

@@ -289,6 +289,11 @@ tema aktif, jadi tidak boleh dipakai di ekspresi `const`.
 - Liquid glass hanya dipakai pada huruf kana (sel aktif/terpelajari dan pilihan huruf). Kartu,
   pencarian, filter, kontrol bawah, dan navigasi pill memakai permukaan solid. Radius kartu 16,
   sheet 24, tombol 14.
+- Navigasi pill ringkas: tinggi 70, radius 26, margin samping 20; tombol terpilih 54×42,
+  tombol lain 42×42.
+- Animasi ringan: `AppPageTransitionsBuilder` memberi fade + geser tipis untuk halaman
+  yang dibuka; pindah tab memudarkan isi `IndexedStack` 240 ms tanpa menghapus state;
+  `ModeCard` masuk dengan fade + geser 240 ms; ikon tab terpilih membesar 180 ms.
 - `ColorScheme` dibuat eksplisit dari palet (`buildAppTheme`), jadi chip, switch, slider, dialog,
   snackbar, dan bottom sheet ikut palet.
 - Saat tema berganti, `app.dart` menyuruh semua widget dibangun ulang sekali supaya warna layar yang

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
+import 'app_page_transitions.dart';
 import 'app_spacing.dart';
 
 /// Gaya teks yang dipakai berulang di banyak layar.
@@ -117,6 +118,16 @@ ThemeData buildAppTheme(Brightness brightness) {
     brightness: brightness,
     // Latar digambar oleh AppBackground (gradien) di akar aplikasi.
     scaffoldBackgroundColor: Colors.transparent,
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: AppPageTransitionsBuilder(),
+        TargetPlatform.iOS: AppPageTransitionsBuilder(),
+        TargetPlatform.linux: AppPageTransitionsBuilder(),
+        TargetPlatform.macOS: AppPageTransitionsBuilder(),
+        TargetPlatform.windows: AppPageTransitionsBuilder(),
+        TargetPlatform.fuchsia: AppPageTransitionsBuilder(),
+      },
+    ),
     colorScheme: _schemeFor(p, brightness),
     textTheme: ThemeData(brightness: brightness).textTheme.apply(
           bodyColor: p.ink,

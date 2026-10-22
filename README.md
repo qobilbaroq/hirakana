@@ -44,8 +44,10 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 **Tampilan**
 - Tema **Gelap** (default), Terang, atau ikut sistem.
 - Palet monokrom netral dengan gradien latar bersih; kartu solid, navigasi pill
-  mengambang, dan liquid glass hanya pada huruf kana. Aksen sage/clay dipakai tipis
-  saja.
+  mengambang yang ringkas, dan liquid glass hanya pada huruf kana. Aksen sage/clay
+  dipakai tipis saja.
+- Transisi halaman dan tab yang halus (fade + geser singkat), plus animasi masuk
+  untuk kartu menu.
 
 ## Mulai cepat
 
