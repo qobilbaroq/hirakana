@@ -29,6 +29,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
       'quiz' => AppRouter.quiz,
       'words' => AppRouter.words,
       'meaning' => AppRouter.meaning,
+      'build_romaji' => AppRouter.buildRomaji,
+      'build_kana' => AppRouter.buildKana,
       'writing' => AppRouter.writing,
       _ => AppRouter.flashcard,
     };
@@ -74,7 +76,16 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                       const SizedBox(height: AppSpacing.lg),
                       Row(
                         children: [
-                          _stat(result.mode == 'words' || result.mode == 'meaning' ? 'Words' : 'Characters', '${result.cards}'),
+                          _stat(
+                              const {
+                                'words',
+                                'meaning',
+                                'build_romaji',
+                                'build_kana',
+                              }.contains(result.mode)
+                                  ? 'Words'
+                                  : 'Characters',
+                              '${result.cards}'),
                           const SizedBox(width: AppSpacing.sm),
                           if (!isWriting) ...[
                             _stat('Correct',

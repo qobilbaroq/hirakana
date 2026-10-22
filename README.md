@@ -26,6 +26,8 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang **semuanya punya arti Bahasa Indonesia**
   dan punya rekaman utuh. Tidak ada soal rangkaian huruf acak — tiap soal adalah kata sungguhan.
   Kalau huruf aktif masih sedikit, kata diulang supaya sesi tetap penuh.
+- **Susun kata (Build the word)**: susun romaji dari kata Jepang, atau susun kananya dari romaji.
+  Potongan suku kata bercampur pengecoh, arti selalu terlihat sebelum menjawab.
 - **Saring kosakata per tingkat**: Practice → Words, pilih *All words* / *N5–N4* / *N3*.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 

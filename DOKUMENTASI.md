@@ -198,6 +198,38 @@ di Settings.
 aktif di Settings (default mati) — dan karena semua kata punya arti, tidak ada soal yang bisa
 dijawab tanpa penjelasan.
 
+### Susun kata (Build the word)
+
+Dua mode di Practice → Words, memakai filter kata yang sama:
+
+- **Build the word: romaji** — tampil kata Jepang, susun romajinya dari potongan suku kata
+  (`おおきい` → `o` `o` `ki` `i`).
+- **Build the word: kana** — tampil romaji, susun kananya dari potongan huruf
+  (`ookii` → `お` `お` `き` `い`).
+
+Arti Indonesia dan kategori selalu terlihat di atas soal. Jumlah kotak jawaban = jumlah potongan
+benar. Ketuk potongan untuk mengisi, ketuk kotak untuk menghapus, dan **Check** baru aktif kalau
+semua kotak penuh. Setelah Check, kotak yang benar berwarna sage dan yang salah berwarna clay; kata,
+romaji, dan suaranya ditampilkan.
+
+Total potongan menyesuaikan panjang kata: 8 untuk 1–3 potongan, 10 untuk 4–5, dan 12 untuk 6+,
+dengan minimal 3 pengecoh. Potongan jawaban dan pilihan disusun sebagai grid kotak kecil maksimal
+dua baris, jadi soal terpanjang pun muat tanpa perlu di-scroll di layar HP biasa. Pengecoh diambil
+dari huruf aktif dengan prioritas: huruf yang sering tertukar (khusus mode kana), bunyi mirip, lalu
+huruf aktif lain. Kalau huruf aktif terlalu sedikit, pengecoh dilengkapi dari seluruh huruf script
+itu. Pengecoh tidak pernah sama dengan jawaban atau berbagi romaji dengan huruf jawaban, jadi tidak
+ada susunan alternatif yang ikut dinilai benar.
+
+Aturan potongan mengikuti data kata: satu potongan romaji = satu suku kata, `っ` digabung dengan suku
+kata sesudahnya (`きって` → `ki` `tte`), dan `ー` menjadi potongan vokal (`ラーメン` → `ra` `a` `me`
+`n`). Ejaan alternatif di `words.tsv` diselaraskan (`cchi`, partikel は = `wa`, づ = `zu`, ぢ = `ji`).
+Kata yang tulisannya tidak cocok dengan romajinya dilewati, supaya tidak ada soal yang mustahil.
+
+Satu sesi maksimal 15 kata (mengikuti Session length kalau lebih kecil), tanpa kata berulang, dan
+mengutamakan kata yang belum pernah / paling lama tidak muncul. Hasilnya dicatat di `word_history`
+lewat `recordResult`, dan di mode kana huruf yang tertukar masuk "Often mixed up". Sesi tersimpan di
+`study_sessions` dengan mode `build_romaji` / `build_kana`.
+
 ---
 
 ## 7. Fitur per layar
@@ -210,8 +242,9 @@ dijawab tanpa penjelasan.
   atau ikon speaker untuk memutar suara lagi (normal, normal, lambat). *Again* / *Got it* baru aktif
   setelah reveal.
 - **Quiz**: grid 2x2; pilihan benar hijau, pilihanmu salah berwarna clay.
-- **Practice**: pilih Hiragana / Katakana / Mixed, lalu *Trace the character*, *Reading practice*, atau
-  salah satu jenis kuis, termasuk *Look-alike drill*.
+- **Practice**: pilih Hiragana / Katakana / Mixed, lalu bagian **Writing**, **Words** (dengan filter
+  All words / N5–N4 / N3 tepat di atas daftarnya), dan **Recognition**. Menu dikelompokkan per bagian
+  supaya lebih ringkas dan tidak perlu banyak scroll.
 - **Writing**: guide goresan bernomor dari KanjiVG, *Replay stroke order*, Undo/Clear, *Check*
   menampilkan guide di atas tulisanmu untuk dibandingkan (tanpa skor). Romaji huruf contoh
   disembunyikan sampai *Check*, supaya kamu bisa menebak cara bacanya sambil menulis.
@@ -352,6 +385,13 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
 - `session_size_test.dart`: batas ukuran sesi, `fillToSize`, progres dengan huruf berulang.
 - `word_questions_test.dart`: data kata (semua bisa dibaca, file audio ada, cukup kata per tahap huruf),
   romaji, pilihan jawaban, sesi baca penuh, dan kata tidak berulang antar sesi.
+- `build_questions_test.dart`: potongan romaji/kana (termasuk `っ`, `ー`, dan ejaan alternatif),
+  pengecoh yang tidak bentrok, serta sesi Susun Kata untuk 1.272 kata.
+- `build_word_screen_test.dart`: alur layar Susun Kata di 360×640 — Check mati sebelum kotak
+  penuh, susunan romaji yang benar dinilai benar, mode kana bisa diisi sampai Check aktif — dan soal
+  terpanjang (7 kotak + 12 potongan) beserta umpan baliknya muat tanpa scroll.
+- `practice_screen_test.dart`: menu Practice menampilkan semua bagian, filter kosakata berada tepat
+  sebelum daftar latihan kata, dan seluruh menu bisa dijangkau dengan scroll di 360×640.
 - `amoled_test.dart`: palet (kontras teks, tombol utama tidak menyilaukan, AMOLED hitam sejati dan hangat)
   dan tema Material.
 
@@ -376,3 +416,11 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
    (mis. ファ, ティ) tidak dimasukkan.
 7. **Contoh kata di flashcard** hanya ada untuk sebagian huruf.
 8. **Tutorial awal** hanya muncul sekali (flag `onboarded`).
+9. **Susun kata tidak mengubah penguasaan huruf.** Sesi tercatat, kata masuk `word_history`, dan di
+   mode kana pasangan huruf yang tertukar ikut dicatat; `kana_progress` tidak berubah.
+10. **Satu kata dilewati di Susun kata.** `ちょうちょ` tertulis dengan romaji `chouchou`, padahal
+    bacaannya `choucho`, jadi soal tidak bisa dibuat dan kata ini dilewati (Reading tetap
+    menampilkannya). Perbaikan yang aman: ganti tulisannya menjadi `ちょうちょう` (bacaan dan audio
+    `chouchou` tetap valid), lalu samakan `tools/vocab_source.txt` dan `tools/level_map.tsv`.
+11. **Pengecoh bisa memakai huruf di luar huruf aktif** kalau huruf aktif terlalu sedikit, supaya
+    selalu ada minimal 3 pengecoh.

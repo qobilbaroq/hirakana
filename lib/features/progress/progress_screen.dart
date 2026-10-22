@@ -15,6 +15,14 @@ import '../learn/session_controller.dart';
 import '../learn/session_launcher.dart';
 import 'progress_controller.dart';
 
+/// Label ramah untuk mode sesi di daftar "Recent sessions".
+String _modeLabel(String mode) => switch (mode) {
+      'build_romaji' => 'Build romaji',
+      'build_kana' => 'Build kana',
+      '' => 'Session',
+      _ => '${mode[0].toUpperCase()}${mode.substring(1)}',
+    };
+
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
 
@@ -234,7 +242,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${r.mode[0].toUpperCase()}${r.mode.substring(1)} · ${r.kanaType}',
+                                  '${_modeLabel(r.mode)} · ${r.kanaType}',
                                   style: AppText.body,
                                 ),
                                 Text(shortDate(r.startedAt),
