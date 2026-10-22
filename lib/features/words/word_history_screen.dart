@@ -5,6 +5,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/widgets/kana_character.dart';
+import '../../core/widgets/pill_choice.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../data/repositories/word_repository.dart';
 import '../../data/seed/word_data.dart';
@@ -100,7 +101,7 @@ class _WordHistoryScreenState extends State<WordHistoryScreen> {
             const SizedBox(height: AppSpacing.xs),
             Text(w.reading, style: AppText.section),
             const SizedBox(height: AppSpacing.xs),
-            Text('Arti: ${w.meaning}', style: AppText.body),
+            Text('Meaning: ${w.meaning}', style: AppText.body),
             if (w.level.isNotEmpty || w.category.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: AppSpacing.xs),
@@ -142,8 +143,8 @@ class _WordHistoryScreenState extends State<WordHistoryScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     child: Text(
-                      'Belum ada kata. Kata yang muncul di Reading practice '
-                      'dan Meaning practice akan tercatat di sini.',
+                      'No words yet. Words that appear in Reading practice '
+                      'and Meaning practice will be recorded here.',
                       textAlign: TextAlign.center,
                       style: AppText.muted,
                     ),
@@ -157,18 +158,13 @@ class _WordHistoryScreenState extends State<WordHistoryScreen> {
                             AppSpacing.md, AppSpacing.sm, AppSpacing.md, 0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Wrap(
-                            spacing: AppSpacing.sm,
+                          child: PillChoiceWrap(
                             children: [
                               for (final f in WordHistoryFilter.values)
-                                ChoiceChip(
-                                  label: Text(f.label),
+                                PillChoice(
+                                  label: f.label,
                                   selected: _filter == f,
-                                  selectedColor:
-                                      AppColors.sage.withValues(alpha: 0.35),
-                                  backgroundColor: AppColors.sand,
-                                  side: BorderSide.none,
-                                  onSelected: (_) =>
+                                  onTap: () =>
                                       setState(() => _filter = f),
                                 ),
                             ],
@@ -189,7 +185,7 @@ class _WordHistoryScreenState extends State<WordHistoryScreen> {
                       Expanded(
                         child: shown.isEmpty
                             ? Center(
-                                child: Text('Tidak ada kata di filter ini.',
+                                child: Text('No words in this filter.',
                                     style: AppText.muted),
                               )
                             : ListView.separated(

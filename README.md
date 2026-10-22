@@ -28,7 +28,7 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
   Kalau huruf aktif masih sedikit, kata diulang supaya sesi tetap penuh.
 - **Susun kata (Build the word)**: susun romaji dari kata Jepang, atau susun kananya dari romaji.
   Potongan suku kata bercampur pengecoh, arti selalu terlihat sebelum menjawab.
-- **Saring kosakata per tingkat**: Practice → Words, pilih *All words* / *N5–N4* / *N3*.
+- **Saring kosakata per tingkat**: di tab **Words**, pilih *All words* / *N5–N4* / *N3*.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 
 **Suara (offline)**
@@ -42,8 +42,10 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - Target harian yang bisa diatur.
 
 **Tampilan**
-- Tema Terang, Gelap, dan **AMOLED** (hitam sejati), atau ikut sistem.
-- Palet hangat yang sama di semua tema; tanpa blok terang yang menyilaukan di mode gelap.
+- Tema **Gelap** (default), Terang, atau ikut sistem.
+- Palet monokrom netral dengan gradien latar bersih; kartu solid, navigasi pill
+  mengambang, dan liquid glass hanya pada huruf kana. Aksen sage/clay dipakai tipis
+  saja.
 
 ## Mulai cepat
 
@@ -89,10 +91,10 @@ langsung untuk dipasang. Panduan lengkap rilis dan pembaruan Android ada di **[R
 
 ```
 lib/
-  app/        router dan tema (palet terang / gelap / AMOLED)
+  app/        router dan tema (palet terang / gelap, latar gradien)
   core/       audio, pengaturan, storage (database per platform), widget bersama
   data/       model, repository (progres, kata), data huruf, goresan, kata
-  features/   home, learn, practice, progress, settings, writing, words, shell
+  features/   kana/learn, practice, words, profile, settings, writing, shell
 assets/
   audio/      suara huruf (normal + slow) dan suara kata (words/)
   strokes/    urutan goresan KanjiVG

@@ -144,21 +144,23 @@ class _WritingScreenState extends State<WritingScreen>
           child: Column(
             children: [
               SessionHeader(
-                title: 'WRITING PRACTICE · ${_index + 1} / ${_queue.length}',
-                progress: _index / _queue.length,
-                leadingIcon: Icons.arrow_back,
+                title: 'Writing · ${_index + 1} / ${_queue.length}',
+                progress: (_index + 1) / _queue.length,
+                leadingIcon: Icons.close,
+                leadingLabel: 'Dismiss',
                 onLeading: () => Navigator.pop(context),
                 trailing: IconButton(
                   tooltip: 'Undo last stroke',
-                  icon: const Icon(Icons.undo),
+                  icon: const Icon(Icons.undo, size: 20),
                   onPressed: _comparing ? null : _tracing.undo,
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
-              Text('Trace the character', style: AppText.muted),
+              Text('Trace the character', style: AppText.caption),
+              const SizedBox(height: 2),
               KanaCharacter(kana.character, size: 36),
               SizedBox(
-                height: 24,
+                height: 26,
                 child: Center(
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 160),

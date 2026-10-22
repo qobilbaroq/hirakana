@@ -141,13 +141,14 @@ class _MeaningPracticeScreenState extends State<MeaningPracticeScreen> {
           child: Column(
             children: [
               SessionHeader(
-                title: 'MEANING · ${_index + 1} / ${_questions.length}',
-                progress: _index / _questions.length,
-                leadingIcon: Icons.arrow_back,
+                title: 'Meaning · ${_index + 1} / ${_questions.length}',
+                progress: (_index + 1) / _questions.length,
+                leadingIcon: Icons.close,
+                leadingLabel: 'Dismiss',
                 onLeading: () => Navigator.pop(context),
                 trailing: IconButton(
                   tooltip: 'Play sound',
-                  icon: const Icon(Icons.volume_up_outlined),
+                  icon: const Icon(Icons.volume_up_outlined, size: 20),
                   onPressed: _answered ? () => playWordSound(q.word) : null,
                 ),
               ),
@@ -159,12 +160,30 @@ class _MeaningPracticeScreenState extends State<MeaningPracticeScreen> {
                       Text(
                         'What does this word mean?',
                         textAlign: TextAlign.center,
-                        style: AppText.section,
+                        style: AppText.section.copyWith(
+                          fontSize: 21,
+                          height: 1.25,
+                          letterSpacing: -0.3,
+                        ),
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: KanaCharacter(q.word.text, size: 72),
+                      const SizedBox(height: AppSpacing.sm + 2),
+                      Container(
+                        width: double.infinity,
+                        height: 128,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(28),
+                          border: Border.all(color: AppColors.line, width: 0.8),
+                        ),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: KanaCharacter(q.word.text, size: 72),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       _grid(q),
@@ -181,10 +200,7 @@ class _MeaningPracticeScreenState extends State<MeaningPracticeScreen> {
                   onPressed: _next,
                 )
               else
-                Text(
-                  'Pilih satu jawaban. Feedback muncul setelah kamu menjawab.',
-                  style: AppText.muted,
-                ),
+                const SizedBox(height: 52),
             ],
           ),
         ),
@@ -256,7 +272,7 @@ class _MeaningPracticeScreenState extends State<MeaningPracticeScreen> {
           ),
         ),
         const SizedBox(height: AppSpacing.xs),
-        Text('Arti: ${q.answer}',
+        Text('Meaning: ${q.answer}',
             textAlign: TextAlign.center, style: AppText.body),
         if (q.word.level.isNotEmpty)
           Padding(

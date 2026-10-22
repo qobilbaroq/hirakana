@@ -30,9 +30,10 @@ class AppSettings extends ChangeNotifier {
 
   /// Tampilkan arti kata setelah menjawab (hanya untuk kata yang punya arti).
   bool showMeaning = true;
-  ThemeMode themeMode = ThemeMode.system;
-  /// Hanya berlaku kalau tema aktif gelap.
-  bool amoled = false;
+
+  /// Desain baru gelap secara default; pengguna tetap bisa memilih System atau
+  /// Light di Settings.
+  ThemeMode themeMode = ThemeMode.dark;
   bool autoPlay = true;
   AudioPattern audioPattern = AudioPattern.normalNormalSlow;
 
@@ -43,14 +44,14 @@ class AppSettings extends ChangeNotifier {
     themeMode = switch (await _repo.getMeta('theme_mode')) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
-      _ => ThemeMode.system,
+      'system' => ThemeMode.system,
+      _ => ThemeMode.dark,
     };
     sessionSize = (int.tryParse(await _repo.getMeta('session_size') ?? '') ??
             minSessionSize)
         .clamp(minSessionSize, maxSessionSize)
         .toInt();
     showMeaning = (await _repo.getMeta('show_meaning')) != '0';
-    amoled = (await _repo.getMeta('theme_amoled')) == '1';
     autoPlay = (await _repo.getMeta('audio_autoplay')) != '0';
     final pattern = await _repo.getMeta('audio_pattern');
     audioPattern = AudioPattern.values.firstWhere(
@@ -81,12 +82,6 @@ class AppSettings extends ChangeNotifier {
     themeMode = m;
     notifyListeners();
     await _repo.setMeta('theme_mode', m.name);
-  }
-
-  Future<void> setAmoled(bool v) async {
-    amoled = v;
-    notifyListeners();
-    await _repo.setMeta('theme_amoled', v ? '1' : '0');
   }
 
   Future<void> setAutoPlay(bool v) async {

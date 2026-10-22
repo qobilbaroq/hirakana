@@ -37,7 +37,7 @@ Future<void> checkForUpdateAndPrompt(
       ScaffoldMessenger.of(context)
         ..clearSnackBars()
         ..showSnackBar(const SnackBar(
-          content: Text('Aplikasi sudah versi terbaru.'),
+          content: Text('You\'re on the latest version.'),
         ));
     }
     return;
@@ -60,7 +60,7 @@ Future<void> checkForUpdateAndPrompt(
 void _showError(BuildContext context, Object error) {
   final message = error is UpdateException
       ? error.message
-      : 'Gagal memeriksa pembaruan.';
+      : 'Couldn\'t check for updates.';
   ScaffoldMessenger.of(context)
     ..clearSnackBars()
     ..showSnackBar(SnackBar(content: Text(message)));
@@ -102,9 +102,9 @@ class _UpdatePromptDialogState extends State<UpdatePromptDialog> {
       setState(() {
         _downloading = false;
         _error = error.code == 'install_permission_required'
-            ? 'Izinkan pemasangan dari Kana Quest, lalu kembali dan tekan '
-                'Perbarui lagi.'
-            : (error.message ?? 'Pembaruan gagal dipasang.');
+            ? 'Allow app installs for Kana Quest, then come back and tap '
+                'Update again.'
+            : (error.message ?? 'The update couldn\'t be installed.');
       });
       return;
     } catch (error) {
@@ -137,9 +137,9 @@ class _UpdatePromptDialogState extends State<UpdatePromptDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Pembaruan tersedia', style: AppText.section),
+          Text('Update available', style: AppText.section),
           const SizedBox(height: AppSpacing.xs),
-          Text('Versi ${widget.release.version}', style: AppText.muted),
+          Text('Version ${widget.release.version}', style: AppText.muted),
         ],
       ),
       content: Column(
@@ -147,7 +147,7 @@ class _UpdatePromptDialogState extends State<UpdatePromptDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (points.isEmpty)
-            Text('Versi ${widget.release.version} tersedia.',
+            Text('Version ${widget.release.version} is available.',
                 style: AppText.body)
           else
             ...points.map((point) => Padding(
@@ -164,7 +164,7 @@ class _UpdatePromptDialogState extends State<UpdatePromptDialog> {
             const SizedBox(height: AppSpacing.sm),
             LinearProgressIndicator(value: _progress),
             const SizedBox(height: AppSpacing.xs),
-            Text('Mengunduh...', style: AppText.muted),
+            Text('Downloading...', style: AppText.muted),
           ],
           if (_error != null) ...[
             const SizedBox(height: AppSpacing.sm),
@@ -181,11 +181,11 @@ class _UpdatePromptDialogState extends State<UpdatePromptDialog> {
       actions: [
         TextButton(
           onPressed: _downloading ? null : _later,
-          child: const Text('Nanti'),
+          child: const Text('Later'),
         ),
         FilledButton(
           onPressed: _downloading ? null : _update,
-          child: const Text('Perbarui'),
+          child: const Text('Update'),
         ),
       ],
     );

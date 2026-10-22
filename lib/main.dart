@@ -22,7 +22,6 @@ Future<void> main() async {
           Brightness.dark;
   AppColors.isDark = settings.themeMode == ThemeMode.dark ||
       (settings.themeMode == ThemeMode.system && platformDark);
-  AppColors.isAmoled = AppColors.isDark && settings.amoled;
 
   runApp(const KanaQuestApp());
 }

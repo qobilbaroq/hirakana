@@ -33,10 +33,11 @@ Total **208 huruf** = 104 Hiragana + 104 Katakana, dalam **27 grup**:
 Setiap huruf punya id unik (`hiragana_a`, `katakana_a`). Hiragana dan katakana dengan romaji yang
 sama memakai satu file suara yang sama.
 
-Navigasi: 4 tab di `MainShell` (**Home, Learn, Practice, Progress**). Flashcard, Quiz, Writing, dan
-Reading dibuka di luar tab, lalu selesai ke layar **Summary**. **Settings** dibuka dari ikon gerigi di Home.
+Navigasi: 4 tab di `MainShell` (**Kana, Practice, Words, Profile**). Flashcard, Quiz, Writing,
+Reading, Meaning, Build the word, dan Choose letters dibuka di luar tab, lalu selesai ke layar
+**Summary**. **Settings** dibuka dari ikon gerigi di Profile.
 
-Alur data: semua akses database lewat `KanaRepository` (`ChangeNotifier`), jadi Home dan Progress
+Alur data: semua akses database lewat `KanaRepository` (`ChangeNotifier`), jadi tab Kana dan Profile
 otomatis ter-refresh saat data berubah. Pengaturan ada di `AppSettings` (juga `ChangeNotifier`).
 
 ---
@@ -44,7 +45,7 @@ otomatis ter-refresh saat data berubah. Pengaturan ada di `AppSettings` (juga `C
 ## 2. Memilih huruf yang dipelajari
 
 **Huruf baru tidak pernah masuk otomatis.** Kamu menentukan sendiri set huruf aktif lewat layar
-**Choose letters** (Learn atau Home, pilih Hiragana/Katakana lalu *Choose letters*):
+**Choose letters** (dari tab Kana atau Practice, pilih Hiragana/Katakana lalu *Choose letters*):
 
 - ketuk huruf untuk memilih, ketuk judul baris untuk memilih satu baris;
 - tombol **Add next 5** (menambah 5 huruf berikutnya sesuai urutan dataset), **Select all**, **Clear**;
@@ -87,7 +88,7 @@ Kalau salah: **1x** berturut tampil lagi dalam 1 menit; **2x** berturut langsung
 | 2 | mulai familiar | benar di >= 2 sesi berbeda |
 | 3 | dikuasai | benar di >= 3 sesi berbeda **dan** benar 2x berturut-turut |
 
-Level 3 dipakai sebagai "Known kana" di Progress. Persen penguasaan per script =
+Level 3 dipakai sebagai "Known kana" di Profile. Persen penguasaan per script =
 `jumlah level / (jumlah huruf x 3)`.
 
 ### "Terlalu cepat"
@@ -135,8 +136,8 @@ dari Again ditampilkan sebagai `+N again`.
 - Setiap jawaban langsung ditulis ke database per kartu, jadi kalau app ditutup di tengah, progres aman.
 - Waktu belajar dihitung per jawaban dan dibatasi 90 detik per langkah (120 detik di Writing).
 
-Jenis soal (`QuizKind`), dipilih acak per soal dari Learn/Home (tidak lebih dari 2x berturut-turut jenis
-yang sama), atau dipilih manual dari tab Practice:
+Jenis soal (`QuizKind`), dipilih acak per soal dari tab Kana/Practice (tidak lebih dari 2x berturut-turut
+jenis yang sama), atau dipilih manual dari tab Practice:
 
 | Jenis | Tanya | Jawab |
 | --- | --- | --- |
@@ -152,14 +153,14 @@ membocorkan jawaban. Kalau salah, jawaban benar ditampilkan dan diputar (kalau s
 
 Setiap jawaban salah di soal pilihan (atau satu huruf di latihan baca) dicatat
 sebagai pasangan (tanpa arah: ぬ-め = め-ぬ) di tabel `confusions`. Pasangan yang tertukar **minimal 2 kali**
-tampil di Progress ("Often mixed up") dan menjadi bahan **Look-alike drill**. Pasangan ini juga
+tampil di Profile ("Often mixed up") dan menjadi bahan **Look-alike drill**. Pasangan ini juga
 dipakai sebagai pengecoh di kuis biasa.
 
 ---
 
 ## 6. Latihan baca
 
-Tab **Practice -> Reading practice**. Selalu menanyakan **cara baca (romaji)**, bukan arti.
+Tab **Words -> Reading practice**. Selalu menanyakan **cara baca (romaji)**, bukan arti.
 Satu sesi (sebanyak ukuran sesi) berisi campuran:
 
 Setiap soal adalah **kata sungguhan** dari pool kurasi, contoh `さかな` -> sakana. Tidak ada lagi soal
@@ -200,7 +201,7 @@ dijawab tanpa penjelasan.
 
 ### Susun kata (Build the word)
 
-Dua mode di Practice → Words, memakai filter kata yang sama:
+Dua mode di tab Words, memakai filter kata yang sama:
 
 - **Build the word: romaji** — tampil kata Jepang, susun romajinya dari potongan suku kata
   (`おおきい` → `o` `o` `ki` `i`).
@@ -234,24 +235,28 @@ lewat `recordResult`, dan di mode kana huruf yang tertukar masuk "Often mixed up
 
 ## 7. Fitur per layar
 
-- **Home**: sapaan, hari ke-n, ikon Settings, kartu target harian + *Continue learning* (melanjutkan
-  mode dan script terakhir), kartu Hiragana/Katakana, *Quick review*.
-- **Learn**: Hiragana / Katakana / Mixed Review, lalu pilih *Flashcards*, *Quick quiz*, atau *Choose letters*.
+- **Kana**: grid gojuon 5 kolom untuk Hiragana/Katakana/Mixed, pencarian, filter tampilan romaji,
+  indikator mastery kaca per huruf, pil Hiragana/Katakana yang mengambang, dan tombol *Choose letters*. Ketuk huruf untuk membuka detail
+  (contoh kata, audio, status mastery, *Add/Remove*, dan *Study*); *Study* membuka pilihan
+  Flashcards / Quick quiz / Writing.
+- **Practice**: pilih Hiragana / Katakana / Mixed, lalu **Flashcards**, **Quick quiz**, **Writing**,
+  **Choose letters**, dan bagian **Recognition** (Kana → sound, Sound → kana, Look-alike drill).
+  Latihan kata tidak lagi di tab ini.
+- **Words**: filter *All words / N5–N4 / N3*, lalu **Reading practice**, **Meaning practice**,
+  **Build the word: romaji**, **Build the word: kana**, dan **Word history**.
+- **Profile**: sapaan dan hari ke-n, ikon Settings, kartu Daily streak + Daily goal (tombol
+  *Continue*), milestone 5/25/50/100, ringkasan *Known kana* / sesi / kata / waktu belajar,
+  penguasaan per script, *Needs another look*, *Often mixed up*, dan recent sessions.
 - **Flashcard**: ketuk kartu atau *Reveal answer* (kartu flip 220 ms, dimatikan kalau perangkat
   menyetel kurangi animasi). Sisi belakang: huruf, romaji, dan contoh kata. Setelah terbuka, ketuk kartu
   atau ikon speaker untuk memutar suara lagi (normal, normal, lambat). *Again* / *Got it* baru aktif
   setelah reveal.
 - **Quiz**: grid 2x2; pilihan benar hijau, pilihanmu salah berwarna clay.
-- **Practice**: pilih Hiragana / Katakana / Mixed, lalu bagian **Writing**, **Words** (dengan filter
-  All words / N5–N4 / N3 tepat di atas daftarnya), dan **Recognition**. Menu dikelompokkan per bagian
-  supaya lebih ringkas dan tidak perlu banyak scroll.
 - **Writing**: guide goresan bernomor dari KanjiVG, *Replay stroke order*, Undo/Clear, *Check*
   menampilkan guide di atas tulisanmu untuk dibandingkan (tanpa skor). Romaji huruf contoh
   disembunyikan sampai *Check*, supaya kamu bisa menebak cara bacanya sambil menulis.
 - **Summary**: jumlah karakter, benar, waktu, kotak *Needs another look*; tombol *Study again* dan *Done*.
-- **Progress**: *Known kana*, waktu belajar minggu ini, penguasaan per script, *Needs another look*,
-  *Often mixed up*, **All characters** (tabel gojuon selebar layar, kolom sejajar), dan 5 sesi terakhir.
-- **Settings**: lihat bagian berikut.
+- **Settings**: dibuka dari Profile; lihat bagian berikut.
 
 ---
 
@@ -261,8 +266,7 @@ Disimpan di tabel `meta`, dimuat saat app mulai (`AppSettings`):
 
 | Pengaturan | Pilihan | Kunci `meta` |
 | --- | --- | --- |
-| Tema | System / Light / Dark | `theme_mode` |
-| AMOLED black | hidup/mati (hanya berlaku di mode gelap) | `theme_amoled` |
+| Tema | System / Light / Dark (default Dark) | `theme_mode` |
 | Session length | 10 sampai 60, kelipatan 5 | `session_size` |
 | Show word meaning | hidup/mati | `show_meaning` |
 | Daily goal | 5 / 10 / 15 / 20 / 30 menit | `goal_minutes` |
@@ -271,14 +275,20 @@ Disimpan di tabel `meta`, dimuat saat app mulai (`AppSettings`):
 
 ### Palet warna
 
-Tiga palet di `lib/app/theme/app_colors.dart` (`AppPalette.light`, `.dark`, `.amoled`). Semuanya satu
-keluarga hangat (sage dan krem); `AppColors.*` adalah **getter** yang mengikuti tema aktif, jadi tidak
-boleh dipakai di ekspresi `const`.
+Dua palet di `lib/app/theme/app_colors.dart` (`AppPalette.light`, `.dark`); **AMOLED sudah dihapus**.
+Keduanya monokrom netral dengan aksen sage/clay tipis. `AppColors.*` adalah **getter** yang mengikuti
+tema aktif, jadi tidak boleh dipakai di ekspresi `const`.
 
-- **Gelap**: latar `#181A17`, teks krem lembut (bukan putih), aksen sage diredam, dan **tombol utama
-  berwarna sage gelap** (`action` / `onAction`), bukan krem terang, supaya tidak ada blok yang menyilaukan.
-- **AMOLED**: latar hitam sejati `#000000`; permukaan lain sedikit kehijauan (bukan abu netral) supaya
-  selaras dengan hitamnya.
+- **Gelap**: gradien latar memakai stop `#868686 → #4B4B4B → #2E2E2E → #201F1F → #181818 →
+  #151414 → #111111`, dicampur 60% dengan paper `#121311` supaya teks off-white tetap terbaca.
+  Kartu solid, tombol utama inverted (terang di atas gelap).
+- **Terang**: gradien paper `#F8F8F4 → #E8E8E2`; kartu putih solid. Pilihan aktif memakai abu-abu
+  `#B8B8B1`, bukan hitam.
+- `AppBackground` (di `MaterialApp.builder`) hanya menggambar gradien, tanpa texture noise;
+  scaffold dan AppBar transparan supaya latar terlihat di semua layar.
+- Liquid glass hanya dipakai pada huruf kana (sel aktif/terpelajari dan pilihan huruf). Kartu,
+  pencarian, filter, kontrol bawah, dan navigasi pill memakai permukaan solid. Radius kartu 16,
+  sheet 24, tombol 14.
 - `ColorScheme` dibuat eksplisit dari palet (`buildAppTheme`), jadi chip, switch, slider, dialog,
   snackbar, dan bottom sheet ikut palet.
 - Saat tema berganti, `app.dart` menyuruh semua widget dibangun ulang sekali supaya warna layar yang
@@ -320,7 +330,7 @@ dikelompokkan per tingkat dan kategori:
 | N5–N4 | Sehari-hari (122), Angka (68), Waktu (85), Keluarga (52), Makanan (77), Aktivitas (91) — total 495 |
 | N3 | Pekerjaan (79), Perjalanan (68), Kesehatan (69), Pendidikan (74), Komunikasi (75) — total 365 |
 
-Di Practice > Words ada pilihan *All words / N5–N4 / N3*. Setiap kata punya arti Indonesia dan suara
+Di tab Words ada pilihan *All words / N5–N4 / N3*. Setiap kata punya arti Indonesia dan suara
 (normal + lambat) dari Open JTalk dengan suara tohoku-f01. Cara menambah/mengubah kata:
 `python3 tools/build_vocab.py` (gabung ke `words.tsv`), `python3 tools/generate_audio.py --voice ...`
 (buat suara yang belum ada), lalu `python3 tools/verify_vocab.py` (cek semuanya lengkap).
@@ -390,10 +400,13 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
 - `build_word_screen_test.dart`: alur layar Susun Kata di 360×640 — Check mati sebelum kotak
   penuh, susunan romaji yang benar dinilai benar, mode kana bisa diisi sampai Check aktif — dan soal
   terpanjang (7 kotak + 12 potongan) beserta umpan baliknya muat tanpa scroll.
-- `practice_screen_test.dart`: menu Practice menampilkan semua bagian, filter kosakata berada tepat
-  sebelum daftar latihan kata, dan seluruh menu bisa dijangkau dengan scroll di 360×640.
-- `amoled_test.dart`: palet (kontras teks, tombol utama tidak menyilaukan, AMOLED hitam sejati dan hangat)
-  dan tema Material.
+- `practice_screen_test.dart`: tab Practice hanya memuat latihan kana, tab Words memuat latihan kata
+  + filter + riwayat, dan seluruh menu bisa dijangkau dengan scroll di 360×640.
+- `main_shell_test.dart`: 4 tab Kana/Practice/Words/Profile terbuka tanpa overflow.
+- `mastery_indicator_test.dart`: indikator mastery 4 langkah, mapping level lama, dan tidak overflow
+  di tile sempit.
+- `theme_palette_test.dart`: kontras teks, pilihan aktif abu-abu, scaffold/AppBar transparan, gradien
+  latar, kaca kana, tombol utama inverted, dan tidak ada lagi palet AMOLED.
 
 ---
 

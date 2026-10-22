@@ -126,7 +126,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
-                        'Huruf yang masih sering tertukar akan muncul lebih sering.',
+                        'Characters you mix up will appear more often.',
                         style: AppText.muted,
                       ),
                     ],

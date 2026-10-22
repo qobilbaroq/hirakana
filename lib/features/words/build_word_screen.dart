@@ -315,13 +315,14 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
           child: Column(
             children: [
               SessionHeader(
-                title: 'BUILD · ${_index + 1} / ${_questions.length}',
-                progress: _index / _questions.length,
-                leadingIcon: Icons.arrow_back,
+                title: 'Build · ${_index + 1} / ${_questions.length}',
+                progress: (_index + 1) / _questions.length,
+                leadingIcon: Icons.close,
+                leadingLabel: 'Dismiss',
                 onLeading: () => Navigator.pop(context),
                 trailing: IconButton(
                   tooltip: 'Play sound',
-                  icon: const Icon(Icons.volume_up_outlined),
+                  icon: const Icon(Icons.volume_up_outlined, size: 20),
                   onPressed: _answered ? () => playWordSound(q.word) : null,
                 ),
               ),

@@ -63,7 +63,19 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: AppSpacing.lg),
-                      Text('SESSION COMPLETE', style: AppText.overline),
+                      Container(
+                        width: 54,
+                        height: 54,
+                        decoration: BoxDecoration(
+                          color: AppColors.sand,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppColors.line, width: 0.8),
+                        ),
+                        child: Icon(Icons.check_rounded,
+                            size: 28, color: AppColors.ink),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text('Session complete', style: AppText.caption),
                       const SizedBox(height: AppSpacing.xs),
                       Text('Well done.', style: AppText.title),
                       const SizedBox(height: AppSpacing.xs),
@@ -177,14 +189,22 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(AppRadius.card),
+          border: Border.all(color: AppColors.line, width: 0.8),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: AppText.muted),
+            Text(label, style: AppText.caption),
             const SizedBox(height: AppSpacing.xs),
-            Text(value,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 21,
+                height: 1.1,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.4,
+              ),
+            ),
           ],
         ),
       ),

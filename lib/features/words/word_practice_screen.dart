@@ -170,13 +170,14 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
           child: Column(
             children: [
               SessionHeader(
-                title: 'READING · ${_index + 1} / ${_questions.length}',
-                progress: _index / _questions.length,
-                leadingIcon: Icons.arrow_back,
+                title: 'Reading · ${_index + 1} / ${_questions.length}',
+                progress: (_index + 1) / _questions.length,
+                leadingIcon: Icons.close,
+                leadingLabel: 'Dismiss',
                 onLeading: () => Navigator.pop(context),
                 trailing: IconButton(
                   tooltip: 'Play sound',
-                  icon: const Icon(Icons.volume_up_outlined),
+                  icon: const Icon(Icons.volume_up_outlined, size: 20),
                   onPressed: _answered ? () => _hear(q) : null,
                 ),
               ),
@@ -188,12 +189,30 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
                       Text(
                         _prompt(q),
                         textAlign: TextAlign.center,
-                        style: AppText.section,
+                        style: AppText.section.copyWith(
+                          fontSize: 21,
+                          height: 1.25,
+                          letterSpacing: -0.3,
+                        ),
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: KanaCharacter(q.text, size: 72),
+                      const SizedBox(height: AppSpacing.sm + 2),
+                      Container(
+                        width: double.infinity,
+                        height: 128,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(28),
+                          border: Border.all(color: AppColors.line, width: 0.8),
+                        ),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: KanaCharacter(q.text, size: 72),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.lg),
                       _grid(q),
@@ -210,10 +229,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
                   onPressed: _next,
                 )
               else
-                Text(
-                  'Pilih satu jawaban. Feedback muncul setelah kamu menjawab.',
-                  style: AppText.muted,
-                ),
+                const SizedBox(height: 52),
             ],
           ),
         ),
@@ -288,7 +304,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
         ),
         if (showMeaning) ...[
           const SizedBox(height: AppSpacing.xs),
-          Text('Arti: $meaning',
+          Text('Meaning: $meaning',
               textAlign: TextAlign.center, style: AppText.muted),
         ],
         if (q.word != null && q.word!.level.isNotEmpty)
