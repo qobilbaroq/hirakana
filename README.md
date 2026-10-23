@@ -26,7 +26,9 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - **Latihan baca**: tebak romaji dari 1.272 kata sungguhan yang **semuanya punya arti Bahasa Indonesia**
   dan punya rekaman utuh. Tidak ada soal rangkaian huruf acak — tiap soal adalah kata sungguhan.
   Kalau huruf aktif masih sedikit, kata diulang supaya sesi tetap penuh.
-- **Saring kosakata per tingkat**: Practice → Words, pilih *All words* / *N5–N4* / *N3*.
+- **Susun kata (Build the word)**: susun romaji dari kata Jepang, atau susun kananya dari romaji.
+  Potongan suku kata bercampur pengecoh, arti selalu terlihat sebelum menjawab.
+- **Saring kosakata per tingkat**: di tab **Words**, pilih *All words* / *N5–N4* / *N3*.
 - **Panjang sesi bisa diatur** (minimal 10, sampai 60).
 
 **Suara (offline)**
@@ -40,8 +42,16 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 - Target harian yang bisa diatur.
 
 **Tampilan**
-- Tema Terang, Gelap, dan **AMOLED** (hitam sejati), atau ikut sistem.
-- Palet hangat yang sama di semua tema; tanpa blok terang yang menyilaukan di mode gelap.
+- Tema **Gelap** (default), Terang, atau ikut sistem.
+- Palet netral **tanpa aksen hijau**, dengan gradien latar bertekstur noise halus
+  dan kartu tembus pandang tanpa border. Mode terang memakai gradasi abu sedang
+  ke `#EBECEE`. Navigasi bawah melengkung landai seperti busur, dengan pil aktif
+  yang memanjang saat berpindah tab; toggle Hiragana/Katakana memakai bentuk
+  melengkung yang sama. Kaca nav/toggle dan kartu dibuat sedikit lebih gelap di
+  kedua tema. Konten keempat tab bergulir di belakang nav supaya kacanya tetap
+  terlihat tembus pandang. Liquid glass hanya dipakai pada huruf kana.
+- Transisi halaman dan tab yang halus (fade + geser singkat), plus animasi masuk
+  untuk kartu menu.
 
 ## Mulai cepat
 
@@ -87,10 +97,10 @@ langsung untuk dipasang. Panduan lengkap rilis dan pembaruan Android ada di **[R
 
 ```
 lib/
-  app/        router dan tema (palet terang / gelap / AMOLED)
+  app/        router dan tema (palet terang / gelap, latar gradien)
   core/       audio, pengaturan, storage (database per platform), widget bersama
   data/       model, repository (progres, kata), data huruf, goresan, kata
-  features/   home, learn, practice, progress, settings, writing, words, shell
+  features/   kana/learn, practice, words, profile, settings, writing, shell
 assets/
   audio/      suara huruf (normal + slow) dan suara kata (words/)
   strokes/    urutan goresan KanjiVG

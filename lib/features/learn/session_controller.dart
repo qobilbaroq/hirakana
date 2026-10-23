@@ -34,7 +34,7 @@ class SessionResult {
     required this.seconds,
   });
 
-  final String mode; // flashcard | quiz | writing
+  final String mode; // flashcard | quiz | writing | words | meaning | build_*
   final SessionArgs args;
   final int cards;
   final int correct;

@@ -7,6 +7,8 @@ import '../features/learn/session_controller.dart';
 import '../features/learn/session_summary_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/shell/main_shell.dart';
+import '../features/words/build_questions.dart';
+import '../features/words/build_word_screen.dart';
 import '../features/words/meaning_practice_screen.dart';
 import '../features/words/word_history_screen.dart';
 import '../features/words/word_practice_screen.dart';
@@ -22,6 +24,8 @@ class AppRouter {
   static const settings = '/settings';
   static const words = '/words';
   static const meaning = '/meaning';
+  static const buildRomaji = '/build-romaji';
+  static const buildKana = '/build-kana';
   static const wordHistory = '/word-history';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -41,6 +45,16 @@ class AppRouter {
         page = WordPracticeScreen(args: settings.arguments as SessionArgs);
       case meaning:
         page = MeaningPracticeScreen(args: settings.arguments as SessionArgs);
+      case buildRomaji:
+        page = BuildWordScreen(
+          args: settings.arguments as SessionArgs,
+          direction: BuildDirection.toRomaji,
+        );
+      case buildKana:
+        page = BuildWordScreen(
+          args: settings.arguments as SessionArgs,
+          direction: BuildDirection.toKana,
+        );
       case wordHistory:
         page = const WordHistoryScreen();
       case summary:

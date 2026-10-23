@@ -103,8 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       glyph: 'あ',
                       title: 'Hiragana',
                       count: hiraganaList.length,
-                      onTap: () => showStudyModeSheet(context,
-                          type: 'hiragana', title: 'Hiragana'),
+                      onTap: () => showStudyModeSheet(
+                        context,
+                        type: 'hiragana',
+                        title: 'Hiragana',
+                      ),
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -113,8 +116,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       glyph: 'ア',
                       title: 'Katakana',
                       count: katakanaList.length,
-                      onTap: () => showStudyModeSheet(context,
-                          type: 'katakana', title: 'Katakana'),
+                      onTap: () => showStudyModeSheet(
+                        context,
+                        type: 'katakana',
+                        title: 'Katakana',
+                      ),
                     ),
                   ),
                 ],
@@ -155,7 +161,7 @@ class _DailyGoalCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(AppRadius.card),
       ),
       child: Column(

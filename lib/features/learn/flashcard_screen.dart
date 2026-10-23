@@ -112,8 +112,6 @@ class _FlashcardScreenState extends State<FlashcardScreen>
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final kana = _session.current!;
-    final typeLabel =
-        widget.args.type == 'mixed' ? kana.typeLabel : widget.args.type;
     final pos = _session.position.toString().padLeft(2, '0');
     final total = _session.total.toString().padLeft(2, '0');
     final again = _session.retryPending > 0 ? ' · +${_session.retryPending} again' : '';
@@ -125,12 +123,14 @@ class _FlashcardScreenState extends State<FlashcardScreen>
           child: Column(
             children: [
               SessionHeader(
-                title: '${typeLabel.toUpperCase()} · $pos / $total$again',
-                progress: _session.progress,
+                title: 'Flashcards · $pos / $total$again',
+                progress: _session.position / _session.total,
+                leadingIcon: Icons.close,
+                leadingLabel: 'Dismiss',
                 onLeading: () => Navigator.pop(context),
                 trailing: IconButton(
                   tooltip: 'Play sound',
-                  icon: const Icon(Icons.volume_up_outlined),
+                  icon: const Icon(Icons.volume_up_outlined, size: 20),
                   onPressed: _speak,
                 ),
               ),
@@ -233,8 +233,8 @@ class _FlashcardScreenState extends State<FlashcardScreen>
             alignment: Alignment.center,
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(AppRadius.card),
+              color: AppColors.card,
+              borderRadius: BorderRadius.circular(28),
             ),
             child: SingleChildScrollView(
               child: Semantics(

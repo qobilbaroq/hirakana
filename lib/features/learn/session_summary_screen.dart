@@ -29,6 +29,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
       'quiz' => AppRouter.quiz,
       'words' => AppRouter.words,
       'meaning' => AppRouter.meaning,
+      'build_romaji' => AppRouter.buildRomaji,
+      'build_kana' => AppRouter.buildKana,
       'writing' => AppRouter.writing,
       _ => AppRouter.flashcard,
     };
@@ -61,7 +63,18 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: AppSpacing.lg),
-                      Text('SESSION COMPLETE', style: AppText.overline),
+                      Container(
+                        width: 54,
+                        height: 54,
+                        decoration: BoxDecoration(
+                          color: AppColors.cardRaised,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.check_rounded,
+                            size: 28, color: AppColors.ink),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text('Session complete', style: AppText.caption),
                       const SizedBox(height: AppSpacing.xs),
                       Text('Well done.', style: AppText.title),
                       const SizedBox(height: AppSpacing.xs),
@@ -74,7 +87,16 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                       const SizedBox(height: AppSpacing.lg),
                       Row(
                         children: [
-                          _stat(result.mode == 'words' || result.mode == 'meaning' ? 'Words' : 'Characters', '${result.cards}'),
+                          _stat(
+                              const {
+                                'words',
+                                'meaning',
+                                'build_romaji',
+                                'build_kana',
+                              }.contains(result.mode)
+                                  ? 'Words'
+                                  : 'Characters',
+                              '${result.cards}'),
                           const SizedBox(width: AppSpacing.sm),
                           if (!isWriting) ...[
                             _stat('Correct',
@@ -90,7 +112,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(AppSpacing.md),
                           decoration: BoxDecoration(
-                            color: AppColors.sand,
+                            color: AppColors.card,
                             borderRadius: BorderRadius.circular(AppRadius.card),
                           ),
                           child: Column(
@@ -109,7 +131,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                                       height: 56,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: AppColors.white,
+                                        color: AppColors.cardRaised,
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: KanaCharacter(k.character,
@@ -164,16 +186,23 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.card,
           borderRadius: BorderRadius.circular(AppRadius.card),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: AppText.muted),
+            Text(label, style: AppText.caption),
             const SizedBox(height: AppSpacing.xs),
-            Text(value,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 21,
+                height: 1.1,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.4,
+              ),
+            ),
           ],
         ),
       ),

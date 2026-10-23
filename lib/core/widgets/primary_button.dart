@@ -28,7 +28,14 @@ class PrimaryButton extends StatelessWidget {
     final child = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+        Flexible(
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
         if (trailing != null) ...[
           const SizedBox(width: AppSpacing.sm),
           Icon(trailing, size: 18),
@@ -45,7 +52,7 @@ class PrimaryButton extends StatelessWidget {
             shape: shape,
             foregroundColor: AppColors.ink,
             disabledForegroundColor: AppColors.muted.withValues(alpha: 0.6),
-            backgroundColor: AppColors.paper,
+            backgroundColor: Colors.transparent,
             side: BorderSide(color: AppColors.line),
           ),
           child: child,
@@ -56,23 +63,25 @@ class PrimaryButton extends StatelessWidget {
           style: FilledButton.styleFrom(
             minimumSize: size,
             shape: shape,
-            backgroundColor: AppColors.sage,
-            foregroundColor: AppColors.white,
-            disabledBackgroundColor: AppColors.sage.withValues(alpha: 0.45),
-            disabledForegroundColor: AppColors.white.withValues(alpha: 0.8),
+            backgroundColor: AppColors.active,
+            foregroundColor: AppColors.onActive,
+            disabledBackgroundColor: AppColors.sand,
+            disabledForegroundColor: AppColors.muted,
           ),
           child: child,
         );
       case ButtonKind.primary:
+        // Tombol utama dibalik: terang di tema gelap, gelap di tema terang.
+        // Ini memberi satu titik fokus tanpa memakai warna aksen.
         return FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             minimumSize: size,
             shape: shape,
-            backgroundColor: AppColors.action,
-            foregroundColor: AppColors.onAction,
-            disabledBackgroundColor: AppColors.action.withValues(alpha: 0.35),
-            disabledForegroundColor: AppColors.onAction.withValues(alpha: 0.7),
+            backgroundColor: AppColors.ink,
+            foregroundColor: AppColors.paper,
+            disabledBackgroundColor: AppColors.sand,
+            disabledForegroundColor: AppColors.muted,
           ),
           child: child,
         );

@@ -10,7 +10,7 @@ import 'session_controller.dart';
 /// Kuis hanya jalan kalau ada huruf pilihanmu yang sudah pernah dilihat.
 Future<void> launchSession(
   BuildContext context, {
-  required String mode, // flashcard | quiz | writing | words | meaning
+  required String mode, // flashcard | quiz | writing | words | meaning | build_romaji | build_kana
   required SessionArgs args,
 }) async {
   final repo = KanaRepository.instance;
@@ -66,7 +66,10 @@ Future<void> launchSession(
     return;
   }
 
-  if (mode == 'words' || mode == 'meaning') {
+  if (mode == 'words' ||
+      mode == 'meaning' ||
+      mode == 'build_romaji' ||
+      mode == 'build_kana') {
     if (!await WordRepository.instance.canRun(args.type)) {
       if (!context.mounted) return;
       final goChoose = await showDialog<bool>(
@@ -95,9 +98,13 @@ Future<void> launchSession(
       }
       return;
     }
-    navigator.pushNamed(
-        mode == 'meaning' ? AppRouter.meaning : AppRouter.words,
-        arguments: args);
+    final route = switch (mode) {
+      'meaning' => AppRouter.meaning,
+      'build_romaji' => AppRouter.buildRomaji,
+      'build_kana' => AppRouter.buildKana,
+      _ => AppRouter.words,
+    };
+    navigator.pushNamed(route, arguments: args);
     return;
   }
 

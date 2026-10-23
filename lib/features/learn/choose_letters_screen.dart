@@ -6,6 +6,7 @@ import '../../app/theme/app_theme.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/kana_group_row.dart';
 import '../../core/widgets/mastery_indicator.dart';
+import '../../core/widgets/pill_button.dart';
 import '../../data/models/kana.dart';
 import '../../data/repositories/kana_repository.dart';
 import '../../data/seed/kana_data.dart';
@@ -76,8 +77,12 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
     if (g == 'vowels') return 'Vowels';
     if (g == 'n-final') return 'N';
     if (g == 'handakuten') return 'Handakuten · P';
-    if (g.startsWith('dakuten-')) return 'Dakuten · ${g.substring(8).toUpperCase()}';
-    if (g.startsWith('yoon-')) return 'Combos · ${g.substring(5).toUpperCase()}';
+    if (g.startsWith('dakuten-')) {
+      return 'Dakuten · ${g.substring(8).toUpperCase()}';
+    }
+    if (g.startsWith('yoon-')) {
+      return 'Combos · ${g.substring(5).toUpperCase()}';
+    }
     return '${g.toUpperCase()} row';
   }
 
@@ -115,41 +120,52 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
                           setState(() => _script = v.first),
                     ),
                     const Spacer(),
-                    Text('$count selected', style: AppText.muted),
+                    Text('$count selected', style: AppText.caption),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Wrap(
-                  spacing: AppSpacing.sm,
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
-                    ActionChip(
-                      label: const Text('Add next 5'),
-                      avatar: const Icon(Icons.add, size: 18),
-                      onPressed: _addNext,
+                    PillButton(
+                      icon: Icons.add,
+                      label: 'Add next 5',
+                      onTap: _addNext,
                     ),
-                    ActionChip(
-                      label: const Text('Select all'),
-                      onPressed: () =>
+                    PillButton(
+                      icon: Icons.done_all,
+                      label: 'Select all',
+                      onTap: () =>
                           _save({..._selected, ..._list.map((k) => k.id)}),
                     ),
-                    ActionChip(
-                      label: const Text('Clear'),
-                      onPressed: () => _save(
-                          _selected.difference(_list.map((k) => k.id).toSet())),
+                    PillButton(
+                      icon: Icons.clear_all,
+                      label: 'Clear',
+                      onTap: () => _save(
+                        _selected.difference(_list.map((k) => k.id).toSet()),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.md),
                 for (final entry in groups.entries) ...[
                   InkWell(
+                    borderRadius: BorderRadius.circular(12),
                     onTap: () => _toggleGroup(entry.value),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.sm,
+                      ),
                       child: Row(
                         children: [
-                          Text(_groupLabel(entry.key), style: AppText.section),
-                          const Spacer(),
-                          Text('Tap to select row', style: AppText.muted),
+                          Expanded(
+                            child: Text(
+                              _groupLabel(entry.key),
+                              style: AppText.section,
+                            ),
+                          ),
+                          Text('Tap to select row', style: AppText.caption),
                         ],
                       ),
                     ),
@@ -173,30 +189,95 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
       button: true,
       selected: on,
       label: '${k.character} ${k.romaji}',
+      excludeSemantics: true,
+      child: _LetterTile(
+        kana: k,
+        on: on,
+        level: _levels[k.id] ?? 0,
+        onTap: () => _toggle(k),
+      ),
+    );
+  }
+}
+
+/// Tile huruf. Saat dipilih: kaca halus memudar masuk dan tile membesar
+/// sedikit. Warnanya sengaja lembut; pip penguasaan dibuat redup supaya tidak
+/// lebih terang dari huruf.
+class _LetterTile extends StatelessWidget {
+  const _LetterTile({
+    required this.kana,
+    required this.on,
+    required this.level,
+    required this.onTap,
+  });
+
+  final Kana kana;
+  final bool on;
+  final int level;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(14);
+    final fg = AppColors.ink;
+    return AnimatedScale(
+      scale: on ? 1 : 0.97,
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutBack,
       child: Material(
-        color: on ? AppColors.sage.withValues(alpha: 0.3) : AppColors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.card,
+        borderRadius: radius,
+        clipBehavior: Clip.antiAlias,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () => _toggle(k),
-          child: Container(
-            height: 68,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: on ? AppColors.sage : AppColors.sand,
-                width: on ? 2 : 1,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          onTap: onTap,
+          child: SizedBox(
+            height: 72,
+            child: Stack(
               children: [
-                KanaCharacter(k.character,
-                    size: k.character.length > 1 ? 20 : 24),
-                Text(k.romaji,
-                    style: TextStyle(fontSize: 11, color: AppColors.muted)),
-                const SizedBox(height: 2),
-                MasteryIndicator(level: _levels[k.id] ?? 0),
+                Positioned.fill(
+                  child: AnimatedOpacity(
+                    opacity: on ? 1 : 0,
+                    duration: const Duration(milliseconds: 220),
+                    curve: Curves.easeOutCubic,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: AppColors.activeGlassGradient(intensity: 0.7),
+                        borderRadius: radius,
+                        border: Border.all(
+                          color: AppColors.glassBorder,
+                          width: 0.8,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      KanaCharacter(
+                        kana.character,
+                        size: kana.character.length > 1 ? 20 : 25,
+                        color: on ? fg : fg.withValues(alpha: 0.86),
+                      ),
+                      Text(
+                        kana.romaji,
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          height: 1.2,
+                          color: on
+                              ? fg.withValues(alpha: 0.65)
+                              : AppColors.muted,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      MasteryIndicator(
+                        level: level,
+                        color: fg.withValues(alpha: on ? 0.5 : 0.38),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

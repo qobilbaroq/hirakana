@@ -40,8 +40,15 @@ class ProgressStats {
     required this.katakanaMastery,
     required this.weak,
     required this.levels,
+    required this.masterySteps,
+    required this.active,
     required this.recent,
     required this.confusions,
+    required this.currentStreak,
+    required this.longestStreak,
+    required this.totalSessions,
+    required this.wordsMet,
+    required this.last7DaysSeconds,
   });
   final int knownCount;
   final int totalCount;
@@ -50,8 +57,15 @@ class ProgressStats {
   final double katakanaMastery; // 0..1
   final List<Kana> weak;
   final Map<String, int> levels; // kanaId -> masteryLevel
+  final Map<String, int> masterySteps; // kanaId -> 0..4 (tampilan kaca)
+  final Set<String> active; // kanaId yang sedang dipelajari
   final List<StudySession> recent;
   final List<ConfusionPair> confusions;
+  final int currentStreak;
+  final int longestStreak;
+  final int totalSessions;
+  final int wordsMet;
+  final List<int> last7DaysSeconds; // 7 hari, paling lama -> hari ini
 }
 
 /// Satu-satunya pintu ke database. Memberi tahu listener (Home, Progress)
@@ -500,6 +514,51 @@ class KanaRepository extends ChangeNotifier {
     final rows = await db.query('study_sessions',
         where: 'cards > 0', orderBy: 'started_at DESC', limit: 5);
 
+    // Statistik turunan untuk layar Profile. Semua dihitung dari sesi yang
+    // sudah ada, tanpa tabel atau data baru.
+    final allSessions = await db.query(
+      'study_sessions',
+      columns: ['started_at', 'duration_sec', 'cards'],
+    );
+    final daySeconds = <DateTime, int>{};
+    var totalSessions = 0;
+    for (final row in allSessions) {
+      final cards = (row['cards'] as num?)?.toInt() ?? 0;
+      final seconds = (row['duration_sec'] as num?)?.toInt() ?? 0;
+      if (cards <= 0 && seconds <= 0) continue;
+      totalSessions++;
+      final dt = DateTime.fromMillisecondsSinceEpoch(
+          (row['started_at'] as num).toInt());
+      final day = DateTime(dt.year, dt.month, dt.day);
+      daySeconds[day] = (daySeconds[day] ?? 0) + seconds;
+    }
+    final studiedDays = daySeconds.keys.toList()..sort();
+    var longestStreak = 0;
+    var run = 0;
+    DateTime? previous;
+    for (final day in studiedDays) {
+      run = previous != null && day.difference(previous).inDays == 1
+          ? run + 1
+          : 1;
+      if (run > longestStreak) longestStreak = run;
+      previous = day;
+    }
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    var currentStreak = 0;
+    var cursor = daySeconds.containsKey(today) ? today : yesterday;
+    while (daySeconds.containsKey(cursor)) {
+      currentStreak++;
+      cursor = cursor.subtract(const Duration(days: 1));
+    }
+    final last7DaysSeconds = [
+      for (var i = 6; i >= 0; i--)
+        daySeconds[today.subtract(Duration(days: i))] ?? 0,
+    ];
+    final wordRows =
+        await db.rawQuery('SELECT COUNT(*) AS c FROM word_history');
+    final wordsMet = (wordRows.first['c'] as num?)?.toInt() ?? 0;
+
     return ProgressStats(
       knownCount: allKana.where((k) => progress[k.id]?.isMastered ?? false).length,
       totalCount: allKana.length,
@@ -508,8 +567,23 @@ class KanaRepository extends ChangeNotifier {
       katakanaMastery: mastery(katakanaList),
       weak: weak.take(8).toList(),
       levels: {for (final e in progress.entries) e.key: e.value.masteryLevel},
+      masterySteps: {
+        for (final e in progress.entries)
+          e.key: e.value.masteryLevel >= 3
+              ? 4
+              : max(
+                  e.value.masteryLevel,
+                  e.value.sessionsCorrect.clamp(0, 3),
+                ),
+      },
+      active: await activeIds(),
       recent: rows.map(StudySession.fromMap).toList(),
       confusions: await topConfusions(limit: 6, minCount: confusionMin),
+      currentStreak: currentStreak,
+      longestStreak: longestStreak,
+      totalSessions: totalSessions,
+      wordsMet: wordsMet,
+      last7DaysSeconds: last7DaysSeconds,
     );
   }
 }

@@ -23,7 +23,10 @@ List<Kana?> _slots(List<Kana> g) {
     case 'n-final':
       return [g[0], null, null, null, null];
     default:
-      return g; // 5 huruf (vowels, ka, ...) atau 3 huruf (kombinasi)
+      // Baris kontraksi (きゃ きゅ きょ) tetap memakai lima kolom supaya
+      // sejajar dengan baris gojuon lainnya.
+      if (g.length == 3) return [g[0], null, g[1], null, g[2]];
+      return g; // 5 huruf (vowels, ka, ...)
   }
 }
 

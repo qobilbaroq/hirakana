@@ -62,7 +62,7 @@ class KanaTracingCanvas extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppRadius.card),
         child: Container(
-          color: AppColors.white,
+          color: AppColors.card,
           child: Stack(
             children: [
               Positioned.fill(

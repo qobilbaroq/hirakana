@@ -184,34 +184,50 @@ class _QuizScreenState extends State<QuizScreen> {
           child: Column(
             children: [
               SessionHeader(
-                title: 'QUICK QUIZ · ${_pos.toString().padLeft(2, '0')} / $total$again',
-                progress: _session.progress,
-                leadingIcon: Icons.arrow_back,
+                title: 'Quick quiz · ${_pos.toString().padLeft(2, '0')} / $total$again',
+                progress: _session.position / _session.total,
+                leadingIcon: Icons.close,
+                leadingLabel: 'Dismiss',
                 onLeading: () => Navigator.pop(context),
                 trailing: IconButton(
                   tooltip: 'Play sound',
-                  icon: const Icon(Icons.volume_up_outlined),
+                  icon: const Icon(Icons.volume_up_outlined, size: 20),
                   onPressed: canPlay ? () => _speak(q.target) : null,
                 ),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: AppSpacing.lg),
-                  child: Column(
-                    children: [
-                      Text(q.prompt,
-                          textAlign: TextAlign.center, style: AppText.section),
-                      if (q.showKana) ...[
-                        const SizedBox(height: AppSpacing.md),
-                        KanaCharacter(q.target.character,
-            size: q.target.character.length > 1 ? 72 : 96),
-                      ],
-                      const SizedBox(height: AppSpacing.lg),
-                      _choiceGrid(q),
-                      const SizedBox(height: AppSpacing.md),
-                      _feedback(q),
-                    ],
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final minHeight = constraints.maxHeight - AppSpacing.lg;
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.only(top: AppSpacing.lg),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: minHeight > 0 ? minHeight : 0,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              q.prompt,
+                              textAlign: TextAlign.center,
+                              style: AppText.section.copyWith(
+                                fontSize: 21,
+                                height: 1.25,
+                                letterSpacing: -0.3,
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.sm + 2),
+                            _PromptCard(question: q),
+                            const SizedBox(height: AppSpacing.lg),
+                            _choiceGrid(q),
+                            const SizedBox(height: AppSpacing.md),
+                            _feedback(q),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               if (_answered)
@@ -221,10 +237,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: _next,
                 )
               else
-                Text(
-                  'Pilih satu jawaban. Feedback muncul setelah kamu menjawab.',
-                  style: AppText.muted,
-                ),
+                const SizedBox(height: 52),
             ],
           ),
         ),
@@ -248,6 +261,7 @@ class _QuizScreenState extends State<QuizScreen> {
         label: q.optionLabel(k),
         isKana: q.optionsAreKana,
         state: state,
+        textSize: q.optionsAreKana ? 32 : 22,
         onTap: _answered ? null : () => _submit(k.id == q.target.id, pickedId: k.id),
       );
     }
@@ -257,13 +271,13 @@ class _QuizScreenState extends State<QuizScreen> {
       children: [
         Row(children: [
           Expanded(child: tile(o[0])),
-          const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: 10),
           Expanded(child: tile(o[1])),
         ]),
-        const SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: 10),
         Row(children: [
           Expanded(child: tile(o[2])),
-          const SizedBox(width: AppSpacing.sm),
+          const SizedBox(width: 10),
           Expanded(child: tile(o[3])),
         ]),
       ],
@@ -295,6 +309,45 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _PromptCard extends StatelessWidget {
+  const _PromptCard({required this.question});
+
+  final QuizQuestion question;
+
+  @override
+  Widget build(BuildContext context) {
+    final kana = question.target.character;
+    return Semantics(
+      label: question.showKana ? kana : question.target.romaji,
+      child: Container(
+        width: double.infinity,
+        height: 128,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: question.showKana
+            ? KanaCharacter(
+                kana,
+                size: kana.length > 1 ? 62 : 92,
+                weight: FontWeight.w500,
+              )
+            : Text(
+                question.target.romaji,
+                style: TextStyle(
+                  fontSize: 54,
+                  height: 1,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -1.5,
+                  color: AppColors.ink,
+                ),
+              ),
+      ),
     );
   }
 }

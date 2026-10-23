@@ -10,7 +10,7 @@ class StudySession {
   });
 
   final int id;
-  final String mode; // flashcard | quiz | writing
+  final String mode; // flashcard | quiz | writing | words | meaning | build_*
   final String kanaType;
   final DateTime startedAt;
   final int durationSeconds;
