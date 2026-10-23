@@ -4,8 +4,8 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 
-/// Pill pilihan tunggal. Yang terpilih dibalik (terang di tema gelap) supaya
-/// langsung terbaca tanpa memakai warna aksen.
+/// Pill pilihan tunggal. Yang terpilih memakai abu-abu [AppColors.active]
+/// dengan latar tembus pandang untuk yang tidak terpilih.
 class PillChoice extends StatelessWidget {
   const PillChoice({
     super.key,
@@ -29,7 +29,7 @@ class PillChoice extends StatelessWidget {
       label: label,
       excludeSemantics: true,
       child: Material(
-        color: selected ? AppColors.active : AppColors.white,
+        color: selected ? AppColors.active : AppColors.card,
         borderRadius: BorderRadius.circular(AppRadius.pill),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -39,12 +39,6 @@ class PillChoice extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),
-              border: Border.all(
-                color: selected
-                    ? Colors.transparent
-                    : AppColors.line.withValues(alpha: 0.9),
-                width: 0.8,
-              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

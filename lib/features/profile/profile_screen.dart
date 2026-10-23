@@ -296,7 +296,7 @@ class _StreakCard extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.sand,
+                  color: AppColors.cardRaised,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                 ),
                 child: Text('Day $dayNumber', style: AppText.caption),
@@ -511,7 +511,7 @@ class _Milestone extends StatelessWidget {
             child: CustomPaint(
               painter: _HexPainter(
                 fill: unlocked
-                    ? AppColors.sand
+                    ? AppColors.cardRaised
                     : Colors.transparent,
                 stroke: unlocked
                     ? AppColors.sage
@@ -706,9 +706,8 @@ class _ReviewCard extends StatelessWidget {
                     height: 42,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: AppColors.paper,
+                      color: AppColors.cardRaised,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.line, width: 0.8),
                     ),
                     child: KanaCharacter(k.character,
                         size: k.character.length > 1 ? 18 : 22),
@@ -764,9 +763,8 @@ class _PairChip extends StatelessWidget {
       height: 34,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: AppColors.paper,
+        color: AppColors.cardRaised,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.line, width: 0.8),
       ),
       child: KanaCharacter(glyph, size: glyph.length > 1 ? 15 : 19),
     );
@@ -800,7 +798,7 @@ class _RecentRow extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: AppColors.sand,
+              color: AppColors.cardRaised,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(_modeIcon(mode), size: 18, color: AppColors.ink),
@@ -851,8 +849,8 @@ class _RoundIconButton extends StatelessWidget {
     return Tooltip(
       message: tooltip,
       child: Material(
-        color: AppColors.white,
-        shape: CircleBorder(side: BorderSide(color: AppColors.line)),
+        color: AppColors.card,
+        shape: const CircleBorder(),
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: onTap,

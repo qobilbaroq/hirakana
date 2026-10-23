@@ -328,9 +328,8 @@ class _PromptCard extends StatelessWidget {
         height: 128,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.card,
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: AppColors.line, width: 0.8),
         ),
         child: question.showKana
             ? KanaCharacter(

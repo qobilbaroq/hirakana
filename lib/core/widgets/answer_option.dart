@@ -24,7 +24,7 @@ class AnswerOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color border = AppColors.line.withValues(alpha: 0.55);
+    Color border = Colors.transparent;
     double width = 1;
     Color? icon;
     switch (state) {
@@ -56,7 +56,7 @@ class AnswerOption extends StatelessWidget {
       label: '$label$stateSuffix',
       excludeSemantics: true,
       child: Material(
-        color: AppColors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(AppRadius.card),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.card),
@@ -70,7 +70,7 @@ class AnswerOption extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.card),
               border: Border.all(color: border, width: width),
               color: state == OptionState.idle || state == OptionState.dimmed
-                  ? AppColors.white
+                  ? AppColors.card
                   : AppColors.sand.withValues(alpha: 0.55),
             ),
             child: Stack(

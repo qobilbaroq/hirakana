@@ -244,7 +244,7 @@ class _WordTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final w = record.word;
     return Material(
-      color: AppColors.white,
+      color: AppColors.card,
       borderRadius: BorderRadius.circular(AppRadius.card),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.card),

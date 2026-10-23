@@ -24,7 +24,7 @@ class PillButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final fg = filled ? AppColors.paper : AppColors.ink;
     return Material(
-      color: filled ? AppColors.ink : AppColors.white,
+      color: filled ? AppColors.ink : AppColors.card,
       borderRadius: BorderRadius.circular(AppRadius.pill),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -34,10 +34,6 @@ class PillButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 13),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.pill),
-            border: Border.all(
-              color: filled ? Colors.transparent : AppColors.line,
-              width: 0.8,
-            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

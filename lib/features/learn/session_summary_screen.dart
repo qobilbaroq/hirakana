@@ -67,9 +67,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                         width: 54,
                         height: 54,
                         decoration: BoxDecoration(
-                          color: AppColors.sand,
+                          color: AppColors.cardRaised,
                           shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.line, width: 0.8),
                         ),
                         child: Icon(Icons.check_rounded,
                             size: 28, color: AppColors.ink),
@@ -113,7 +112,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(AppSpacing.md),
                           decoration: BoxDecoration(
-                            color: AppColors.sand,
+                            color: AppColors.card,
                             borderRadius: BorderRadius.circular(AppRadius.card),
                           ),
                           child: Column(
@@ -132,7 +131,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                                       height: 56,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: AppColors.white,
+                                        color: AppColors.cardRaised,
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: KanaCharacter(k.character,
@@ -187,9 +186,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.card,
           borderRadius: BorderRadius.circular(AppRadius.card),
-          border: Border.all(color: AppColors.line, width: 0.8),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

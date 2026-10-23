@@ -5,6 +5,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
+import '../../core/widgets/curved_nav_geometry.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/kana_group_row.dart';
 import '../../core/widgets/mastery_indicator.dart';
@@ -210,6 +211,12 @@ class _LearnScreenState extends State<LearnScreen> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).padding.bottom;
+    final navGeometry = CurvedNavGeometry(
+      maxWidth: MediaQuery.sizeOf(context).width - 32,
+      count: 4,
+    );
+    // Kontrol bawah tidak boleh menutupi navigasi melengkung yang melayang.
+    final controlsBottom = bottomInset + navGeometry.height + 20;
     return SafeArea(
       bottom: false,
       child: ListenableBuilder(
@@ -259,7 +266,7 @@ class _LearnScreenState extends State<LearnScreen> {
                               active: stats?.active ?? const {},
                               showRomaji: _showRomaji,
                               selectedId: _selectedId,
-                              bottomInset: bottomInset + 58,
+                              bottomInset: controlsBottom + 58,
                               onTap: (kana) => _openDetail(kana, stats),
                             ),
                     ),
@@ -269,7 +276,7 @@ class _LearnScreenState extends State<LearnScreen> {
               Positioned(
                 left: 20,
                 right: 20,
-                bottom: bottomInset + 8,
+                bottom: controlsBottom,
                 child: _BottomControls(
                   script: _script,
                   showRomaji: _showRomaji,
@@ -313,7 +320,7 @@ class _SearchField extends StatelessWidget {
       decoration: InputDecoration(
         isDense: true,
         filled: true,
-        fillColor: AppColors.sand,
+        fillColor: AppColors.cardRaised,
         hintText: 'Search kana or romaji',
         hintStyle: AppText.muted,
         prefixIcon: Icon(Icons.search, size: 20, color: AppColors.muted),
@@ -334,10 +341,7 @@ class _SearchField extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.pill),
-          borderSide: BorderSide(
-            color: AppColors.line.withValues(alpha: 0.9),
-            width: 0.8,
-          ),
+          borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -543,12 +547,8 @@ class _BottomControls extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: AppColors.white,
+                  color: AppColors.card,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
-                  border: Border.all(
-                    color: AppColors.line.withValues(alpha: 0.9),
-                    width: 0.8,
-                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -646,15 +646,9 @@ class _CircleButton extends StatelessWidget {
       child: Tooltip(
         message: tooltip,
         child: Material(
-          color: selected ? AppColors.active : AppColors.white,
+          color: selected ? AppColors.active : AppColors.card,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.pill),
-            side: BorderSide(
-              color: selected
-                  ? Colors.transparent
-                  : AppColors.line.withValues(alpha: 0.9),
-              width: 0.8,
-            ),
           ),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
@@ -721,12 +715,8 @@ class _KanaDetailSheet extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.sand,
+                      color: AppColors.cardRaised,
                       borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(
-                        color: AppColors.line.withValues(alpha: 0.9),
-                        width: 0.8,
-                      ),
                     ),
                     child: KanaCharacter(
                       kana.character,

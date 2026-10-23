@@ -84,7 +84,7 @@ class _DismissPill extends StatelessWidget {
       label: label,
       excludeSemantics: true,
       child: Material(
-        color: AppColors.sand,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(AppRadius.pill),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -94,7 +94,6 @@ class _DismissPill extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10, right: 14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),
-              border: Border.all(color: AppColors.line, width: 0.8),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

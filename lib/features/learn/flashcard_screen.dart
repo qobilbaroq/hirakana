@@ -233,9 +233,8 @@ class _FlashcardScreenState extends State<FlashcardScreen>
             alignment: Alignment.center,
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: AppColors.card,
               borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: AppColors.line, width: 0.8),
             ),
             child: SingleChildScrollView(
               child: Semantics(

@@ -67,12 +67,13 @@ void main() {
       );
     });
 
-    test('terang tetap terang dan opak', () {
+    test('terang memakai gradasi hangat yang tetap terang', () {
       addTearDown(() => AppColors.isDark = false);
       AppColors.isDark = false;
       final g = AppColors.backgroundGradient;
       expect(g.colors.first.a, 1);
-      expect(g.colors.first.computeLuminance(), greaterThan(0.8));
+      expect(g.colors.last.a, 1);
+      expect(g.colors.first.computeLuminance(), greaterThan(0.65));
     });
 
     test('kaca aktif kana tetap transparan di kedua tema', () {

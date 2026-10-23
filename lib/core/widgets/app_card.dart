@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 
-/// Permukaan kartu biasa: solid, border tipis, tanpa gradien kaca.
+/// Permukaan kartu tembus pandang tanpa border.
 ///
 /// [color] dipakai untuk kartu yang butuh latar berbeda (misalnya kartu
-/// peringatan); default-nya permukaan kartu tema.
+/// peringatan); default-nya lapisan kartu tema.
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
@@ -27,14 +27,12 @@ class AppCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppRadius.card),
-      side:
-          border ??
-          BorderSide(color: AppColors.line.withValues(alpha: 0.8), width: 0.8),
+      side: border ?? BorderSide.none,
     );
     final content = Padding(padding: padding, child: child);
 
     return Material(
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.card,
       shape: shape,
       clipBehavior: Clip.antiAlias,
       child: onTap == null
@@ -73,10 +71,6 @@ class IconTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withValues(alpha: AppColors.isDark ? 0.26 : 0.34),
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(
-          color: AppColors.line.withValues(alpha: 0.8),
-          width: 0.8,
-        ),
       ),
       child: Icon(icon, size: size * 0.48, color: AppColors.ink),
     );

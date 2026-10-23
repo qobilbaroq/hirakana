@@ -236,7 +236,8 @@ lewat `recordResult`, dan di mode kana huruf yang tertukar masuk "Often mixed up
 ## 7. Fitur per layar
 
 - **Kana**: grid gojuon 5 kolom untuk Hiragana/Katakana/Mixed, pencarian, filter tampilan romaji,
-  indikator mastery kaca per huruf, pil Hiragana/Katakana yang mengambang, dan tombol *Choose letters*. Ketuk huruf untuk membuka detail
+  indikator mastery kaca per huruf, pil Hiragana/Katakana yang diletakkan di atas navigasi
+  melengkung, dan tombol *Choose letters*. Ketuk huruf untuk membuka detail
   (contoh kata, audio, status mastery, *Add/Remove*, dan *Study*); *Study* membuka pilihan
   Flashcards / Quick quiz / Writing.
 - **Practice**: pilih Hiragana / Katakana / Mixed, lalu **Flashcards**, **Quick quiz**, **Writing**,
@@ -276,24 +277,30 @@ Disimpan di tabel `meta`, dimuat saat app mulai (`AppSettings`):
 ### Palet warna
 
 Dua palet di `lib/app/theme/app_colors.dart` (`AppPalette.light`, `.dark`); **AMOLED sudah dihapus**.
-Keduanya monokrom netral dengan aksen sage/clay tipis. `AppColors.*` adalah **getter** yang mengikuti
-tema aktif, jadi tidak boleh dipakai di ekspresi `const`.
+Keduanya netral dengan aksen sage/clay tipis. `AppColors.*` adalah **getter** yang mengikuti tema
+aktif, jadi tidak boleh dipakai di ekspresi `const`. Surface kartu memakai `card`/`cardRaised`
+(putih transparan di tema terang, putih 6–10% di tema gelap) tanpa border; border hanya untuk status
+pilihan/jawaban.
 
-- **Gelap**: gradien latar memakai stop `#868686 → #4B4B4B → #2E2E2E → #201F1F → #181818 →
-  #151414 → #111111`, dicampur 60% dengan paper `#121311` supaya teks off-white tetap terbaca.
-  Kartu solid, tombol utama inverted (terang di atas gelap).
-- **Terang**: gradien paper `#F8F8F4 → #E8E8E2`; kartu putih solid. Pilihan aktif memakai abu-abu
-  `#B8B8B1`, bukan hitam.
-- `AppBackground` (di `MaterialApp.builder`) hanya menggambar gradien, tanpa texture noise;
-  scaffold dan AppBar transparan supaya latar terlihat di semua layar.
+- **Gelap**: paper `#111111`, mulai dari `bgTop #6A6A6A` lalu cepat meredup ke paper. Teks
+  off-white `#E6E6E6`, aksen sage `#95AA8B`, tombol utama sage gelap `#5B7253`.
+- **Terang**: paper `#F7F5EF`, mulai dari `bgTop #DEDBD0`; kartu putih 60–80% transparan.
+  Pilihan aktif memakai abu-abu `#B8B8B1`, bukan hitam.
+- `AppBackground` global (di `MaterialApp.builder`) menggambar gradien dengan stop yang cepat
+  meredup, lalu `NoiseOverlay` halus dari `CustomPainter` (tanpa aset). Scaffold dan AppBar
+  transparan supaya latar terlihat di semua layar.
 - Liquid glass hanya dipakai pada huruf kana (sel aktif/terpelajari dan pilihan huruf). Kartu,
-  pencarian, filter, kontrol bawah, dan navigasi pill memakai permukaan solid. Radius kartu 16,
-  sheet 24, tombol 14.
-- Navigasi pill ringkas: tinggi 70, radius 26, margin samping 20; tombol terpilih 54×42,
-  tombol lain 42×42.
+  pencarian, filter, kontrol bawah, dan surface lain memakai lapisan `card`/`cardRaised`.
+  Radius kartu 16, sheet 24, tombol 14.
+- Navigasi bawah memakai `CurvedNavBar`: busur dengan tengah lebih tinggi, ujung turun ≈5,2%
+  lebar bar, tebal 48–58 px, dan tap target ≥48 px. Pil aktif ≈70% tebal bar, ikut miring
+  mengikuti busur, dan memanjang ke tab tujuan lalu mengecil kembali (560 ms). Bar memakai
+  kaca tembus pandang tanpa blur.
+- Kontrol bawah Kana dihitung dari `CurvedNavGeometry.height` agar selalu berada di atas
+  navigasi; tab lain memakai `AppSpacing.navClearance`.
 - Animasi ringan: `AppPageTransitionsBuilder` memberi fade + geser tipis untuk halaman
   yang dibuka; pindah tab memudarkan isi `IndexedStack` 240 ms tanpa menghapus state;
-  `ModeCard` masuk dengan fade + geser 240 ms; ikon tab terpilih membesar 180 ms.
+  `ModeCard` masuk dengan fade + geser 240 ms; warna ikon tab memudar 260 ms.
 - `ColorScheme` dibuat eksplisit dari palet (`buildAppTheme`), jadi chip, switch, slider, dialog,
   snackbar, dan bottom sheet ikut palet.
 - Saat tema berganti, `app.dart` menyuruh semua widget dibangun ulang sekali supaya warna layar yang

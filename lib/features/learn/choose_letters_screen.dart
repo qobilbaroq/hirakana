@@ -193,7 +193,7 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
       label: '${k.character} ${k.romaji}',
       excludeSemantics: true,
       child: Material(
-        color: on ? Colors.transparent : AppColors.white,
+        color: on ? Colors.transparent : AppColors.card,
         borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
@@ -206,12 +206,9 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
                   ? AppColors.activeGlassGradient(intensity: 1.5)
                   : null,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: on
-                    ? AppColors.glassBorderStrong
-                    : AppColors.line.withValues(alpha: 0.9),
-                width: 0.8,
-              ),
+              border: on
+                  ? Border.all(color: AppColors.glassBorderStrong, width: 0.8)
+                  : null,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

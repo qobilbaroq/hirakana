@@ -201,7 +201,7 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
   Widget _slot(BuildQuestion q, int i) {
     final filled = i < _picked.length;
     final text = filled ? _labelOf(q, _picked[i]) : '';
-    var border = AppColors.line;
+    var border = Colors.transparent;
     var width = 1.5;
     if (_answered) {
       final match = _lastOk || (filled && text == q.answerTiles[i]);
@@ -214,7 +214,7 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: AppColors.sand,
+          color: AppColors.card,
           borderRadius: BorderRadius.circular(AppRadius.button),
           border: Border.all(color: border, width: width),
         ),
@@ -252,7 +252,7 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
     return Opacity(
       opacity: used ? 0.25 : 1,
       child: Material(
-        color: AppColors.white,
+        color: AppColors.cardRaised,
         borderRadius: BorderRadius.circular(AppRadius.button),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.button),
@@ -262,7 +262,6 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.button),
-              border: Border.all(color: AppColors.line),
             ),
             child: FittedBox(fit: BoxFit.scaleDown, child: _label(t.label)),
           ),
