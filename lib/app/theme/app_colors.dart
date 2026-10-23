@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Satu set warna lengkap untuk tema terang atau gelap.
 ///
-/// Palet netral dengan aksen sage yang diredam. Kartu memakai lapisan
-/// tembus pandang tanpa border; efek kaca dipakai pada huruf kana dan
-/// navigasi bawah.
+/// Palet monokrom netral tanpa aksen hijau. Efek kaca dipakai pada huruf kana,
+/// navigasi, toggle, dan tombol bulat; kartu memakai permukaan tembus pandang
+/// tanpa border. Border hanya untuk status pilihan/jawaban.
 class AppPalette {
   const AppPalette({
     required this.paper,
@@ -20,14 +20,6 @@ class AppPalette {
     required this.onAction,
     required this.active,
     required this.onActive,
-    required this.card,
-    required this.cardRaised,
-    required this.divider,
-    required this.bgTop,
-    required this.glass,
-    required this.glassPill,
-    required this.glassIcon,
-    required this.glassIconOn,
     required this.isDark,
   });
 
@@ -36,7 +28,7 @@ class AppPalette {
   final Color sage; // aksen netral (progress, ikon)
   final Color clay; // aksen hangat (salah / perlu dilihat lagi)
   final Color sand; // permukaan kedua (chip, kotak ikon)
-  final Color white; // permukaan solid (dialog, elemen lama)
+  final Color white; // permukaan kartu
   final Color muted; // teks sekunder
   final Color line; // garis tipis
   final Color guide; // panduan huruf samar di kanvas menulis
@@ -44,66 +36,43 @@ class AppPalette {
   final Color onAction; // teks/ikon di atas tombol utama
   final Color active; // latar pilihan aktif (abu-abu, bukan hitam)
   final Color onActive; // teks/ikon di atas pilihan aktif
-  final Color card; // isi kartu: lapisan tembus pandang, tanpa border
-  final Color cardRaised; // isi kartu di dalam kartu / elemen menonjol
-  final Color divider; // garis pemisah di dalam kartu
-  final Color bgTop; // warna atas gradasi latar layar
-  final Color glass; // badan bar navigasi melengkung
-  final Color glassPill; // pil tab aktif
-  final Color glassIcon; // ikon tab tidak aktif
-  final Color glassIconOn; // ikon tab aktif
   final bool isDark;
 
+  /// Terang netral-dingin, diukur dari screenshot mode terang referensi:
+  /// latar abu muda, teks hampir hitam, tanpa rona hijau.
   static const light = AppPalette(
-    paper: Color(0xFFF7F5EF),
-    ink: Color(0xFF242721),
-    sage: Color(0xFF82947A),
-    clay: Color(0xFFD8A08B),
-    sand: Color(0xFFE9E5DA),
-    white: Color(0xFFFFFFFF),
-    muted: Color(0xFF777B71),
-    line: Color(0xFFDDD9CC),
-    guide: Color(0xFFE3DFD2),
-    action: Color(0xFF242721),
-    onAction: Color(0xFFFFFFFF),
-    active: Color(0xFFB8B8B1),
-    onActive: Color(0xFF242721),
-    card: Color(0x99FFFFFF),
-    cardRaised: Color(0xCCFFFFFF),
-    divider: Color(0x14000000),
-    bgTop: Color(0xFFDEDBD0),
-    glass: Color(0x14000000),
-    glassPill: Color(0x8C242721),
-    glassIcon: Color(0x99242721),
-    glassIconOn: Color(0xFFFFFFFF),
+    paper: Color(0xFFEBECEE),
+    ink: Color(0xFF1B1B1D),
+    sage: Color(0xFF6B6D72),
+    clay: Color(0xFFB0605A),
+    sand: Color(0xFFE0E1E4),
+    white: Color(0xFFF7F7F9),
+    muted: Color(0xFF5E6066),
+    line: Color(0xFFD0D1D5),
+    guide: Color(0xFFDCDDE0),
+    action: Color(0xFF1B1B1D),
+    onAction: Color(0xFFF4F4F6),
+    active: Color(0xFFB6B7BB),
+    onActive: Color(0xFF1B1B1D),
     isDark: false,
   );
 
-  /// Gelap netral mengikuti referensi desain (abu-abu murni, tanpa rona
-  /// hangat). Aksen sage diredam dan tombol utama berwarna sage gelap
-  /// sehingga tidak ada blok terang yang menyilaukan.
+  /// Gelap netral seperti aplikasi kamus: latar hampir hitam, kartu abu tua,
+  /// teks off-white. Gradien latar memakai stop yang diberikan pengguna.
   static const dark = AppPalette(
-    paper: Color(0xFF111111),
-    ink: Color(0xFFE6E6E6),
-    sage: Color(0xFF95AA8B),
-    clay: Color(0xFFCD9A86),
-    sand: Color(0xFF262626),
-    white: Color(0xFF1C1C1C),
-    muted: Color(0xFFA0A0A0),
-    line: Color(0xFF333333),
-    guide: Color(0xFF2E2E2E),
-    action: Color(0xFF5B7253),
-    onAction: Color(0xFFF2F0E9),
+    paper: Color(0xFF121311),
+    ink: Color(0xFFE7E6E1),
+    sage: Color(0xFFAAAAAA),
+    clay: Color(0xFFC98A7C),
+    sand: Color(0xFF272826),
+    white: Color(0xFF1B1C1A),
+    muted: Color(0xFFB0B3AB),
+    line: Color(0xFF343532),
+    guide: Color(0xFF2D2E2B),
+    action: Color(0xFF2A2B28),
+    onAction: Color(0xFFEDECE7),
     active: Color(0xFFC9C9C3),
-    onActive: Color(0xFF111111),
-    card: Color(0x0FFFFFFF),
-    cardRaised: Color(0x1AFFFFFF),
-    divider: Color(0x14FFFFFF),
-    bgTop: Color(0xFF6A6A6A),
-    glass: Color(0x1CFFFFFF),
-    glassPill: Color(0x73FFFFFF),
-    glassIcon: Color(0xA6FFFFFF),
-    glassIconOn: Color(0xFFFFFFFF),
+    onActive: Color(0xFF121311),
     isDark: true,
   );
 }
@@ -128,46 +97,102 @@ abstract final class AppColors {
   static Color get onAction => _p.onAction;
   static Color get active => _p.active;
   static Color get onActive => _p.onActive;
-  static Color get card => _p.card;
-  static Color get cardRaised => _p.cardRaised;
-  static Color get divider => _p.divider;
-  static Color get bgTop => _p.bgTop;
-  static Color get glass => _p.glass;
-  static Color get glassPill => _p.glassPill;
-  static Color get glassIcon => _p.glassIcon;
-  static Color get glassIconOn => _p.glassIconOn;
+
+  // Permukaan tembus pandang: menyatu dengan gradasi latar, tanpa border.
+  // Sengaja dibuat sedikit lebih gelap dari versi awal.
+  static Color get card =>
+      isDark ? const Color(0x0AFFFFFF) : const Color(0xA8FFFFFF);
+  static Color get cardRaised =>
+      isDark ? const Color(0x12FFFFFF) : const Color(0xD0FFFFFF);
+  static Color get divider =>
+      isDark ? const Color(0x14FFFFFF) : const Color(0x12000000);
+
+  // Bar melengkung (navigasi, toggle, tombol bulat).
+  static Color get glass =>
+      isDark ? const Color(0x16FFFFFF) : const Color(0x1C000000);
+  static Color get glassPill =>
+      isDark ? const Color(0x5EFFFFFF) : const Color(0x75000000);
+  static Color get glassIcon =>
+      isDark ? const Color(0xA6FFFFFF) : const Color(0x80000000);
+  static Color get glassIconOn => const Color(0xFFFFFFFF);
+  static Color get segPill =>
+      isDark ? const Color(0x3DFFFFFF) : const Color(0x40000000);
+  static Color get segText =>
+      isDark ? const Color(0xB3FFFFFF) : const Color(0x8C000000);
+  static Color get segTextOn =>
+      isDark ? const Color(0xFFFFFFFF) : const Color(0xE6000000);
+
+  /// Kekuatan noise: terang butuh lebih kuat (simpangan baku ±2,7–3,3 pada
+  /// referensi) daripada gelap (±1,4).
+  static double get noiseIntensity => isDark ? 1.0 : 1.1;
+
+  // Mode terang: diukur dari screenshot referensi (abu sedang di atas, cepat
+  // memudar, lalu datar #EBECEE di separuh bawah layar).
+  static const _lightStops = [
+    0.0,
+    0.083,
+    0.125,
+    0.167,
+    0.208,
+    0.25,
+    0.333,
+    0.417,
+    0.5,
+    1.0,
+  ];
+  static const _lightColors = [
+    Color(0xFF979898),
+    Color(0xFFA0A2A1),
+    Color(0xFFA8A9AA),
+    Color(0xFFB2B3B5),
+    Color(0xFFBDBEC0),
+    Color(0xFFCACBCD),
+    Color(0xFFD6D7D9),
+    Color(0xFFDFE0E2),
+    Color(0xFFEBECEE),
+    Color(0xFFEFF0F2),
+  ];
 
   static const _backgroundStops = [
     0.0,
-    0.0625,
-    0.125,
-    0.1875,
-    0.3125,
-    0.4375,
-    0.5625,
+    0.15,
+    0.28,
+    0.37,
+    0.44,
+    0.53,
+    0.84,
     1.0,
   ];
-  static const _backgroundWeights = [
-    1.0,
-    0.93,
-    0.78,
-    0.60,
-    0.31,
-    0.11,
-    0.01,
-    0.0,
+  static const _backgroundColors = [
+    Color(0xFF868686),
+    Color(0xFF4B4B4B),
+    Color(0xFF2E2E2E),
+    Color(0xFF201F1F),
+    Color(0xFF181818),
+    Color(0xFF151414),
+    Color(0xFF111111),
+    Color(0xFF111111),
   ];
 
-  /// Gradien latar halaman: warna `bgTop` di bagian atas, cepat menuju warna
-  /// `paper`, lalu datar di separuh bawah layar. Keduanya mengikuti tema aktif.
+  /// Gradien latar halaman. Stop persis dari referensi pengguna, dicampur
+  /// sedikit dengan warna paper supaya teks terang di bagian atas tetap terbaca.
   static LinearGradient get backgroundGradient {
-    final base = _p.paper;
-    final top = _p.bgTop;
+    if (!isDark) {
+      return const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: _lightStops,
+        colors: _lightColors,
+      );
+    }
     return LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       stops: _backgroundStops,
-      colors: [for (final w in _backgroundWeights) Color.lerp(base, top, w)!],
+      colors: [
+        for (final c in _backgroundColors)
+          Color.alphaBlend(c.withValues(alpha: 0.6), _p.paper),
+      ],
     );
   }
 

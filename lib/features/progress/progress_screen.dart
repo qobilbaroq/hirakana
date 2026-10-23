@@ -17,11 +17,11 @@ import 'progress_controller.dart';
 
 /// Label ramah untuk mode sesi di daftar "Recent sessions".
 String _modeLabel(String mode) => switch (mode) {
-      'build_romaji' => 'Build romaji',
-      'build_kana' => 'Build kana',
-      '' => 'Session',
-      _ => '${mode[0].toUpperCase()}${mode.substring(1)}',
-    };
+  'build_romaji' => 'Build romaji',
+  'build_kana' => 'Build kana',
+  '' => 'Session',
+  _ => '${mode[0].toUpperCase()}${mode.substring(1)}',
+};
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({super.key});
@@ -81,7 +81,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
               const SizedBox(height: AppSpacing.sm),
               _Panel(
-                color: AppColors.white,
+                color: AppColors.card,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -117,7 +117,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               height: 52,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: AppColors.white,
+                                color: AppColors.card,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: KanaCharacter(k.character, size: 26),
@@ -135,7 +135,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
               const SizedBox(height: AppSpacing.sm),
               _Panel(
-                color: AppColors.white,
+                color: AppColors.card,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -155,9 +155,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
                               _PairChip(c.a.character),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: AppSpacing.sm),
-                                child: Icon(Icons.swap_horiz,
-                                    color: AppColors.muted),
+                                  horizontal: AppSpacing.sm,
+                                ),
+                                child: Icon(
+                                  Icons.swap_horiz,
+                                  color: AppColors.muted,
+                                ),
                               ),
                               _PairChip(c.b.character),
                               const Spacer(),
@@ -173,7 +176,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           context,
                           mode: 'quiz',
                           args: const SessionArgs(
-                              type: 'mixed', quizKind: QuizKind.lookalike),
+                            type: 'mixed',
+                            quizKind: QuizKind.lookalike,
+                          ),
                         ),
                       ),
                     ],
@@ -184,7 +189,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
               Row(
                 children: [
                   Expanded(
-                      child: Text('All characters', style: AppText.section)),
+                    child: Text('All characters', style: AppText.section),
+                  ),
                   SegmentedButton<bool>(
                     showSelectedIcon: false,
                     style: SegmentedButton.styleFrom(
@@ -210,13 +216,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     (k) => Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppColors.white,
+                        color: AppColors.card,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
-                          KanaCharacter(k.character,
-                              size: k.character.length > 1 ? 18 : 22),
+                          KanaCharacter(
+                            k.character,
+                            size: k.character.length > 1 ? 18 : 22,
+                          ),
                           const SizedBox(height: 4),
                           MasteryIndicator(level: s.levels[k.id] ?? 0),
                         ],
@@ -234,7 +242,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                     child: _Panel(
-                      color: AppColors.white,
+                      color: AppColors.card,
                       child: Row(
                         children: [
                           Expanded(
@@ -245,8 +253,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                                   '${_modeLabel(r.mode)} · ${r.kanaType}',
                                   style: AppText.body,
                                 ),
-                                Text(shortDate(r.startedAt),
-                                    style: AppText.muted),
+                                Text(
+                                  shortDate(r.startedAt),
+                                  style: AppText.muted,
+                                ),
                               ],
                             ),
                           ),
@@ -320,17 +330,18 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _Panel(
-      color: AppColors.white,
+      color: AppColors.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: AppText.muted),
           const SizedBox(height: AppSpacing.xs),
-          Text(value,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+          ),
           const SizedBox(height: 2),
-          Text(caption,
-              style: TextStyle(fontSize: 12, color: AppColors.sage)),
+          Text(caption, style: TextStyle(fontSize: 12, color: AppColors.sage)),
         ],
       ),
     );

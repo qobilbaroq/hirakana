@@ -6,32 +6,52 @@ import 'package:flutter/services.dart';
 import '../../app/theme/app_colors.dart';
 import 'curved_nav_geometry.dart';
 
+/// Satu item pada bar melengkung: ikon, huruf (mis. `あ`), atau teks pendek.
 class CurvedNavItem {
-  const CurvedNavItem({required this.label, this.icon, this.glyph})
-    : assert(icon != null || glyph != null);
+  const CurvedNavItem({required this.label, this.icon, this.glyph, this.text})
+    : assert(icon != null || glyph != null || text != null);
 
-  final IconData? icon;
-
-  /// Huruf kana untuk tab Kana; null untuk tab berbasis ikon.
-  final String? glyph;
-
-  /// Hanya untuk aksesibilitas (pembaca layar) dan tooltip.
+  /// Untuk aksesibilitas (pembaca layar) dan tooltip.
   final String label;
+  final IconData? icon;
+  final String? glyph;
+  final String? text;
 }
 
-/// Navigasi bawah berbentuk busur melayang. Pil aktif memanjang ke tab yang
-/// dipilih, lalu kembali ke ukuran pil biasa (lihat [CurvedNavGeometry.stretch]).
+/// Bar berbentuk busur melayang. Pil aktif memanjang ke item yang dipilih,
+/// lalu kembali ke ukuran pil biasa (lihat [CurvedNavGeometry.stretch]).
+///
+/// Dipakai untuk navigasi bawah dan, dengan item teks, untuk toggle
+/// Hiragana/Katakana. Warna bawaan = warna navigasi.
 class CurvedNavBar extends StatefulWidget {
   const CurvedNavBar({
     super.key,
     required this.items,
     required this.currentIndex,
     required this.onTap,
+    this.thickness,
+    this.slotWidth,
+    this.sagFactor = CurvedNavGeometry.defaultSagFactor,
+    this.iconSize = 26,
+    this.glassColor,
+    this.pillColor,
+    this.idleColor,
+    this.activeColor,
+    this.haptics = true,
   });
 
   final List<CurvedNavItem> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final double? thickness;
+  final double? slotWidth;
+  final double sagFactor;
+  final double iconSize;
+  final Color? glassColor;
+  final Color? pillColor;
+  final Color? idleColor;
+  final Color? activeColor;
+  final bool haptics;
 
   @override
   State<CurvedNavBar> createState() => _CurvedNavBarState();
@@ -81,7 +101,7 @@ class _CurvedNavBarState extends State<CurvedNavBar>
 
   void _select(int i) {
     if (i == widget.currentIndex) return;
-    HapticFeedback.selectionClick();
+    if (widget.haptics) HapticFeedback.selectionClick();
     widget.onTap(i);
   }
 
@@ -92,6 +112,9 @@ class _CurvedNavBarState extends State<CurvedNavBar>
         final g = CurvedNavGeometry(
           maxWidth: constraints.maxWidth,
           count: widget.items.length,
+          thickness: widget.thickness,
+          slotWidth: widget.slotWidth,
+          sagFactor: widget.sagFactor,
         );
         _geometry = g;
         return Center(
@@ -112,8 +135,8 @@ class _CurvedNavBarState extends State<CurvedNavBar>
                           geometry: g,
                           left: l,
                           right: r,
-                          glass: AppColors.glass,
-                          pill: AppColors.glassPill,
+                          glass: widget.glassColor ?? AppColors.glass,
+                          pill: widget.pillColor ?? AppColors.glassPill,
                         ),
                       ),
                     ),
@@ -134,6 +157,8 @@ class _CurvedNavBarState extends State<CurvedNavBar>
     final s = g.slotCenter(i);
     final (x, y) = g.centerlinePoint(s);
     final selected = i == widget.currentIndex;
+    final idle = widget.idleColor ?? AppColors.glassIcon;
+    final active = widget.activeColor ?? AppColors.glassIconOn;
     return Positioned(
       left: x - g.slot / 2,
       top: y - g.thickness / 2,
@@ -153,27 +178,43 @@ class _CurvedNavBarState extends State<CurvedNavBar>
               angle: g.tangentAngle(s),
               child: Center(
                 child: TweenAnimationBuilder<Color?>(
-                  tween: ColorTween(
-                    end: selected ? AppColors.glassIconOn : AppColors.glassIcon,
-                  ),
+                  tween: ColorTween(end: selected ? active : idle),
                   duration: const Duration(milliseconds: 260),
-                  builder: (context, color, _) => item.glyph != null
-                      ? Text(
-                          item.glyph!,
-                          style: TextStyle(
-                            fontFamily: 'Noto Sans JP',
-                            fontSize: 21,
-                            height: 1,
-                            fontWeight: FontWeight.w500,
-                            color: color,
-                          ),
-                        )
-                      : Icon(item.icon, size: 25, color: color),
+                  builder: (context, color, _) => _content(item, color),
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _content(CurvedNavItem item, Color? color) {
+    if (item.icon != null) {
+      return Icon(item.icon, size: widget.iconSize, color: color);
+    }
+    if (item.glyph != null) {
+      return Text(
+        item.glyph!,
+        style: TextStyle(
+          fontFamily: 'Noto Sans JP',
+          fontSize: widget.iconSize - 2,
+          height: 1,
+          fontWeight: FontWeight.w500,
+          color: color,
+        ),
+      );
+    }
+    return Text(
+      item.text!,
+      maxLines: 1,
+      overflow: TextOverflow.visible,
+      style: TextStyle(
+        fontSize: 13,
+        height: 1,
+        fontWeight: FontWeight.w600,
+        color: color,
       ),
     );
   }

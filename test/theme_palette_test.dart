@@ -67,13 +67,22 @@ void main() {
       );
     });
 
-    test('terang memakai gradasi hangat yang tetap terang', () {
+    test('terang: abu sedang di atas, memudar jadi terang, dan opak', () {
       addTearDown(() => AppColors.isDark = false);
       AppColors.isDark = false;
       final g = AppColors.backgroundGradient;
+      expect(g.stops!.length, g.colors.length);
       expect(g.colors.first.a, 1);
       expect(g.colors.last.a, 1);
-      expect(g.colors.first.computeLuminance(), greaterThan(0.65));
+      // Mengikuti referensi: atas abu sedang, bawah hampir putih.
+      expect(g.colors.first.computeLuminance(), lessThan(0.5));
+      expect(g.colors.last.computeLuminance(), greaterThan(0.8));
+      for (var i = 1; i < g.colors.length; i++) {
+        expect(
+          g.colors[i].computeLuminance(),
+          greaterThanOrEqualTo(g.colors[i - 1].computeLuminance()),
+        );
+      }
     });
 
     test('kaca aktif kana tetap transparan di kedua tema', () {
@@ -85,6 +94,40 @@ void main() {
         expect(g.colors.first.a, lessThan(1));
         expect(g.colors.last.a, greaterThan(0));
         expect(g.colors.last.a, lessThan(1));
+      }
+    });
+  });
+
+  group('tanpa warna hijau', () {
+    for (final entry in {
+      'terang': AppPalette.light,
+      'gelap': AppPalette.dark,
+    }.entries) {
+      test('${entry.key}: sage netral (bukan hijau)', () {
+        final c = entry.value.sage;
+        expect((c.g - c.r).abs(), lessThan(0.03));
+        expect((c.g - c.b).abs(), lessThan(0.03));
+      });
+    }
+  });
+
+  group('permukaan tembus pandang', () {
+    test('kartu, kaca, dan segmen tembus pandang di kedua tema', () {
+      addTearDown(() => AppColors.isDark = false);
+      for (final dark in [true, false]) {
+        AppColors.isDark = dark;
+        for (final c in [
+          AppColors.card,
+          AppColors.cardRaised,
+          AppColors.divider,
+          AppColors.glass,
+          AppColors.glassPill,
+          AppColors.segPill,
+        ]) {
+          expect(c.a, greaterThan(0));
+          expect(c.a, lessThan(1));
+        }
+        expect(AppColors.noiseIntensity, greaterThan(0));
       }
     });
   });

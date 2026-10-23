@@ -185,51 +185,98 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
 
   Widget _tile(Kana k) {
     final on = _selected.contains(k.id);
-    final dark = AppColors.isDark;
-    final fg = on ? (dark ? AppColors.ink : AppColors.onActive) : AppColors.ink;
     return Semantics(
       button: true,
       selected: on,
       label: '${k.character} ${k.romaji}',
       excludeSemantics: true,
+      child: _LetterTile(
+        kana: k,
+        on: on,
+        level: _levels[k.id] ?? 0,
+        onTap: () => _toggle(k),
+      ),
+    );
+  }
+}
+
+/// Tile huruf. Saat dipilih: kaca halus memudar masuk dan tile membesar
+/// sedikit. Warnanya sengaja lembut; pip penguasaan dibuat redup supaya tidak
+/// lebih terang dari huruf.
+class _LetterTile extends StatelessWidget {
+  const _LetterTile({
+    required this.kana,
+    required this.on,
+    required this.level,
+    required this.onTap,
+  });
+
+  final Kana kana;
+  final bool on;
+  final int level;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(14);
+    final fg = AppColors.ink;
+    return AnimatedScale(
+      scale: on ? 1 : 0.97,
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutBack,
       child: Material(
-        color: on ? Colors.transparent : AppColors.card,
-        borderRadius: BorderRadius.circular(14),
+        color: AppColors.card,
+        borderRadius: radius,
+        clipBehavior: Clip.antiAlias,
         child: InkWell(
-          borderRadius: BorderRadius.circular(14),
-          onTap: () => _toggle(k),
-          child: Container(
+          onTap: onTap,
+          child: SizedBox(
             height: 72,
-            decoration: BoxDecoration(
-              color: on && !dark ? AppColors.active : null,
-              gradient: on && dark
-                  ? AppColors.activeGlassGradient(intensity: 1.5)
-                  : null,
-              borderRadius: BorderRadius.circular(14),
-              border: on
-                  ? Border.all(color: AppColors.glassBorderStrong, width: 0.8)
-                  : null,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
               children: [
-                KanaCharacter(
-                  k.character,
-                  size: k.character.length > 1 ? 20 : 25,
-                  color: fg,
-                ),
-                Text(
-                  k.romaji,
-                  style: TextStyle(
-                    fontSize: 10.5,
-                    height: 1.2,
-                    color: on ? fg.withValues(alpha: 0.72) : AppColors.muted,
+                Positioned.fill(
+                  child: AnimatedOpacity(
+                    opacity: on ? 1 : 0,
+                    duration: const Duration(milliseconds: 220),
+                    curve: Curves.easeOutCubic,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: AppColors.activeGlassGradient(intensity: 0.7),
+                        borderRadius: radius,
+                        border: Border.all(
+                          color: AppColors.glassBorder,
+                          width: 0.8,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 3),
-                MasteryIndicator(
-                  level: _levels[k.id] ?? 0,
-                  color: on ? fg : null,
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      KanaCharacter(
+                        kana.character,
+                        size: kana.character.length > 1 ? 20 : 25,
+                        color: on ? fg : fg.withValues(alpha: 0.86),
+                      ),
+                      Text(
+                        kana.romaji,
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          height: 1.2,
+                          color: on
+                              ? fg.withValues(alpha: 0.65)
+                              : AppColors.muted,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      MasteryIndicator(
+                        level: level,
+                        color: fg.withValues(alpha: on ? 0.5 : 0.38),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

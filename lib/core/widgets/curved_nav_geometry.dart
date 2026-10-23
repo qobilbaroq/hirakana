@@ -11,12 +11,16 @@ class CurvedNavGeometry {
     required double maxWidth,
     required this.count,
     double? thickness,
+    double? slotWidth,
+    this.sagFactor = defaultSagFactor,
   }) : assert(count > 0),
        thickness = thickness ?? (maxWidth * 0.135).clamp(48.0, 58.0) {
     // Lebar satu slot dibatasi supaya bar tidak melebar kalau itemnya sedikit.
-    slot = ((maxWidth - this.thickness) / count)
-        .clamp(0.0, maxWidth * 0.2)
-        .toDouble();
+    // [slotWidth] memaksa lebar slot (dipakai toggle teks), tetap muat di layar.
+    final room = ((maxWidth - this.thickness) / count).clamp(0.0, maxWidth);
+    slot = slotWidth != null
+        ? math.min(slotWidth, room.toDouble())
+        : room.clamp(0.0, maxWidth * 0.2).toDouble();
     halfArc = count * slot / 2;
     width = count * slot + this.thickness;
     final sag = width * sagFactor;
@@ -27,8 +31,12 @@ class CurvedNavGeometry {
     pillThickness = this.thickness * 0.7;
   }
 
-  /// Seberapa melengkung bar: tinggi lengkungan = lebar bar × nilai ini.
-  static const sagFactor = 0.052;
+  /// Kelengkungan bawaan: tinggi lengkungan = lebar bar × nilai ini. Sudah
+  /// dikurangi dari 0,052 (terlalu melengkung) menjadi 0,034.
+  static const defaultSagFactor = 0.034;
+
+  /// Seberapa melengkung bar ini (lihat [defaultSagFactor]).
+  final double sagFactor;
 
   final int count;
 

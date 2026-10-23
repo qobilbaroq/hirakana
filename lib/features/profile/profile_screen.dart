@@ -78,6 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: ListenableBuilder(
         listenable: _listenable,
         builder: (context, _) {
@@ -849,7 +850,7 @@ class _RoundIconButton extends StatelessWidget {
     return Tooltip(
       message: tooltip,
       child: Material(
-        color: AppColors.card,
+        color: AppColors.glass,
         shape: const CircleBorder(),
         child: InkWell(
           customBorder: const CircleBorder(),

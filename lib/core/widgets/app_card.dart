@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 
-/// Permukaan kartu tembus pandang tanpa border.
+/// Permukaan kartu: tembus pandang tanpa border supaya menyatu dengan
+/// gradasi latar (lihat [AppColors.card]).
 ///
 /// [color] dipakai untuk kartu yang butuh latar berbeda (misalnya kartu
-/// peringatan); default-nya lapisan kartu tema.
+/// peringatan); default-nya permukaan kartu tema.
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,

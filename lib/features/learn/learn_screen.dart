@@ -5,6 +5,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
+import '../../core/widgets/curved_nav_bar.dart';
 import '../../core/widgets/curved_nav_geometry.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/kana_group_row.dart';
@@ -211,12 +212,15 @@ class _LearnScreenState extends State<LearnScreen> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).padding.bottom;
+    // Scaffold.extendBody sudah memasukkan tinggi navigasi ke padding bawah
+    // body, jadi cukup tambahkan jarak visual 8 px (jangan hitung dua kali).
+    final controlsBottom = bottomInset + 8;
     final navGeometry = CurvedNavGeometry(
-      maxWidth: MediaQuery.sizeOf(context).width - 32,
+      maxWidth: MediaQuery.sizeOf(context).width - 40,
       count: 4,
     );
-    // Kontrol bawah tidak boleh menutupi navigasi melengkung yang melayang.
-    final controlsBottom = bottomInset + navGeometry.height + 20;
+    // Tombol kiri/kanan ikut turun mengikuti ujung busur navigasi.
+    final edgeDrop = navGeometry.height - navGeometry.thickness;
     return SafeArea(
       bottom: false,
       child: ListenableBuilder(
@@ -280,6 +284,7 @@ class _LearnScreenState extends State<LearnScreen> {
                 child: _BottomControls(
                   script: _script,
                   showRomaji: _showRomaji,
+                  edgeDrop: edgeDrop,
                   onScript: _selectScript,
                   onToggleRomaji: () =>
                       setState(() => _showRomaji = !_showRomaji),
@@ -515,10 +520,13 @@ class _KanaCell extends StatelessWidget {
   }
 }
 
+/// Kontrol mengambang di atas navigasi: tombol quiz, toggle Hiragana/Katakana
+/// berbentuk busur (pil memanjang saat berpindah), dan tombol romaji.
 class _BottomControls extends StatelessWidget {
   const _BottomControls({
     required this.script,
     required this.showRomaji,
+    required this.edgeDrop,
     required this.onScript,
     required this.onToggleRomaji,
     required this.onQuiz,
@@ -526,104 +534,64 @@ class _BottomControls extends StatelessWidget {
 
   final String script;
   final bool showRomaji;
+
+  /// Turunnya ujung busur navigasi; tombol bulat ikut turun sejauh ini agar
+  /// tidak tampak melayang jauh di sisi kiri/kanan.
+  final double edgeDrop;
   final ValueChanged<String> onScript;
   final VoidCallback onToggleRomaji;
   final VoidCallback onQuiz;
 
+  static const _scripts = [
+    CurvedNavItem(label: 'Hiragana', text: 'Hiragana'),
+    CurvedNavItem(label: 'Katakana', text: 'Katakana'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _CircleButton(
-          icon: Icons.sports_esports_outlined,
-          tooltip: 'Quiz this script',
-          onTap: onQuiz,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Center(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: AppColors.card,
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _ScriptPill(
-                      label: 'Hiragana',
-                      selected: script == 'hiragana',
-                      onTap: () => onScript('hiragana'),
-                    ),
-                    const SizedBox(width: 2),
-                    _ScriptPill(
-                      label: 'Katakana',
-                      selected: script == 'katakana',
-                      onTap: () => onScript('katakana'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        Transform.translate(
+          offset: Offset(0, edgeDrop),
+          child: _CircleButton(
+            icon: Icons.sports_esports_outlined,
+            tooltip: 'Quiz this script',
+            onTap: onQuiz,
           ),
         ),
         const SizedBox(width: 8),
-        _CircleButton(
-          icon: showRomaji
-              ? Icons.visibility_outlined
-              : Icons.visibility_off_outlined,
-          tooltip: showRomaji ? 'Hide romaji' : 'Show romaji',
-          selected: showRomaji,
-          onTap: onToggleRomaji,
+        Expanded(
+          child: CurvedNavBar(
+            items: _scripts,
+            currentIndex: script == 'katakana' ? 1 : 0,
+            onTap: (i) => onScript(i == 0 ? 'hiragana' : 'katakana'),
+            thickness: 42,
+            slotWidth: 104,
+            haptics: false,
+            pillColor: AppColors.segPill,
+            idleColor: AppColors.segText,
+            activeColor: AppColors.segTextOn,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Transform.translate(
+          offset: Offset(0, edgeDrop),
+          child: _CircleButton(
+            icon: showRomaji
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
+            tooltip: showRomaji ? 'Hide romaji' : 'Show romaji',
+            selected: showRomaji,
+            onTap: onToggleRomaji,
+          ),
         ),
       ],
     );
   }
 }
 
-class _ScriptPill extends StatelessWidget {
-  const _ScriptPill({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: selected,
-      label: label,
-      excludeSemantics: true,
-      child: Material(
-        color: selected ? AppColors.active : Colors.transparent,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(AppRadius.pill),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-            child: Text(
-              label,
-              style: AppText.bodyStrong.copyWith(
-                fontSize: 12.5,
-                color: selected ? AppColors.onActive : AppColors.muted,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
+/// Tombol bulat tembus pandang (tanpa border), sewarna bar melengkung.
 class _CircleButton extends StatelessWidget {
   const _CircleButton({
     required this.icon,
@@ -646,20 +614,18 @@ class _CircleButton extends StatelessWidget {
       child: Tooltip(
         message: tooltip,
         child: Material(
-          color: selected ? AppColors.active : AppColors.card,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-          ),
+          color: selected ? AppColors.segPill : AppColors.glass,
+          shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: onTap,
             child: SizedBox(
-              width: 42,
-              height: 42,
+              width: 44,
+              height: 44,
               child: Icon(
                 icon,
                 size: 20,
-                color: selected ? AppColors.onActive : AppColors.ink,
+                color: selected ? AppColors.segTextOn : AppColors.glassIcon,
               ),
             ),
           ),

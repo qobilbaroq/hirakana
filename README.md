@@ -43,10 +43,13 @@ Platform: **Android, iOS, Linux, Windows, macOS, Web**.
 
 **Tampilan**
 - Tema **Gelap** (default), Terang, atau ikut sistem.
-- Palet netral dengan gradien latar bertekstur noise halus dan kartu tembus
-  pandang tanpa border. Navigasi bawah melengkung seperti busur, dengan pil aktif
-  yang memanjang saat berpindah tab. Liquid glass hanya dipakai pada huruf kana;
-  aksen sage/clay dipakai tipis saja.
+- Palet netral **tanpa aksen hijau**, dengan gradien latar bertekstur noise halus
+  dan kartu tembus pandang tanpa border. Mode terang memakai gradasi abu sedang
+  ke `#EBECEE`. Navigasi bawah melengkung landai seperti busur, dengan pil aktif
+  yang memanjang saat berpindah tab; toggle Hiragana/Katakana memakai bentuk
+  melengkung yang sama. Kaca nav/toggle dan kartu dibuat sedikit lebih gelap di
+  kedua tema. Konten keempat tab bergulir di belakang nav supaya kacanya tetap
+  terlihat tembus pandang. Liquid glass hanya dipakai pada huruf kana.
 - Transisi halaman dan tab yang halus (fade + geser singkat), plus animasi masuk
   untuk kartu menu.
 

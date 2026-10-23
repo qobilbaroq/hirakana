@@ -7,7 +7,7 @@ import '../practice/practice_screen.dart';
 import '../profile/profile_screen.dart';
 import '../words/words_screen.dart';
 
-/// Satu Scaffold dengan navigasi bawah melengkung 4 tab.
+/// Satu Scaffold dengan navigasi melengkung mengambang.
 /// Body memakai [extendBody] supaya konten bisa bergulir di belakang navigasi.
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -28,13 +28,6 @@ class _MainShellState extends State<MainShell>
     const PracticeScreen(),
     const WordsScreen(),
     ProfileScreen(onOpenTab: _openTab),
-  ];
-
-  static const _items = [
-    CurvedNavItem(label: 'Kana', glyph: 'あ'),
-    CurvedNavItem(label: 'Practice', icon: Icons.grid_view_rounded),
-    CurvedNavItem(label: 'Words', icon: Icons.menu_book_outlined),
-    CurvedNavItem(label: 'Profile', icon: Icons.person_outline_rounded),
   ];
 
   late final AnimationController _pageController;
@@ -88,13 +81,36 @@ class _MainShellState extends State<MainShell>
           child: IndexedStack(index: _index, children: _pages),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        top: false,
-        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      bottomNavigationBar: _FloatingNav(index: _index, onSelected: _openTab),
+    );
+  }
+}
+
+/// Navigasi bawah: busur melayang. Pil aktif memanjang ke tab tujuan lalu
+/// kembali ke ukuran pil (lihat [CurvedNavBar]).
+class _FloatingNav extends StatelessWidget {
+  const _FloatingNav({required this.index, required this.onSelected});
+
+  final int index;
+  final ValueChanged<int> onSelected;
+
+  static const _items = [
+    CurvedNavItem(label: 'Kana', glyph: 'あ'),
+    CurvedNavItem(label: 'Practice', icon: Icons.grid_view_rounded),
+    CurvedNavItem(label: 'Words', icon: Icons.menu_book_outlined),
+    CurvedNavItem(label: 'Profile', icon: Icons.person_outline_rounded),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
         child: CurvedNavBar(
           items: _items,
-          currentIndex: _index,
-          onTap: _openTab,
+          currentIndex: index,
+          onTap: onSelected,
         ),
       ),
     );

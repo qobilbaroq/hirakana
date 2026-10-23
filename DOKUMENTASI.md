@@ -210,8 +210,8 @@ Dua mode di tab Words, memakai filter kata yang sama:
 
 Arti Indonesia dan kategori selalu terlihat di atas soal. Jumlah kotak jawaban = jumlah potongan
 benar. Ketuk potongan untuk mengisi, ketuk kotak untuk menghapus, dan **Check** baru aktif kalau
-semua kotak penuh. Setelah Check, kotak yang benar berwarna sage dan yang salah berwarna clay; kata,
-romaji, dan suaranya ditampilkan.
+semua kotak penuh. Setelah Check, kotak yang benar memakai abu netral dan yang salah berwarna
+clay; kata, romaji, dan suaranya ditampilkan.
 
 Total potongan menyesuaikan panjang kata: 8 untuk 1–3 potongan, 10 untuk 4–5, dan 12 untuk 6+,
 dengan minimal 3 pengecoh. Potongan jawaban dan pilihan disusun sebagai grid kotak kecil maksimal
@@ -236,8 +236,10 @@ lewat `recordResult`, dan di mode kana huruf yang tertukar masuk "Often mixed up
 ## 7. Fitur per layar
 
 - **Kana**: grid gojuon 5 kolom untuk Hiragana/Katakana/Mixed, pencarian, filter tampilan romaji,
-  indikator mastery kaca per huruf, pil Hiragana/Katakana yang diletakkan di atas navigasi
-  melengkung, dan tombol *Choose letters*. Ketuk huruf untuk membuka detail
+  indikator mastery kaca per huruf, toggle Hiragana/Katakana melengkung yang diletakkan 8 px
+  di atas navigasi, dan tombol *Choose letters*. Di *Choose letters*, tile terpilih
+  memakai kaca lembut dan membesar dengan animasi pop, tanpa ikon centang tambahan; pip
+  penguasaan sengaja diredupkan. Ketuk huruf untuk membuka detail
   (contoh kata, audio, status mastery, *Add/Remove*, dan *Study*); *Study* membuka pilihan
   Flashcards / Quick quiz / Writing.
 - **Practice**: pilih Hiragana / Katakana / Mixed, lalu **Flashcards**, **Quick quiz**, **Writing**,
@@ -252,7 +254,8 @@ lewat `recordResult`, dan di mode kana huruf yang tertukar masuk "Often mixed up
   menyetel kurangi animasi). Sisi belakang: huruf, romaji, dan contoh kata. Setelah terbuka, ketuk kartu
   atau ikon speaker untuk memutar suara lagi (normal, normal, lambat). *Again* / *Got it* baru aktif
   setelah reveal.
-- **Quiz**: grid 2x2; pilihan benar hijau, pilihanmu salah berwarna clay.
+- **Quiz**: grid 2x2; pilihan benar memakai border/ikon abu netral, pilihanmu salah berwarna
+  clay.
 - **Writing**: guide goresan bernomor dari KanjiVG, *Replay stroke order*, Undo/Clear, *Check*
   menampilkan guide di atas tulisanmu untuk dibandingkan (tanpa skor). Romaji huruf contoh
   disembunyikan sampai *Check*, supaya kamu bisa menebak cara bacanya sambil menulis.
@@ -277,27 +280,43 @@ Disimpan di tabel `meta`, dimuat saat app mulai (`AppSettings`):
 ### Palet warna
 
 Dua palet di `lib/app/theme/app_colors.dart` (`AppPalette.light`, `.dark`); **AMOLED sudah dihapus**.
-Keduanya netral dengan aksen sage/clay tipis. `AppColors.*` adalah **getter** yang mengikuti tema
+Keduanya netral monokrom **tanpa aksen hijau**. `AppColors.*` adalah **getter** yang mengikuti tema
 aktif, jadi tidak boleh dipakai di ekspresi `const`. Surface kartu memakai `card`/`cardRaised`
-(putih transparan di tema terang, putih 6–10% di tema gelap) tanpa border; border hanya untuk status
-pilihan/jawaban.
+(putih 66%/82% di tema terang, putih 4%/7% di tema gelap) tanpa border; border hanya untuk status
+pilihan/jawaban dan tombol sekunder. Kaca nav/toggle dan kartu sengaja dibuat sedikit lebih gelap
+di kedua tema.
 
-- **Gelap**: paper `#111111`, mulai dari `bgTop #6A6A6A` lalu cepat meredup ke paper. Teks
-  off-white `#E6E6E6`, aksen sage `#95AA8B`, tombol utama sage gelap `#5B7253`.
-- **Terang**: paper `#F7F5EF`, mulai dari `bgTop #DEDBD0`; kartu putih 60–80% transparan.
-  Pilihan aktif memakai abu-abu `#B8B8B1`, bukan hitam.
-- `AppBackground` global (di `MaterialApp.builder`) menggambar gradien dengan stop yang cepat
-  meredup, lalu `NoiseOverlay` halus dari `CustomPainter` (tanpa aset). Scaffold dan AppBar
-  transparan supaya latar terlihat di semua layar.
+- **Gelap**: paper `#121311`, ink `#E7E6E1`, sage `#AAAAAA`, clay `#C98A7C`, sand `#272826`,
+  white `#1B1C1A`, muted `#B0B3AB`, active `#C9C9C3`, action `#2A2B28`. Gradien memakai delapan
+  stop lama (`#868686` → `#111111`) yang masing-masing dicampur 60% dengan paper, jadi puncaknya
+  sekitar `#585857`.
+- **Terang**: paper `#EBECEE`, ink `#1B1B1D`, sage `#6B6D72`, clay `#B0605A`, sand `#E0E1E4`,
+  white `#F7F7F9`, muted `#5E6066`, active `#B6B7BB`. Gradien sepuluh stop dari abu sedang
+  `#979898` di atas, cepat memudar ke `#EBECEE`, lalu berakhir `#EFF0F2` di bawah.
+- `AppBackground` global (di `MaterialApp.builder`) menggambar gradien, lalu `NoiseOverlay`
+  halus dari `CustomPainter` (tanpa aset). `AppColors.noiseIntensity` bernilai 1,0 di gelap dan
+  1,1 di terang. Scaffold dan AppBar transparan supaya latar terlihat di semua layar.
 - Liquid glass hanya dipakai pada huruf kana (sel aktif/terpelajari dan pilihan huruf). Kartu,
-  pencarian, filter, kontrol bawah, dan surface lain memakai lapisan `card`/`cardRaised`.
-  Radius kartu 16, sheet 24, tombol 14.
-- Navigasi bawah memakai `CurvedNavBar`: busur dengan tengah lebih tinggi, ujung turun ≈5,2%
-  lebar bar, tebal 48–58 px, dan tap target ≥48 px. Pil aktif ≈70% tebal bar, ikut miring
-  mengikuti busur, dan memanjang ke tab tujuan lalu mengecil kembali (560 ms). Bar memakai
-  kaca tembus pandang tanpa blur.
-- Kontrol bawah Kana dihitung dari `CurvedNavGeometry.height` agar selalu berada di atas
-  navigasi; tab lain memakai `AppSpacing.navClearance`.
+  pencarian, filter, kartu jawaban, Dismiss pill, dan surface lain memakai lapisan
+  `card`/`cardRaised`. Radius kartu 16, sheet 24, tombol 14.
+- Navigasi bawah memakai `CurvedNavBar`: busur dengan tengah lebih tinggi, ujung turun
+  **≈3,4% lebar bar** (`defaultSagFactor` 0,034), tebal 48–58 px, dan tap target ≥48 px. Pil
+  aktif ≈70% tebal bar, ikut miring mengikuti busur, dan memanjang ke tab tujuan lalu mengecil
+  kembali (560 ms). Bar memakai kaca tembus pandang tanpa blur, margin 20 px kiri/kanan dan
+  8 px bawah.
+- Keempat tab memakai `SafeArea(bottom: false)` supaya konten bergulir di belakang navigasi;
+  kaca nav tetap tembus pandang di Kana, Practice, Words, dan Profile. Padding bawah daftar
+  tetap `AppSpacing.navClearance` agar item terakhir tidak tertutup nav.
+- Kaca nav, toggle/tombol, dan kartu dibuat sedikit lebih gelap di kedua tema. `glass` memakai
+  putih 8,6% (gelap) / hitam 11% (terang), `glassPill` 37%/46%, `segPill` 24%/25%, `card`
+  putih 4% (gelap) / 66% (terang), dan `cardRaised` putih 7% (gelap) / 82% (terang).
+- Toggle Hiragana/Katakana memakai `CurvedNavBar` yang sama dengan item teks (`thickness` 42,
+  `slotWidth` 104), sehingga pilnya juga memanjang saat berpindah script. Tombol bulat quiz dan
+  romaji berukuran 44 px memakai `glass`/`segPill` tanpa border; keduanya diturunkan sebesar
+  `edgeDrop` (sag busur nav) agar ikut mengikuti lengkungan dan tidak melayang di sisi.
+- Kontrol bawah Kana diletakkan 8 px di atas navigasi (`bottomInset + 8`). `Scaffold.extendBody`
+  sudah memasukkan tinggi navigasi ke padding bawah body, jadi tinggi nav tidak dihitung dua kali;
+  padding grid = kontrol + 58 px. Tab lain memakai `AppSpacing.navClearance`.
 - Animasi ringan: `AppPageTransitionsBuilder` memberi fade + geser tipis untuk halaman
   yang dibuka; pindah tab memudarkan isi `IndexedStack` 240 ms tanpa menghapus state;
   `ModeCard` masuk dengan fade + geser 240 ms; warna ikon tab memudar 260 ms.
@@ -414,11 +433,15 @@ Test memakai database SQLite in-memory (`test/helpers/test_db.dart`). Yang dicak
   terpanjang (7 kotak + 12 potongan) beserta umpan baliknya muat tanpa scroll.
 - `practice_screen_test.dart`: tab Practice hanya memuat latihan kana, tab Words memuat latihan kata
   + filter + riwayat, dan seluruh menu bisa dijangkau dengan scroll di 360×640.
-- `main_shell_test.dart`: 4 tab Kana/Practice/Words/Profile terbuka tanpa overflow.
+- `main_shell_test.dart`: 4 tab Kana/Practice/Words/Profile terbuka tanpa overflow; konten
+  Practice/Words/Profile juga memanjang di belakang navigasi transparan.
 - `mastery_indicator_test.dart`: indikator mastery 4 langkah, mapping level lama, dan tidak overflow
   di tile sempit.
-- `theme_palette_test.dart`: kontras teks, pilihan aktif abu-abu, scaffold/AppBar transparan, gradien
-  latar, kaca kana, tombol utama inverted, dan tidak ada lagi palet AMOLED.
+- `theme_palette_test.dart`: kontras teks, pilihan aktif abu-abu, scaffold/AppBar transparan,
+  gradien terang (abu sedang → terang), surface tembus pandang, kaca kana, tombol utama inverted,
+  tidak ada hijau, dan tidak ada lagi palet AMOLED.
+- `curved_nav_geometry_test.dart`: lengkungan simetris, tap target, sudut item, animasi pil
+  memanjang, `defaultSagFactor` 0,034, dan toggle teks yang tetap muat.
 
 ---
 

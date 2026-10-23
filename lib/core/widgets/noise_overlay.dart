@@ -52,7 +52,8 @@ class NoiseData {
 class NoiseOverlay extends StatefulWidget {
   const NoiseOverlay({super.key, this.intensity = 1});
 
-  /// 1 = kekuatan referensi (tema gelap). Tema terang memakai nilai lebih kecil.
+  /// 1 = kekuatan referensi (tema gelap). Tema terang memakai 1,1 karena
+  /// noise di latar terang perlu sedikit lebih kuat agar terlihat.
   final double intensity;
 
   @override

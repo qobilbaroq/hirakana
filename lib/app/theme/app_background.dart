@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../core/widgets/noise_overlay.dart';
-import 'app_colors.dart';
+import '../theme/app_colors.dart';
 
-/// Latar global: gradasi dari atas yang lebih terang ke warna dasar, ditambah
-/// noise halus. Dipasang di akar aplikasi, di belakang semua layar.
+/// Latar global: gradien di belakang semua layar, dan noise halus di atasnya.
+///
+/// Scaffold dibuat transparan di tema supaya gradien terlihat saat konten
+/// bergulir. Noise digambar dari titik acak (tanpa gambar) dan tidak menerima
+/// sentuhan; lihat [NoiseOverlay].
 class AppBackground extends StatelessWidget {
   const AppBackground({super.key, required this.child});
 
@@ -19,7 +22,7 @@ class AppBackground extends StatelessWidget {
           decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
         ),
         child,
-        NoiseOverlay(intensity: AppColors.isDark ? 1 : 0.6),
+        NoiseOverlay(intensity: AppColors.noiseIntensity),
       ],
     );
   }

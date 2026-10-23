@@ -68,6 +68,32 @@ void main() {
       expect(longest, greaterThan(g.pillLength * 1.8));
     });
 
+    test('toggle teks: lebar slot dipaksa dan tetap muat', () {
+      final seg = CurvedNavGeometry(
+        maxWidth: 320,
+        count: 2,
+        thickness: 42,
+        slotWidth: 104,
+      );
+      expect(seg.slot, 104);
+      expect(seg.width, 104 * 2 + 42);
+      expect(seg.width, lessThanOrEqualTo(320));
+      final tiny = CurvedNavGeometry(
+        maxWidth: 200,
+        count: 2,
+        thickness: 42,
+        slotWidth: 104,
+      );
+      expect(tiny.width, lessThanOrEqualTo(200 + 1e-9));
+    });
+
+    test('kelengkungan bawaan lebih landai daripada versi awal (0,052)', () {
+      expect(CurvedNavGeometry.defaultSagFactor, lessThan(0.052));
+      final drop = g.height - g.thickness;
+      expect(drop, lessThan(g.width * 0.052));
+      expect(drop, greaterThan(0));
+    });
+
     test('memanjang juga ke arah kiri', () {
       final (l0, r0) = g.pillEdges(3);
       final (l1, r1) = g.pillEdges(0);

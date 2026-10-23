@@ -26,6 +26,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, AppSpacing.navClearance),
         children: [
