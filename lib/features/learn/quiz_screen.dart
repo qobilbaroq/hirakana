@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
@@ -195,41 +196,34 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: canPlay ? () => _speak(q.target) : null,
                 ),
               ),
+              // Atas: soal dan info jawaban (muncul setelah menjawab).
+              // Bawah: pilihan jawaban tepat di atas tombol Next, supaya
+              // jempol tidak perlu berpindah jauh.
               Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final minHeight = constraints.maxHeight - AppSpacing.lg;
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.only(top: AppSpacing.lg),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: minHeight > 0 ? minHeight : 0,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              q.prompt,
-                              textAlign: TextAlign.center,
-                              style: AppText.section.copyWith(
-                                fontSize: 21,
-                                height: 1.25,
-                                letterSpacing: -0.3,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm + 2),
-                            _PromptCard(question: q),
-                            const SizedBox(height: AppSpacing.lg),
-                            _choiceGrid(q),
-                            const SizedBox(height: AppSpacing.md),
-                            _feedback(q),
-                          ],
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(top: AppSpacing.lg),
+                  child: Column(
+                    children: [
+                      Text(
+                        q.prompt,
+                        textAlign: TextAlign.center,
+                        style: AppText.section.copyWith(
+                          fontSize: 21,
+                          height: 1.25,
+                          letterSpacing: -0.3,
                         ),
                       ),
-                    );
-                  },
+                      const SizedBox(height: AppSpacing.sm + 2),
+                      _PromptCard(question: q),
+                      const SizedBox(height: AppSpacing.md),
+                      _feedback(q),
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(height: AppSpacing.sm),
+              _choiceGrid(q),
+              const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(
                   label: _session.finished ? 'Finish' : 'Next',
@@ -302,8 +296,8 @@ class _QuizScreenState extends State<QuizScreen> {
         const SizedBox(height: AppSpacing.xs),
         Text(
           '${q.target.character}  ·  ${q.target.romaji}',
-          style: const TextStyle(
-            fontFamily: 'Noto Sans JP',
+          style: TextStyle(
+            fontFamily: AppFonts.kana,
             fontSize: 22,
             fontWeight: FontWeight.w600,
           ),

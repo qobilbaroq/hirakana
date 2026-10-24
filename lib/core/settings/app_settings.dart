@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../data/repositories/kana_repository.dart';
 
 /// Pola putar saat huruf yang sama diputar berulang. true = lambat.
@@ -35,6 +37,11 @@ class AppSettings extends ChangeNotifier {
   /// Light di Settings.
   ThemeMode themeMode = ThemeMode.dark;
   bool autoPlay = true;
+
+  /// Warna aksen (mono = hitam-putih bawaan) dan font huruf Jepang.
+  AppAccent accent = AppAccent.mono;
+  String fontId = AppFonts.defaultId;
+
   AudioPattern audioPattern = AudioPattern.normalNormalSlow;
 
   final _repo = KanaRepository.instance;
@@ -51,6 +58,9 @@ class AppSettings extends ChangeNotifier {
             minSessionSize)
         .clamp(minSessionSize, maxSessionSize)
         .toInt();
+    accent = AppAccent.byName(await _repo.getMeta('accent'));
+    fontId = AppFonts.byId(await _repo.getMeta('kana_font')).id;
+    _applyLook();
     showMeaning = (await _repo.getMeta('show_meaning')) != '0';
     autoPlay = (await _repo.getMeta('audio_autoplay')) != '0';
     final pattern = await _repo.getMeta('audio_pattern');
@@ -82,6 +92,26 @@ class AppSettings extends ChangeNotifier {
     themeMode = m;
     notifyListeners();
     await _repo.setMeta('theme_mode', m.name);
+  }
+
+  /// Menyalin pilihan tampilan ke [AppColors] / [AppFonts], yang dibaca widget.
+  void _applyLook() {
+    AppColors.accent = accent;
+    AppFonts.selectedId = fontId;
+  }
+
+  Future<void> setAccent(AppAccent a) async {
+    accent = a;
+    _applyLook();
+    notifyListeners();
+    await _repo.setMeta('accent', a.name);
+  }
+
+  Future<void> setFont(String id) async {
+    fontId = AppFonts.byId(id).id;
+    _applyLook();
+    notifyListeners();
+    await _repo.setMeta('kana_font', fontId);
   }
 
   Future<void> setAutoPlay(bool v) async {

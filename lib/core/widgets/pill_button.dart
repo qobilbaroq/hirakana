@@ -22,9 +22,9 @@ class PillButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fg = filled ? AppColors.paper : AppColors.ink;
+    final fg = filled ? AppColors.onButton : AppColors.ink;
     return Material(
-      color: filled ? AppColors.ink : AppColors.card,
+      color: filled ? AppColors.button : AppColors.card,
       borderRadius: BorderRadius.circular(AppRadius.pill),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.pill),

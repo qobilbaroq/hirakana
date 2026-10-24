@@ -5,6 +5,7 @@ import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
+import '../../core/widgets/app_card.dart';
 import '../../core/widgets/curved_nav_bar.dart';
 import '../../core/widgets/curved_nav_geometry.dart';
 import '../../core/widgets/kana_character.dart';
@@ -151,6 +152,22 @@ class _LearnScreenState extends State<LearnScreen> {
   String? _selectedId;
   bool _showRomaji = true;
 
+  /// Kartu "Start here" disembunyikan pengguna? null = belum dimuat.
+  bool? _startHidden;
+
+  @override
+  void initState() {
+    super.initState();
+    KanaRepository.instance.getMeta('start_card_hidden').then((v) {
+      if (mounted) setState(() => _startHidden = v == '1');
+    });
+  }
+
+  void _setStartHidden(bool hidden) {
+    setState(() => _startHidden = hidden);
+    KanaRepository.instance.setMeta('start_card_hidden', hidden ? '1' : '0');
+  }
+
   @override
   void dispose() {
     _progress.dispose();
@@ -171,6 +188,38 @@ class _LearnScreenState extends State<LearnScreen> {
               k.id.toLowerCase().contains(q),
         )
         .toList();
+  }
+
+  /// Huruf yang sedang dipelajari di script ini; kalau belum ada, lima huruf
+  /// pertama (yang otomatis dipakai sebagai awalan).
+  List<Kana> _focusLetters(ProgressStats? stats) {
+    final active = stats?.active ?? const <String>{};
+    final inSet = _list.where((k) => active.contains(k.id)).toList();
+    return inSet.isNotEmpty
+        ? inSet
+        : _list.take(KanaRepository.starterCount).toList();
+  }
+
+  bool _hasStarted(ProgressStats? stats) =>
+      _list.any((k) => (stats?.masterySteps[k.id] ?? 0) > 0);
+
+  Widget _startCard(ProgressStats? stats) {
+    final letters = _focusLetters(stats);
+    final preview = letters.take(5).map((k) => k.character).join(' ');
+    final more = letters.length > 5 ? ' +${letters.length - 5}' : '';
+    final started = _hasStarted(stats);
+    final scriptName = _script == 'hiragana' ? 'Hiragana' : 'Katakana';
+    return _StartCard(
+      title: started ? 'Continue learning' : 'Start here',
+      subtitle:
+          started ? '$scriptName · $preview$more' : 'Lesson 1 · $preview',
+      onStart: () => launchSession(
+        context,
+        mode: 'flashcard',
+        args: SessionArgs(type: _script),
+      ),
+      onClose: () => _setStartHidden(true),
+    );
   }
 
   void _selectScript(String script) {
@@ -200,9 +249,19 @@ class _LearnScreenState extends State<LearnScreen> {
           await KanaRepository.instance.setActiveIds(next);
           if (sheetContext.mounted) Navigator.pop(sheetContext);
         },
-        onStudy: () {
+        onStudy: (mode) async {
           Navigator.pop(sheetContext);
-          showStudyModeSheet(context, type: kana.type, title: kana.typeLabel);
+          // Huruf yang diketuk ikut masuk set supaya benar-benar dipelajari.
+          if (!active) {
+            final ids = await KanaRepository.instance.activeIds();
+            await KanaRepository.instance.setActiveIds({...ids, kana.id});
+          }
+          if (!mounted) return;
+          launchSession(
+            context,
+            mode: mode,
+            args: SessionArgs(type: kana.type, firstKanaId: kana.id),
+          );
         },
       ),
     );
@@ -241,6 +300,13 @@ class _LearnScreenState extends State<LearnScreen> {
                         subtitle:
                             '${_list.length} characters · tap for details',
                         bottomGap: AppSpacing.md,
+                        trailing: _startHidden == true
+                            ? _CircleButton(
+                                icon: Icons.help_outline_rounded,
+                                tooltip: 'Show start guide',
+                                onTap: () => _setStartHidden(false),
+                              )
+                            : null,
                       ),
                     ),
                     Padding(
@@ -271,6 +337,9 @@ class _LearnScreenState extends State<LearnScreen> {
                               showRomaji: _showRomaji,
                               selectedId: _selectedId,
                               bottomInset: controlsBottom + 58,
+                              header: _startHidden == false
+                                  ? _startCard(stats)
+                                  : null,
                               onTap: (kana) => _openDetail(kana, stats),
                             ),
                     ),
@@ -298,6 +367,50 @@ class _LearnScreenState extends State<LearnScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// Kartu ajakan mulai belajar: ketuk untuk mulai, X untuk menyembunyikan.
+class _StartCard extends StatelessWidget {
+  const _StartCard({
+    required this.title,
+    required this.subtitle,
+    required this.onStart,
+    required this.onClose,
+  });
+
+  final String title;
+  final String subtitle;
+  final VoidCallback onStart;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      onTap: onStart,
+      padding: const EdgeInsets.fromLTRB(14, 10, 4, 10),
+      child: Row(
+        children: [
+          const IconTile(icon: Icons.play_arrow_rounded),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: AppText.bodyStrong.copyWith(fontSize: 16)),
+                const SizedBox(height: 2),
+                Text(subtitle, style: AppText.caption),
+              ],
+            ),
+          ),
+          IconButton(
+            tooltip: 'Hide',
+            onPressed: onClose,
+            icon: Icon(Icons.close, size: 18, color: AppColors.muted),
+          ),
+        ],
       ),
     );
   }
@@ -367,8 +480,11 @@ class _KanaGrid extends StatelessWidget {
     required this.selectedId,
     required this.bottomInset,
     required this.onTap,
+    this.header,
   });
 
+  /// Widget di atas grid yang ikut bergulir (kartu "Start here").
+  final Widget? header;
   final List<Kana> kana;
   final bool grouped;
   final Map<String, int> steps;
@@ -414,6 +530,7 @@ class _KanaGrid extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(20, 0, 20, bottomInset),
           child: Column(
             children: [
+              if (header != null) ...[header!, const SizedBox(height: gap)],
               for (final group in groupKana(kana)) ...[
                 kanaGroupRow(group, (k) => _tile(context, k, null), gap: gap),
                 const SizedBox(height: gap),
@@ -463,9 +580,9 @@ class _KanaCell extends StatelessWidget {
         ? AppColors.activeGlassGradient(intensity: intensity)
         : null;
     final borderColor = selected
-        ? AppColors.glassBorderStrong
+        ? AppColors.tileBorderStrong
         : mastered || active
-        ? AppColors.glassBorder
+        ? AppColors.tileBorder
         : Colors.transparent;
     final color = lit ? AppColors.ink : AppColors.muted;
 
@@ -648,7 +765,9 @@ class _KanaDetailSheet extends StatelessWidget {
   final int step;
   final bool active;
   final Future<void> Function() onToggleActive;
-  final VoidCallback onStudy;
+
+  /// [mode]: flashcard | quiz | writing.
+  final ValueChanged<String> onStudy;
 
   @override
   Widget build(BuildContext context) {
@@ -745,11 +864,27 @@ class _KanaDetailSheet extends StatelessWidget {
               ],
               const SizedBox(height: AppSpacing.lg),
               PrimaryButton(
-                label: 'Study ${kana.typeLabel}',
-                onPressed: onStudy,
+                label: 'Start flashcards',
+                onPressed: () => onStudy('flashcard'),
                 trailing: Icons.arrow_forward,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                    onPressed: () => onStudy('writing'),
+                    icon: Icon(Icons.draw_outlined,
+                        size: 18, color: AppColors.muted),
+                    label: Text('Writing', style: AppText.muted),
+                  ),
+                  TextButton.icon(
+                    onPressed: () => onStudy('quiz'),
+                    icon: Icon(Icons.quiz_outlined,
+                        size: 18, color: AppColors.muted),
+                    label: Text('Quick quiz', style: AppText.muted),
+                  ),
+                ],
+              ),
               PrimaryButton(
                 label: active ? 'Remove from my letters' : 'Add to my letters',
                 kind: ButtonKind.secondary,

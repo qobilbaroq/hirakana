@@ -39,30 +39,21 @@ Future<void> launchSession(
     }
   } else if (mode == 'quiz' && await repo.reviewedActiveCount(args.type) == 0) {
     if (!context.mounted) return;
-    final goFlashcards = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Study first'),
-        content: const Text(
-          'The quiz only asks about letters you have already seen. '
-          'Start with a few flashcards, then come back.',
+    // Tidak ada pop-up penghadang: langsung buka flashcard, beri tahu alasannya.
+    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+      const SnackBar(
+        content: Text(
+          'The quiz opens after you have seen a few letters. '
+          "Let's start with flashcards.",
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Not now'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Open flashcards'),
-          ),
-        ],
+        duration: Duration(seconds: 3),
       ),
     );
-    if (goFlashcards == true && context.mounted) {
-      await launchSession(context,
-          mode: 'flashcard', args: SessionArgs(type: args.type));
-    }
+    await launchSession(
+      context,
+      mode: 'flashcard',
+      args: SessionArgs(type: args.type, firstKanaId: args.firstKanaId),
+    );
     return;
   }
 

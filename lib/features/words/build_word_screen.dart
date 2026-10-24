@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
@@ -368,21 +369,24 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
                       const SizedBox(height: AppSpacing.md),
                       _slotGrid(q),
                       const SizedBox(height: AppSpacing.sm),
-                      if (_answered)
-                        _feedback(q)
-                      else ...[
-                        _tileGrid(q),
-                        const SizedBox(height: AppSpacing.sm),
-                        Text(
-                          'Tap a tile to fill · tap a slot to remove',
-                          textAlign: TextAlign.center,
-                          style: AppText.muted.copyWith(fontSize: 12),
-                        ),
-                      ],
+                      if (_answered) _feedback(q),
                     ],
                   ),
                 ),
               ),
+              // Potongan huruf ada tepat di atas tombol Check, jadi setelah
+              // memilih jempol tidak perlu naik-turun layar.
+              if (!_answered) ...[
+                const SizedBox(height: AppSpacing.sm),
+                _tileGrid(q),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  'Tap a tile to fill · tap a slot to remove',
+                  textAlign: TextAlign.center,
+                  style: AppText.muted.copyWith(fontSize: 12),
+                ),
+              ],
+              const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(
                   label: last ? 'Finish' : 'Next',
@@ -424,7 +428,7 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
           '${q.word.text}  ·  ${q.word.reading}',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Noto Sans JP',
+            fontFamily: AppFonts.kana,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.ink,

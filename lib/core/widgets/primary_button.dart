@@ -71,15 +71,15 @@ class PrimaryButton extends StatelessWidget {
           child: child,
         );
       case ButtonKind.primary:
-        // Tombol utama dibalik: terang di tema gelap, gelap di tema terang.
-        // Ini memberi satu titik fokus tanpa memakai warna aksen.
+        // Tombol utama: dibalik (terang di gelap, gelap di terang) pada tema
+        // mono, dan berwarna aksen pada tema berwarna.
         return FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
             minimumSize: size,
             shape: shape,
-            backgroundColor: AppColors.ink,
-            foregroundColor: AppColors.paper,
+            backgroundColor: AppColors.button,
+            foregroundColor: AppColors.onButton,
             disabledBackgroundColor: AppColors.sand,
             disabledForegroundColor: AppColors.muted,
           ),

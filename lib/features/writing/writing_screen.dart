@@ -57,6 +57,7 @@ class _WritingScreenState extends State<WritingScreen>
       size: size,
       fillToSize: size > AppSettings.minSessionSize,
     ));
+    putKanaFirst(_queue, widget.args.firstKanaId);
     _sessionId = await _repo.startSession('writing', widget.args.type);
     _lastTick = DateTime.now();
     if (!mounted) return;

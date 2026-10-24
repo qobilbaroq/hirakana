@@ -106,9 +106,11 @@ ColorScheme _schemeFor(AppPalette p, Brightness brightness) {
 }
 
 ThemeData buildAppTheme(Brightness brightness) {
-  final p = brightness == Brightness.dark
-      ? AppPalette.dark
-      : AppPalette.light;
+  // Palet + aksen pilihan pengguna (mono = hitam-putih bawaan).
+  final p = AppColors.paletteFor(
+    brightness == Brightness.dark,
+    AppColors.accent,
+  );
   final roundShape = RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(AppRadius.button),
   );
@@ -158,8 +160,8 @@ ThemeData buildAppTheme(Brightness brightness) {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         // Tombol utama tetap inverted: terang di tema gelap.
-        backgroundColor: p.ink,
-        foregroundColor: p.paper,
+        backgroundColor: p.button,
+        foregroundColor: p.onButton,
         disabledBackgroundColor: p.sand,
         disabledForegroundColor: p.muted,
         minimumSize: const Size.fromHeight(52),
@@ -204,15 +206,15 @@ ThemeData buildAppTheme(Brightness brightness) {
           states.contains(WidgetState.selected) ? Colors.transparent : p.line),
     ),
     sliderTheme: SliderThemeData(
-      activeTrackColor: p.ink,
+      activeTrackColor: p.button,
       inactiveTrackColor: p.sand,
-      thumbColor: p.ink,
-      overlayColor: p.ink.withValues(alpha: 0.12),
-      valueIndicatorColor: p.ink,
-      valueIndicatorTextStyle: TextStyle(color: p.paper),
+      thumbColor: p.button,
+      overlayColor: p.button.withValues(alpha: 0.12),
+      valueIndicatorColor: p.button,
+      valueIndicatorTextStyle: TextStyle(color: p.onButton),
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: p.ink,
+      color: p.button,
       linearTrackColor: p.sand,
     ),
     chipTheme: ChipThemeData(

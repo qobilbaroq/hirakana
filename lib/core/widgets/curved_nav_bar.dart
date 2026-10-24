@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import 'curved_nav_geometry.dart';
 
 /// Satu item pada bar melengkung: ikon, huruf (mis. `あ`), atau teks pendek.
@@ -61,25 +62,50 @@ class _CurvedNavBarState extends State<CurvedNavBar>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 560),
+    duration: _duration,
   );
+
+  /// Durasi animasi pil dan warna ikon dibuat sama di semua bar (navigasi
+  /// bawah dan toggle) supaya geraknya konsisten.
+  static const _duration = Duration(milliseconds: 420);
 
   CurvedNavGeometry? _geometry;
   double _l0 = 0, _r0 = 0, _l1 = 0, _r1 = 0;
 
-  @override
-  void didUpdateWidget(CurvedNavBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  /// Item yang sedang ditampilkan sebagai aktif. Diubah langsung saat disentuh
+  /// (sebelum halaman di belakangnya dibangun ulang), supaya animasi tidak
+  /// tersendat oleh pembangunan halaman yang berat.
+  late int _shown = widget.currentIndex;
+
+  /// Jumlah sentuhan yang sudah menggerakkan pil tetapi belum diteruskan ke
+  /// [CurvedNavBar.onTap]. Selama > 0, perubahan indeks dari luar diabaikan
+  /// supaya pil tidak melompat balik saat disentuh cepat berturut-turut.
+  int _pending = 0;
+
+  void _animateTo(int index) {
     final g = _geometry;
-    if (g == null || oldWidget.currentIndex == widget.currentIndex) return;
+    if (g == null) {
+      _shown = index;
+      return;
+    }
     // Mulai dari posisi pil saat ini (juga kalau pil masih bergerak).
     final (l, r) = _edges(g);
-    final (nl, nr) = g.pillEdges(widget.currentIndex);
+    final (nl, nr) = g.pillEdges(index);
     _l0 = l;
     _r0 = r;
     _l1 = nl;
     _r1 = nr;
+    _shown = index;
     _controller.forward(from: 0);
+  }
+
+  @override
+  void didUpdateWidget(CurvedNavBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Perubahan dari luar (bukan dari sentuhan di bar ini).
+    if (_pending == 0 && widget.currentIndex != _shown) {
+      _animateTo(widget.currentIndex);
+    }
   }
 
   @override
@@ -89,7 +115,7 @@ class _CurvedNavBarState extends State<CurvedNavBar>
   }
 
   (double, double) _edges(CurvedNavGeometry g) {
-    if (!_controller.isAnimating) return g.pillEdges(widget.currentIndex);
+    if (!_controller.isAnimating) return g.pillEdges(_shown);
     return CurvedNavGeometry.stretch(
       l0: _l0,
       r0: _r0,
@@ -100,9 +126,16 @@ class _CurvedNavBarState extends State<CurvedNavBar>
   }
 
   void _select(int i) {
-    if (i == widget.currentIndex) return;
+    if (i == _shown) return;
     if (widget.haptics) HapticFeedback.selectionClick();
-    widget.onTap(i);
+    // Animasi pil mulai dulu; perpindahan halaman dijalankan di frame
+    // berikutnya supaya frame pertama animasi tidak ikut tertahan.
+    setState(() => _animateTo(i));
+    _pending++;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pending = _pending > 0 ? _pending - 1 : 0;
+      if (mounted) widget.onTap(i);
+    });
   }
 
   @override
@@ -119,7 +152,8 @@ class _CurvedNavBarState extends State<CurvedNavBar>
         _geometry = g;
         return Center(
           heightFactor: 1,
-          child: SizedBox(
+          child: RepaintBoundary(
+            child: SizedBox(
             width: g.width,
             height: g.height,
             child: AnimatedBuilder(
@@ -147,6 +181,7 @@ class _CurvedNavBarState extends State<CurvedNavBar>
               },
             ),
           ),
+          ),
         );
       },
     );
@@ -156,7 +191,7 @@ class _CurvedNavBarState extends State<CurvedNavBar>
     final item = widget.items[i];
     final s = g.slotCenter(i);
     final (x, y) = g.centerlinePoint(s);
-    final selected = i == widget.currentIndex;
+    final selected = i == _shown;
     final idle = widget.idleColor ?? AppColors.glassIcon;
     final active = widget.activeColor ?? AppColors.glassIconOn;
     return Positioned(
@@ -179,7 +214,7 @@ class _CurvedNavBarState extends State<CurvedNavBar>
               child: Center(
                 child: TweenAnimationBuilder<Color?>(
                   tween: ColorTween(end: selected ? active : idle),
-                  duration: const Duration(milliseconds: 260),
+                  duration: _duration,
                   builder: (context, color, _) => _content(item, color),
                 ),
               ),
@@ -198,7 +233,7 @@ class _CurvedNavBarState extends State<CurvedNavBar>
       return Text(
         item.glyph!,
         style: TextStyle(
-          fontFamily: 'Noto Sans JP',
+          fontFamily: AppFonts.kana,
           fontSize: widget.iconSize - 2,
           height: 1,
           fontWeight: FontWeight.w500,

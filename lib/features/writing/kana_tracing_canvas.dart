@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../data/seed/stroke_data.dart';
@@ -223,7 +224,7 @@ class _TracingPainter extends CustomPainter {
       text: TextSpan(
         text: character,
         style: TextStyle(
-          fontFamily: 'Noto Sans JP',
+          fontFamily: AppFonts.kana,
           fontSize: min(size.width / character.length, size.shortestSide) * 0.8,
           color: comparing
               ? AppColors.clay.withValues(alpha: 0.75)

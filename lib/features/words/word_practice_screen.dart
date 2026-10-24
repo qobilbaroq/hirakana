@@ -213,14 +213,15 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.lg),
-                      _grid(q),
                       const SizedBox(height: AppSpacing.md),
                       _feedback(q),
                     ],
                   ),
                 ),
               ),
+              const SizedBox(height: AppSpacing.sm),
+              _grid(q),
+              const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(
                   label: last ? 'Finish' : 'Next',
@@ -275,36 +276,54 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
     final ok = _picked == q.answer;
     final meaning = q.word?.meaning ?? '';
     final showMeaning =
-        ok && q.word != null && AppSettings.instance.showMeaning && meaning.isNotEmpty;
+        q.word != null && AppSettings.instance.showMeaning && meaning.isNotEmpty;
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              ok ? Icons.check_circle : Icons.info_outline,
-              color: ok ? AppColors.sage : AppColors.clay,
-              size: 20,
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Text(ok ? "Nice, that's right." : 'Not quite.', style: AppText.body),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
-          '${q.text}  ·  ${q.answer}',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Noto Sans JP',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: AppColors.ink,
+        if (!ok) ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.info_outline,
+                color: AppColors.clay,
+                size: 20,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Text('Not quite.', style: AppText.body),
+            ],
           ),
-        ),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         if (showMeaning) ...[
+          Text(
+            meaning,
+            textAlign: TextAlign.center,
+            style: AppText.section.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: AppColors.ink,
+            ),
+          ),
           const SizedBox(height: AppSpacing.xs),
-          Text('Meaning: $meaning',
-              textAlign: TextAlign.center, style: AppText.muted),
+          Text(
+            q.answer,
+            textAlign: TextAlign.center,
+            style: AppText.body.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.muted,
+            ),
+          ),
+        ] else ...[
+          Text(
+            q.answer,
+            textAlign: TextAlign.center,
+            style: AppText.section.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: AppColors.ink,
+            ),
+          ),
         ],
         if (q.word != null && q.word!.level.isNotEmpty)
           Padding(

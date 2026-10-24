@@ -1,5 +1,71 @@
 import 'package:flutter/material.dart';
 
+/// Warna aksen yang bisa dipilih pengguna. [mono] = tampilan hitam-putih
+/// bawaan (tanpa warna).
+enum AppAccent {
+  mono(
+    label: 'Mono',
+    color: Color(0xFF8E8E93),
+    deep: Color(0xFF8E8E93),
+    swatch: Color(0xFF8E8E93),
+  ),
+  blue(
+    label: 'Blue',
+    color: Color(0xFF0A6CE0),
+    deep: Color(0xFF0A4FC4),
+    swatch: Color(0xFF0A84FF),
+  ),
+  green(
+    label: 'Green',
+    color: Color(0xFF1E8E3E),
+    deep: Color(0xFF1B7A38),
+    swatch: Color(0xFF34C759),
+  ),
+  orange(
+    label: 'Orange',
+    color: Color(0xFFC25E00),
+    deep: Color(0xFFB35A00),
+    swatch: Color(0xFFFF9500),
+  ),
+  purple(
+    label: 'Purple',
+    color: Color(0xFF5754D6),
+    deep: Color(0xFF433FB5),
+    swatch: Color(0xFF5E5CE6),
+  ),
+  red(
+    label: 'Red',
+    color: Color(0xFFE0254B),
+    deep: Color(0xFFB01A3C),
+    swatch: Color(0xFFFF2D55),
+  );
+
+  const AppAccent({
+    required this.label,
+    required this.color,
+    required this.deep,
+    required this.swatch,
+  });
+
+  final String label;
+
+  /// Isi tombol, pil aktif, dan bar progress (putih terbaca di atasnya).
+  final Color color;
+
+  /// Warna pangkal gradien latar di bagian atas layar.
+  final Color deep;
+
+  /// Warna cerah untuk contoh warna di Settings dan kaca huruf.
+  final Color swatch;
+
+  bool get isMono => this == mono;
+
+  static AppAccent byName(String? name) => AppAccent.values.firstWhere(
+    (a) => a.name == name,
+    orElse: () => AppAccent.mono,
+  );
+}
+
 /// Satu set warna lengkap untuk tema terang atau gelap.
 ///
 /// Palet monokrom netral tanpa aksen hijau. Efek kaca dipakai pada huruf kana,
@@ -21,6 +87,7 @@ class AppPalette {
     required this.active,
     required this.onActive,
     required this.isDark,
+    this.accent = AppAccent.mono,
   });
 
   final Color paper; // latar layar
@@ -37,6 +104,37 @@ class AppPalette {
   final Color active; // latar pilihan aktif (abu-abu, bukan hitam)
   final Color onActive; // teks/ikon di atas pilihan aktif
   final bool isDark;
+
+  /// Aksen yang sedang dipakai ([AppAccent.mono] = tanpa warna).
+  final AppAccent accent;
+
+  bool get hasAccent => !accent.isMono;
+
+  /// Latar tombol utama: ink (hitam/putih) di mono, warna aksen di tema berwarna.
+  Color get button => hasAccent ? accent.color : ink;
+  Color get onButton => hasAccent ? Colors.white : paper;
+
+  /// Salinan palet ini dengan warna aksen terpasang. Mono = palet apa adanya.
+  AppPalette withAccent(AppAccent a) {
+    if (a.isMono) return this;
+    return AppPalette(
+      paper: paper,
+      ink: ink,
+      sage: a.color,
+      clay: clay,
+      sand: sand,
+      white: white,
+      muted: muted,
+      line: line,
+      guide: guide,
+      action: a.color,
+      onAction: Colors.white,
+      active: a.color,
+      onActive: Colors.white,
+      isDark: isDark,
+      accent: a,
+    );
+  }
 
   /// Terang netral-dingin, diukur dari screenshot mode terang referensi:
   /// latar abu muda, teks hampir hitam, tanpa rona hijau.
@@ -82,7 +180,24 @@ class AppPalette {
 abstract final class AppColors {
   static bool isDark = false;
 
-  static AppPalette get _p => isDark ? AppPalette.dark : AppPalette.light;
+  /// Aksen pilihan pengguna. Diisi oleh `AppSettings`.
+  static AppAccent accent = AppAccent.mono;
+
+  static bool get hasAccent => !accent.isMono;
+
+  static final _paletteCache = <String, AppPalette>{};
+
+  /// Palet untuk tema [dark] dengan aksen [a] (di-cache).
+  static AppPalette paletteFor(bool dark, AppAccent a) =>
+      _paletteCache.putIfAbsent(
+        '${dark ? 'd' : 'l'}-${a.name}',
+        () => (dark ? AppPalette.dark : AppPalette.light).withAccent(a),
+      );
+
+  static AppPalette get _p => paletteFor(isDark, accent);
+
+  static Color get button => _p.button;
+  static Color get onButton => _p.onButton;
 
   static Color get paper => _p.paper;
   static Color get ink => _p.ink;
@@ -108,19 +223,28 @@ abstract final class AppColors {
       isDark ? const Color(0x14FFFFFF) : const Color(0x12000000);
 
   // Bar melengkung (navigasi, toggle, tombol bulat).
+  // Dibuat lebih pekat dan gelap dari versi sebelumnya (dulu terlalu
+  // tembus pandang sehingga konten di belakang bar terlihat jelas).
   static Color get glass =>
-      isDark ? const Color(0x16FFFFFF) : const Color(0x1C000000);
-  static Color get glassPill =>
-      isDark ? const Color(0x5EFFFFFF) : const Color(0x75000000);
+      isDark ? const Color(0xD21F2023) : const Color(0xCCC4C6CA);
+  static Color get glassPill => hasAccent
+      ? accent.color.withValues(alpha: 0.94)
+      : isDark
+      ? const Color(0x5EFFFFFF)
+      : const Color(0x75000000);
   static Color get glassIcon =>
       isDark ? const Color(0xA6FFFFFF) : const Color(0x80000000);
   static Color get glassIconOn => const Color(0xFFFFFFFF);
-  static Color get segPill =>
-      isDark ? const Color(0x3DFFFFFF) : const Color(0x40000000);
+  static Color get segPill => hasAccent
+      ? accent.color.withValues(alpha: 0.82)
+      : isDark
+      ? const Color(0x3DFFFFFF)
+      : const Color(0x40000000);
   static Color get segText =>
       isDark ? const Color(0xB3FFFFFF) : const Color(0x8C000000);
-  static Color get segTextOn =>
-      isDark ? const Color(0xFFFFFFFF) : const Color(0xE6000000);
+  static Color get segTextOn => hasAccent || isDark
+      ? const Color(0xFFFFFFFF)
+      : const Color(0xE6000000);
 
   /// Kekuatan noise: terang butuh lebih kuat (simpangan baku ±2,7–3,3 pada
   /// referensi) daripada gelap (±1,4).
@@ -177,6 +301,39 @@ abstract final class AppColors {
   /// Gradien latar halaman. Stop persis dari referensi pengguna, dicampur
   /// sedikit dengan warna paper supaya teks terang di bagian atas tetap terbaca.
   static LinearGradient get backgroundGradient {
+    final mono = _monoGradient;
+    if (!hasAccent) return mono;
+    // Tema berwarna: bagian atas layar diwarnai aksen, lalu memudar ke warna
+    // netral yang sama seperti mono (bawah layar tetap gelap/terang).
+    final tint = isDark ? _darkTint : _lightTint;
+    final source = isDark ? accent.deep : accent.swatch;
+    return LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: mono.stops,
+      colors: [
+        for (var i = 0; i < mono.colors.length; i++)
+          Color.lerp(mono.colors[i], source, tint[i])!,
+      ],
+    );
+  }
+
+  // Seberapa kuat aksen mewarnai tiap stop (panjang = jumlah stop gradien).
+  static const _darkTint = [1.0, 0.62, 0.36, 0.2, 0.1, 0.04, 0.0, 0.0];
+  static const _lightTint = [
+    0.55,
+    0.46,
+    0.4,
+    0.34,
+    0.27,
+    0.2,
+    0.12,
+    0.06,
+    0.0,
+    0.0,
+  ];
+
+  static LinearGradient get _monoGradient {
     if (!isDark) {
       return const LinearGradient(
         begin: Alignment.topCenter,
@@ -196,6 +353,15 @@ abstract final class AppColors {
     );
   }
 
+  /// Border tipis kotak huruf: bertinta aksen di tema berwarna.
+  static Color get tileBorder => hasAccent
+      ? accent.swatch.withValues(alpha: isDark ? 0.5 : 0.55)
+      : glassBorder;
+
+  static Color get tileBorderStrong => hasAccent
+      ? accent.swatch.withValues(alpha: 0.95)
+      : glassBorderStrong;
+
   /// Border kaca: putih tipis di gelap, tinta tipis di terang.
   static Color get glassBorder => isDark
       ? Colors.white.withValues(alpha: 0.18)
@@ -210,6 +376,16 @@ abstract final class AppColors {
   /// kaca putih. Di terang tintanya abu-abu, bukan hitam.
   static LinearGradient activeGlassGradient({double intensity = 1}) {
     final t = intensity.clamp(0.0, 1.5);
+    if (hasAccent) {
+      return LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          accent.swatch.withValues(alpha: (0.72 * t).clamp(0.0, 0.9)),
+          accent.swatch.withValues(alpha: (0.30 * t).clamp(0.0, 0.5)),
+        ],
+      );
+    }
     if (isDark) {
       return LinearGradient(
         begin: Alignment.topCenter,
@@ -220,13 +396,15 @@ abstract final class AppColors {
         ],
       );
     }
-    final gray = const Color(0xFFB8B8B1);
+    // Mode terang: abu tua (bukan abu muda) supaya huruf terpilih jelas
+    // berbeda dari latar abu terang.
+    const gray = Color(0xFF4A4C52);
     return LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        gray.withValues(alpha: (0.30 * t).clamp(0.0, 0.5)),
-        gray.withValues(alpha: (0.20 * t).clamp(0.0, 0.36)),
+        gray.withValues(alpha: (0.34 * t).clamp(0.0, 0.62)),
+        gray.withValues(alpha: (0.24 * t).clamp(0.0, 0.46)),
       ],
     );
   }

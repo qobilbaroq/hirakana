@@ -21,6 +21,8 @@ void main() {
   setUp(() async {
     await TestDb.reset();
     await repo.setActiveIds(activeVowelsAndK.map((k) => k.id).toSet());
+    // Onboarding hanya untuk pengguna baru; tes ini membahas tab utama.
+    await repo.setMeta('intro_done', '1');
     await AppSettings.instance.load();
     await AppSettings.instance.setThemeMode(ThemeMode.dark);
   });

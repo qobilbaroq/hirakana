@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/utils/format.dart';
@@ -34,7 +35,11 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
       'writing' => AppRouter.writing,
       _ => AppRouter.flashcard,
     };
-    Navigator.pushReplacementNamed(context, route, arguments: result.args);
+    Navigator.pushReplacementNamed(
+      context,
+      route,
+      arguments: result.args.withoutFirst(),
+    );
   }
 
   Future<void> _addMore() async {
@@ -154,7 +159,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                       child: Text(
                         _addedLabel!,
                         style: AppText.muted.copyWith(
-                          fontFamily: 'Noto Sans JP',
+                          fontFamily: AppFonts.kana,
                         ),
                       ),
                     ),
