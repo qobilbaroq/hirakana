@@ -135,7 +135,7 @@ class SettingsScreen extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       title: const Text('Show word meaning'),
                       subtitle: const Text(
-                          'After a correct answer in reading practice, for words that have a meaning.'),
+                          'In reading practice, for words that have a meaning.'),
                       value: settings.showMeaning,
                       onChanged: settings.setShowMeaning,
                     ),
