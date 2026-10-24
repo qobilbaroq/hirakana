@@ -5,6 +5,7 @@ import '../features/learn/flashcard_screen.dart';
 import '../features/learn/quiz_screen.dart';
 import '../features/learn/session_controller.dart';
 import '../features/learn/session_summary_screen.dart';
+import '../features/onboarding/onboarding_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/shell/main_shell.dart';
 import '../features/words/build_questions.dart';
@@ -27,6 +28,7 @@ class AppRouter {
   static const buildRomaji = '/build-romaji';
   static const buildKana = '/build-kana';
   static const wordHistory = '/word-history';
+  static const onboarding = '/onboarding';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final Widget page;
@@ -57,6 +59,8 @@ class AppRouter {
         );
       case wordHistory:
         page = const WordHistoryScreen();
+      case onboarding:
+        page = const OnboardingScreen();
       case summary:
         page = SessionSummaryScreen(result: settings.arguments as SessionResult);
       default:

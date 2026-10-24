@@ -35,7 +35,11 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
       'writing' => AppRouter.writing,
       _ => AppRouter.flashcard,
     };
-    Navigator.pushReplacementNamed(context, route, arguments: result.args);
+    Navigator.pushReplacementNamed(
+      context,
+      route,
+      arguments: result.args.withoutFirst(),
+    );
   }
 
   Future<void> _addMore() async {

@@ -3,6 +3,7 @@ import 'dart:math';
 import '../../core/settings/app_settings.dart';
 import '../../data/models/kana.dart';
 import '../../data/repositories/kana_repository.dart';
+import '../../data/seed/kana_data.dart';
 import 'quiz_question.dart';
 
 class SessionArgs {
@@ -12,6 +13,7 @@ class SessionArgs {
     this.quizKind,
     this.vocabLevel,
     this.onlyTexts,
+    this.firstKanaId,
   });
 
   final String type; // hiragana | katakana | mixed
@@ -21,6 +23,46 @@ class SessionArgs {
   // Latihan baca / tebak arti: hanya kata-kata ini (mengulang dari riwayat).
   // null = kata biasa dari huruf pilihan.
   final List<String>? onlyTexts;
+
+  /// Huruf yang diketuk di tab Kana: jadi kartu/soal PERTAMA di sesi ini,
+  /// sisanya urut seperti biasa. null = sesi biasa.
+  final String? firstKanaId;
+
+  /// Salinan tanpa [firstKanaId], dipakai saat "Study again" supaya sesi
+  /// berikutnya kembali seperti biasa.
+  SessionArgs withoutFirst() => SessionArgs(
+        type: type,
+        quick: quick,
+        quizKind: quizKind,
+        vocabLevel: vocabLevel,
+        onlyTexts: onlyTexts,
+      );
+}
+
+/// Menaruh huruf [firstId] di urutan pertama antrean; sisanya tetap. Kalau
+/// huruf itu belum ada di antrean, ia disisipkan dan huruf terakhir dibuang
+/// supaya jumlah kartu sesuai pengaturan. Huruf yang sama tidak dibiarkan
+/// berurutan.
+void putKanaFirst(List<Kana> queue, String? firstId) {
+  if (firstId == null) return;
+  final found = allKana.where((k) => k.id == firstId);
+  if (found.isEmpty) return;
+  final first = found.first;
+  final at = queue.indexWhere((k) => k.id == firstId);
+  if (at >= 0) {
+    queue.removeAt(at);
+  } else if (queue.isNotEmpty) {
+    queue.removeLast();
+  }
+  queue.insert(0, first);
+  if (queue.length > 2 && queue[1].id == firstId) {
+    final j = queue.indexWhere((k) => k.id != firstId, 2);
+    if (j > 1) {
+      final t = queue[1];
+      queue[1] = queue[j];
+      queue[j] = t;
+    }
+  }
 }
 
 class SessionResult {
@@ -97,6 +139,7 @@ class SessionController {
         // supaya terasa natural. Selain itu urutannya diacak.
         shuffle: !(mode == 'flashcard' && await _allUnseen(type)),
       ));
+      putKanaFirst(queue, args.firstKanaId);
     }
     partners = await _repo.confusionPartners();
     _retryFlags.addAll(List.filled(queue.length, false));
