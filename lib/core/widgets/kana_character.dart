@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 
 class KanaCharacter extends StatelessWidget {
   const KanaCharacter(
@@ -22,7 +23,7 @@ class KanaCharacter extends StatelessWidget {
       text,
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontFamily: 'Noto Sans JP',
+        fontFamily: AppFonts.kana,
         fontSize: size,
         height: 1.2,
         fontWeight: weight,

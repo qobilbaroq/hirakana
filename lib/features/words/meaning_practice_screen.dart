@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
@@ -184,14 +185,15 @@ class _MeaningPracticeScreenState extends State<MeaningPracticeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.lg),
-                      _grid(q),
                       const SizedBox(height: AppSpacing.md),
                       _feedback(q),
                     ],
                   ),
                 ),
               ),
+              const SizedBox(height: AppSpacing.sm),
+              _grid(q),
+              const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(
                   label: last ? 'Finish' : 'Next',
@@ -264,7 +266,7 @@ class _MeaningPracticeScreenState extends State<MeaningPracticeScreen> {
           '${q.word.text}  ·  ${q.word.reading}',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Noto Sans JP',
+            fontFamily: AppFonts.kana,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.ink,

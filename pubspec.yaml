@@ -44,6 +44,24 @@ flutter:
         - asset: assets/fonts/NotoSansJP-Regular.otf
         - asset: assets/fonts/NotoSansJP-Bold.otf
           weight: 700
+    # Font pilihan di Settings (sudah dikecilkan: hanya kana, tanda baca,
+    # dan Latin dasar). Semuanya berlisensi SIL OFL.
+    - family: Klee One
+      fonts:
+        - asset: assets/fonts/KleeOne-Regular.ttf
+        - asset: assets/fonts/KleeOne-SemiBold.ttf
+          weight: 600
+    - family: Zen Maru Gothic
+      fonts:
+        - asset: assets/fonts/ZenMaruGothic-Regular.ttf
+        - asset: assets/fonts/ZenMaruGothic-Bold.ttf
+          weight: 700
+    - family: Yuji Syuku
+      fonts:
+        - asset: assets/fonts/YujiSyuku-Regular.ttf
+    - family: Zen Kurenaido
+      fonts:
+        - asset: assets/fonts/ZenKurenaido-Regular.ttf
 
 # Ikon aplikasi: jalankan `dart run flutter_launcher_icons`
 flutter_launcher_icons:
@@ -51,7 +69,7 @@ flutter_launcher_icons:
   ios: false
   image_path: "assets/icon/icon.png"
   min_sdk_android: 21
-  adaptive_icon_background: "#82947A"
+  adaptive_icon_background: "#18191E"
   adaptive_icon_foreground: "assets/icon/icon_foreground.png"
   adaptive_icon_monochrome: "assets/icon/icon_mono.png"
 

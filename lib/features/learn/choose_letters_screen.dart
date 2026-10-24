@@ -200,9 +200,9 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
   }
 }
 
-/// Tile huruf. Saat dipilih: kaca halus memudar masuk dan tile membesar
-/// sedikit. Warnanya sengaja lembut; pip penguasaan dibuat redup supaya tidak
-/// lebih terang dari huruf.
+/// Tile huruf. Dibuat jelas beda antara terpilih dan tidak: terpilih punya
+/// kaca yang kuat, border tegas, dan tanda centang kecil; tidak terpilih
+/// tetap punya border tipis supaya tepinya terlihat di mode terang.
 class _LetterTile extends StatelessWidget {
   const _LetterTile({
     required this.kana,
@@ -235,19 +235,45 @@ class _LetterTile extends StatelessWidget {
             child: Stack(
               children: [
                 Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: radius,
+                      border: Border.all(
+                        color: AppColors.glassBorder,
+                        width: 0.8,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned.fill(
                   child: AnimatedOpacity(
                     opacity: on ? 1 : 0,
                     duration: const Duration(milliseconds: 220),
                     curve: Curves.easeOutCubic,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        gradient: AppColors.activeGlassGradient(intensity: 0.7),
+                        gradient: AppColors.activeGlassGradient(
+                          intensity: AppColors.isDark ? 0.9 : 1.4,
+                        ),
                         borderRadius: radius,
                         border: Border.all(
-                          color: AppColors.glassBorder,
-                          width: 0.8,
+                          color: AppColors.tileBorderStrong,
+                          width: 1.2,
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 5,
+                  right: 6,
+                  child: AnimatedOpacity(
+                    opacity: on ? 1 : 0,
+                    duration: const Duration(milliseconds: 180),
+                    child: Icon(
+                      Icons.check_circle,
+                      size: 13,
+                      color: fg.withValues(alpha: 0.85),
                     ),
                   ),
                 ),
@@ -266,14 +292,14 @@ class _LetterTile extends StatelessWidget {
                           fontSize: 10.5,
                           height: 1.2,
                           color: on
-                              ? fg.withValues(alpha: 0.65)
+                              ? fg.withValues(alpha: 0.75)
                               : AppColors.muted,
                         ),
                       ),
                       const SizedBox(height: 3),
                       MasteryIndicator(
                         level: level,
-                        color: fg.withValues(alpha: on ? 0.5 : 0.38),
+                        color: fg.withValues(alpha: on ? 0.55 : 0.38),
                       ),
                     ],
                   ),

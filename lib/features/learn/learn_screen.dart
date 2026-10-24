@@ -463,9 +463,9 @@ class _KanaCell extends StatelessWidget {
         ? AppColors.activeGlassGradient(intensity: intensity)
         : null;
     final borderColor = selected
-        ? AppColors.glassBorderStrong
+        ? AppColors.tileBorderStrong
         : mastered || active
-        ? AppColors.glassBorder
+        ? AppColors.tileBorder
         : Colors.transparent;
     final color = lit ? AppColors.ink : AppColors.muted;
 

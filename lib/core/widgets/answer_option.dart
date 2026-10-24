@@ -24,18 +24,19 @@ class AnswerOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Benar/salah ditandai warna border dan isi saja (tanpa ikon centang/X).
     Color border = Colors.transparent;
     double width = 1;
-    Color? icon;
+    Color? tint;
     switch (state) {
       case OptionState.correct:
         border = AppColors.sage;
         width = 1.5;
-        icon = AppColors.sage;
+        tint = AppColors.sage.withValues(alpha: 0.22);
       case OptionState.wrong:
         border = AppColors.clay;
         width = 1.5;
-        icon = AppColors.clay;
+        tint = AppColors.clay.withValues(alpha: 0.22);
       case OptionState.dimmed:
       case OptionState.idle:
         break;
@@ -69,38 +70,19 @@ class AnswerOption extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.card),
               border: Border.all(color: border, width: width),
-              color: state == OptionState.idle || state == OptionState.dimmed
-                  ? AppColors.card
-                  : AppColors.sand.withValues(alpha: 0.55),
+              color: tint ?? AppColors.card,
             ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                isKana
-                    ? KanaCharacter(label, size: textSize ?? 34, color: textColor)
-                    : Text(
-                        label,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: textSize ?? 24,
-                          fontWeight: FontWeight.w600,
-                          color: textColor,
-                        ),
-                      ),
-                if (icon != null)
-                  Positioned(
-                    top: 0,
-                    right: 4,
-                    child: Icon(
-                      state == OptionState.correct
-                          ? Icons.check_circle
-                          : Icons.cancel,
-                      size: 17,
-                      color: icon,
+            child: isKana
+                ? KanaCharacter(label, size: textSize ?? 34, color: textColor)
+                : Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: textSize ?? 24,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
                     ),
                   ),
-              ],
-            ),
           ),
         ),
       ),

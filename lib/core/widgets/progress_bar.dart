@@ -22,7 +22,7 @@ class ProgressBar extends StatelessWidget {
         value: value.clamp(0.0, 1.0),
         minHeight: height,
         backgroundColor: AppColors.sand,
-        valueColor: AlwaysStoppedAnimation<Color>(color ?? AppColors.ink),
+        valueColor: AlwaysStoppedAnimation<Color>(color ?? AppColors.button),
       ),
     );
   }

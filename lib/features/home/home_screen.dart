@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/settings/app_settings.dart';
@@ -71,10 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(height: AppSpacing.xs),
-              const Text(
+              Text(
                 'おはよう!',
                 style: TextStyle(
-                  fontFamily: 'Noto Sans JP',
+                  fontFamily: AppFonts.kana,
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
                 ),
@@ -220,8 +221,8 @@ class _KanaCategoryCard extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   glyph,
-                  style: const TextStyle(
-                    fontFamily: 'Noto Sans JP',
+                  style: TextStyle(
+                    fontFamily: AppFonts.kana,
                     fontSize: 28,
                     fontWeight: FontWeight.w600,
                   ),

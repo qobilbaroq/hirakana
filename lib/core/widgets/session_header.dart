@@ -136,7 +136,7 @@ class _SegmentedProgress extends StatelessWidget {
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
                   widthFactor: fill,
-                  child: Container(color: AppColors.ink),
+                  child: Container(color: AppColors.button),
                 ),
               ),
             ),

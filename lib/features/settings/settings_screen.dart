@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
@@ -45,6 +47,51 @@ class SettingsScreen extends StatelessWidget {
                       onSelectionChanged: (v) =>
                           settings.setThemeMode(v.first),
                     ),
+                    const SizedBox(height: 18),
+                    Text('Accent color', style: AppText.muted),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: [
+                        for (final a in AppAccent.values)
+                          _AccentDot(
+                            accent: a,
+                            selected: settings.accent == a,
+                            onTap: () => settings.setAccent(a),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      settings.accent.isMono
+                          ? 'Mono: the default black and white look.'
+                          : '${settings.accent.label} accent on buttons, '
+                                'navigation, and the background.',
+                      style: AppText.caption,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              _SettingsCard(
+                title: 'Japanese font',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Used for kana and Japanese words. Other text stays the same.',
+                      style: AppText.muted,
+                    ),
+                    const SizedBox(height: 10),
+                    for (final f in AppFonts.options) ...[
+                      _FontTile(
+                        option: f,
+                        selected: settings.fontId == f.id,
+                        onTap: () => settings.setFont(f.id),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                   ],
                 ),
               ),
@@ -169,12 +216,137 @@ class SettingsScreen extends StatelessWidget {
                 'Stroke order data: KanjiVG (CC BY-SA 3.0), kanjivg.tagaini.net\n'
                 'Letter voice clips: veardk/just-gojuon (MIT)\n'
                 'Word voice: HTS voice tohoku-f01, Tohoku University ICN Lab (CC BY 4.0)\n'
-                'Word list: written for this app, no external source',
+                'Word list: written for this app, no external source\n'
+                'Fonts: Noto Sans JP, Klee One, Zen Maru Gothic, Yuji Syuku, '
+                'Zen Kurenaido (SIL OFL 1.1)',
                 style: AppText.caption,
               ),
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// Lingkaran contoh warna aksen. Yang terpilih diberi cincin.
+class _AccentDot extends StatelessWidget {
+  const _AccentDot({
+    required this.accent,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final AppAccent accent;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: '${accent.label} accent',
+      excludeSemantics: true,
+      child: Tooltip(
+        message: accent.label,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            width: 44,
+            height: 44,
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selected ? AppColors.ink : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: accent.swatch,
+              ),
+              child: selected
+                  ? const Icon(Icons.check, size: 18, color: Colors.white)
+                  : null,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Satu baris pilihan font dengan contoh huruf memakai font itu sendiri.
+class _FontTile extends StatelessWidget {
+  const _FontTile({
+    required this.option,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final AppFontOption option;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(AppRadius.card);
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: '${option.label} font',
+      excludeSemantics: true,
+      child: Material(
+        color: AppColors.card,
+        borderRadius: radius,
+        child: InkWell(
+          borderRadius: radius,
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 160),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: radius,
+              border: Border.all(
+                color: selected ? AppColors.button : Colors.transparent,
+                width: 1.5,
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(option.label, style: AppText.bodyStrong),
+                      const SizedBox(height: 2),
+                      Text(option.note, style: AppText.caption),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'あいう ア',
+                  style: TextStyle(
+                    fontFamily: option.family,
+                    fontSize: 22,
+                    height: 1.2,
+                    color: AppColors.ink,
+                  ),
+                ),
+                if (selected) ...[
+                  const SizedBox(width: 8),
+                  Icon(Icons.check_circle, size: 18, color: AppColors.button),
+                ],
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

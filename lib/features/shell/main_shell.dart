@@ -45,17 +45,16 @@ class _MainShellState extends State<MainShell>
     super.initState();
     _pageController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 240),
+      duration: const Duration(milliseconds: 220),
       value: 1,
     );
-    _pageOpacity = CurvedAnimation(
-      parent: _pageController,
-      curve: Curves.easeOutCubic,
+    _pageOpacity = Tween<double>(begin: 0.4, end: 1).animate(
+      CurvedAnimation(parent: _pageController, curve: Curves.easeOutCubic),
     );
     _pageOffset = Tween<Offset>(
-      begin: const Offset(0, 0.018),
+      begin: const Offset(0, 0.012),
       end: Offset.zero,
-    ).animate(_pageOpacity);
+    ).animate(_pageController);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_checkedForUpdate) return;
       _checkedForUpdate = true;
@@ -78,7 +77,11 @@ class _MainShellState extends State<MainShell>
         opacity: _pageOpacity,
         child: SlideTransition(
           position: _pageOffset,
-          child: IndexedStack(index: _index, children: _pages),
+          // Dipisah dari bar navigasi supaya animasi pil tidak ikut digambar
+          // ulang bersama halaman.
+          child: RepaintBoundary(
+            child: IndexedStack(index: _index, children: _pages),
+          ),
         ),
       ),
       bottomNavigationBar: _FloatingNav(index: _index, onSelected: _openTab),
