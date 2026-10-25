@@ -14,6 +14,7 @@ class AnswerOption extends StatelessWidget {
     required this.state,
     required this.onTap,
     this.textSize,
+    this.minHeight = 84,
   });
 
   final String label;
@@ -21,6 +22,7 @@ class AnswerOption extends StatelessWidget {
   final OptionState state;
   final VoidCallback? onTap;
   final double? textSize; // null = ukuran bawaan (kana 34, romaji 24)
+  final double minHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class AnswerOption extends StatelessWidget {
           onTap: onTap,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 160),
-            constraints: const BoxConstraints(minHeight: 84),
+            constraints: BoxConstraints(minHeight: minHeight),
             alignment: Alignment.center,
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(

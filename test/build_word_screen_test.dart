@@ -193,6 +193,10 @@ void main() {
         lessThanOrEqualTo(49),
         reason: '7 kotak jawaban harus tetap satu baris');
 
+    // Potongan cukup besar untuk ibu jari walau 12 kotak (4 kolom x 3 baris).
+    expect(tester.getSize(find.byType(Opacity).first).width,
+        greaterThanOrEqualTo(58));
+
     final scrollable =
         tester.state<ScrollableState>(find.byType(Scrollable).first);
     expect(scrollable.position.maxScrollExtent, 0,
