@@ -91,15 +91,15 @@ bool isSaneQuestion(QuizQuestion q) {
   return true;
 }
 
-/// Mengembalikan [q] apa adanya, tapi lebih dulu memastikan invariansnya benar
-/// (dalam mode debug/test ada yang melempar error).
+/// Mengembalikan [q] apa adanya setelah memastikan invariansnya benar.
 QuizQuestion _checked(QuizQuestion q) {
-  assert(
-    isSaneQuestion(q),
-    'Soal kuis tidak sah: kind=${q.kind} target=${q.target.id} '
-    '(${q.target.typeLabel} "${q.target.romaji}") '
-    'options=${q.options.map((k) => '${k.id}/${k.character}').toList()}',
-  );
+  if (!isSaneQuestion(q)) {
+    throw StateError(
+      'Soal kuis tidak sah: kind=${q.kind} target=${q.target.id} '
+      '(${q.target.typeLabel} "${q.target.romaji}") '
+      'options=${q.options.map((k) => '${k.id}/${k.character}').toList()}',
+    );
+  }
   return q;
 }
 
