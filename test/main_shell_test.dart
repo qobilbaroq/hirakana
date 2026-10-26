@@ -37,7 +37,8 @@ void main() {
     await tester.pumpWidget(const KanaQuestApp());
     await settle(tester);
 
-    expect(find.text('Kana'), findsOneWidget);
+    // Judul layar + label navigasi, jadi lebih dari satu.
+    expect(find.text('Kana'), findsWidgets);
     expect(find.text('Hiragana'), findsWidgets);
     // Baris kombinasi tetap dibangun di grid 5 kolom.
     expect(find.text('きゃ'), findsWidgets);
@@ -76,7 +77,8 @@ void main() {
 
     await tester.tap(find.byTooltip('Kana'));
     await settle(tester);
-    expect(find.text('Kana'), findsOneWidget);
+    // Judul layar + label navigasi, jadi lebih dari satu.
+    expect(find.text('Kana'), findsWidgets);
     expect(tester.takeException(), isNull);
   });
 

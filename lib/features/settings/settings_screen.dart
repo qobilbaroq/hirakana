@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../app/router.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_fonts.dart';
 import '../../app/theme/app_spacing.dart';
@@ -13,6 +14,7 @@ import '../../core/widgets/app_card.dart';
 import '../../core/widgets/pill_button.dart';
 import '../../core/widgets/pill_choice.dart';
 import '../../data/seed/kana_data.dart';
+import '../../core/utils/motion.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -50,17 +52,22 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 18),
                     Text('Accent color', style: AppText.muted),
                     const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
-                      children: [
-                        for (final a in AppAccent.values)
-                          _AccentDot(
-                            accent: a,
-                            selected: settings.accent == a,
-                            onTap: () => settings.setAccent(a),
-                          ),
-                      ],
+                    // Lebar dikunci ke 3 dot (3 x 44 + 2 x 12) supaya selalu jadi
+                    // grid 3x2 yang rapi, tidak ada satu dot yatim di baris 2.
+                    SizedBox(
+                      width: 160,
+                      child: Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          for (final a in AppAccent.values)
+                            _AccentDot(
+                              accent: a,
+                              selected: settings.accent == a,
+                              onTap: () => settings.setAccent(a),
+                            ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -209,6 +216,26 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 const _UpdateSection(),
               ],
+              const SizedBox(height: 12),
+              _SettingsCard(
+                title: 'Help',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Watch the short introduction to Kana Quest again.',
+                      style: AppText.muted,
+                    ),
+                    const SizedBox(height: 10),
+                    PillButton(
+                      icon: Icons.replay,
+                      label: 'Replay intro',
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRouter.onboarding),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: AppSpacing.lg),
               Text('Credits', style: AppText.section),
               const SizedBox(height: 6),
@@ -254,7 +281,7 @@ class _AccentDot extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: onTap,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
+            duration: motionDuration(context, const Duration(milliseconds: 180)),
             width: 44,
             height: 44,
             padding: const EdgeInsets.all(3),
@@ -271,7 +298,15 @@ class _AccentDot extends StatelessWidget {
                 color: accent.swatch,
               ),
               child: selected
-                  ? const Icon(Icons.check, size: 18, color: Colors.white)
+                  // Hijau dan oranye terang: centang putih hanya ~2,2:1, jadi
+                  // dipakai centang gelap untuk swatch terang.
+                  ? Icon(
+                      Icons.check,
+                      size: 18,
+                      color: accent.swatch.computeLuminance() > 0.4
+                          ? const Color(0xDE000000)
+                          : Colors.white,
+                    )
                   : null,
             ),
           ),
@@ -308,7 +343,7 @@ class _FontTile extends StatelessWidget {
           borderRadius: radius,
           onTap: onTap,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
+            duration: motionDuration(context, const Duration(milliseconds: 160)),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               borderRadius: radius,

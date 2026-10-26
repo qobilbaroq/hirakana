@@ -30,7 +30,8 @@ class PillButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.pill),
         onTap: onTap,
         child: Container(
-          height: 34,
+          // Minimum 44 (target sentuh); tinggi ikut membesar saat teks besar.
+          constraints: const BoxConstraints(minHeight: 44),
           padding: const EdgeInsets.symmetric(horizontal: 13),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.pill),

@@ -35,10 +35,15 @@ class PillChoice extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.pill),
           onTap: onTap,
           child: Container(
-            height: 38,
+            // Minimum 44 (target sentuh); tinggi ikut membesar saat teks besar.
+            constraints: const BoxConstraints(minHeight: 44),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),
+              // Status terpilih tidak hanya lewat warna: ada garis tepi tegas.
+              border: selected
+                  ? Border.all(color: AppColors.ink, width: 1.5)
+                  : null,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

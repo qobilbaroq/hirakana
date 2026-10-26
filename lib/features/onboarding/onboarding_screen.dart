@@ -6,6 +6,7 @@ import '../../app/theme/app_theme.dart';
 import '../../core/widgets/app_card.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/primary_button.dart';
+import '../../core/utils/motion.dart';
 
 /// Apa yang harus dilakukan setelah onboarding ditutup.
 enum OnboardingResult { start, chooseLetters, skip }
@@ -43,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       return;
     }
     _controller.nextPage(
-      duration: const Duration(milliseconds: 260),
+      duration: motionDuration(context, const Duration(milliseconds: 260)),
       curve: Curves.easeOutCubic,
     );
   }
@@ -77,7 +78,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ? const SizedBox.shrink()
                       : TextButton(
                           onPressed: _skip,
-                          child: Text('Skip', style: AppText.muted),
+                          child: Text(
+                            'Skip',
+                            style: AppText.muted.copyWith(
+                              color: AppColors.onGradientMuted,
+                            ),
+                          ),
                         ),
                 ),
               ),
@@ -134,7 +140,13 @@ class _PageFrame extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
           Text(title, style: AppText.title),
           const SizedBox(height: AppSpacing.sm),
-          Text(body, style: AppText.muted.copyWith(fontSize: 15)),
+          Text(
+            body,
+            style: AppText.muted.copyWith(
+              fontSize: 16,
+              color: AppColors.onGradientMuted,
+            ),
+          ),
           if (extra != null) ...[
             const SizedBox(height: AppSpacing.lg),
             extra!,
@@ -155,6 +167,69 @@ class _IntroPage extends StatelessWidget {
       title: 'Learn Hiragana & Katakana',
       body: 'Start from zero. You learn five letters at a time, '
           'and you decide when to add more. No pressure.',
+      extra: _TryKana(),
+    );
+  }
+}
+
+/// Latihan kecil di halaman pertama: ketuk huruf untuk melihat bunyinya.
+/// Mengajar lewat interaksi, bukan hanya teks.
+class _TryKana extends StatefulWidget {
+  const _TryKana();
+
+  @override
+  State<_TryKana> createState() => _TryKanaState();
+}
+
+class _TryKanaState extends State<_TryKana> {
+  static const _letters = [('あ', 'a'), ('い', 'i'), ('う', 'u')];
+  int? _picked;
+
+  @override
+  Widget build(BuildContext context) {
+    final picked = _picked;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            for (var i = 0; i < _letters.length; i++) ...[
+              if (i > 0) const SizedBox(width: AppSpacing.sm),
+              Semantics(
+                button: true,
+                selected: picked == i,
+                label: _letters[i].$1,
+                excludeSemantics: true,
+                child: Material(
+                  color: picked == i ? AppColors.active : AppColors.card,
+                  borderRadius: BorderRadius.circular(AppRadius.card),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                    onTap: () => setState(() => _picked = i),
+                    child: Container(
+                      width: 64,
+                      constraints: const BoxConstraints(minHeight: 64),
+                      alignment: Alignment.center,
+                      child: KanaCharacter(
+                        _letters[i].$1,
+                        size: 30,
+                        color: picked == i ? AppColors.onActive : null,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          picked == null
+              ? 'Tap a letter to see how it sounds.'
+              : 'Sounds like "${_letters[picked].$2}".',
+          style: AppText.bodyStrong.copyWith(color: AppColors.onGradientMuted),
+        ),
+      ],
     );
   }
 }
@@ -274,23 +349,28 @@ class _Dots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Semantics(
+      label: 'Page ${index + 1} of $count',
+      excludeSemantics: true,
+      child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (var i = 0; i < count; i++)
           AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+            duration: motionDuration(context, const Duration(milliseconds: 200)),
             margin: const EdgeInsets.symmetric(horizontal: 3),
             width: i == index ? 20 : 7,
             height: 7,
             decoration: BoxDecoration(
               color: i == index
                   ? AppColors.ink
-                  : AppColors.muted.withValues(alpha: 0.4),
+                  // Dot tidak aktif >= 3:1 terhadap latar (dulu ~1,8:1).
+                  : AppColors.onGradientMuted.withValues(alpha: 0.6),
               borderRadius: BorderRadius.circular(99),
             ),
           ),
       ],
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 
@@ -32,7 +33,12 @@ class ScreenHeader extends StatelessWidget {
                 Text(title, style: AppText.title),
                 if (subtitle != null) ...[
                   const SizedBox(height: 6),
-                  Text(subtitle!, style: AppText.muted),
+                  Text(
+                    subtitle!,
+                    style: AppText.muted.copyWith(
+                      color: AppColors.onGradientMuted,
+                    ),
+                  ),
                 ],
               ],
             ),

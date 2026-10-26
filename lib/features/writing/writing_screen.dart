@@ -15,6 +15,7 @@ import '../../data/repositories/kana_repository.dart';
 import '../../data/seed/stroke_data.dart';
 import '../learn/session_controller.dart';
 import 'kana_tracing_canvas.dart';
+import '../../core/utils/motion.dart';
 
 class WritingScreen extends StatefulWidget {
   const WritingScreen({super.key, required this.args});
@@ -164,7 +165,7 @@ class _WritingScreenState extends State<WritingScreen>
                 height: 26,
                 child: Center(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 160),
+                    duration: motionDuration(context, const Duration(milliseconds: 160)),
                     child: _revealed
                         ? Text(
                             kana.romaji,

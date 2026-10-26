@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import 'kana_character.dart';
+import '../utils/motion.dart';
 
 enum OptionState { idle, correct, wrong, dimmed }
 
@@ -65,7 +66,7 @@ class AnswerOption extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.card),
           onTap: onTap,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
+            duration: motionDuration(context, const Duration(milliseconds: 160)),
             constraints: BoxConstraints(minHeight: minHeight),
             alignment: Alignment.center,
             padding: const EdgeInsets.all(AppSpacing.sm),

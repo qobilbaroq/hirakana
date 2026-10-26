@@ -33,9 +33,9 @@ class AppSettings extends ChangeNotifier {
   /// Tampilkan arti kata setelah menjawab (hanya untuk kata yang punya arti).
   bool showMeaning = true;
 
-  /// Desain baru gelap secara default; pengguna tetap bisa memilih System atau
-  /// Light di Settings.
-  ThemeMode themeMode = ThemeMode.dark;
+  /// Default mengikuti pengaturan sistem; pengguna tetap bisa memilih Light
+  /// atau Dark di Settings.
+  ThemeMode themeMode = ThemeMode.system;
   bool autoPlay = true;
 
   /// Warna aksen (mono = hitam-putih bawaan) dan font huruf Jepang.
@@ -51,8 +51,7 @@ class AppSettings extends ChangeNotifier {
     themeMode = switch (await _repo.getMeta('theme_mode')) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
-      'system' => ThemeMode.system,
-      _ => ThemeMode.dark,
+      _ => ThemeMode.system,
     };
     sessionSize = (int.tryParse(await _repo.getMeta('session_size') ?? '') ??
             minSessionSize)
