@@ -252,10 +252,7 @@ class _LearnScreenState extends State<LearnScreen> {
         onStudy: (mode) async {
           Navigator.pop(sheetContext);
           // Huruf yang diketuk ikut masuk set supaya benar-benar dipelajari.
-          if (!active) {
-            final ids = await KanaRepository.instance.activeIds();
-            await KanaRepository.instance.setActiveIds({...ids, kana.id});
-          }
+          if (!active) await KanaRepository.instance.addToActive(kana);
           if (!mounted) return;
           launchSession(
             context,

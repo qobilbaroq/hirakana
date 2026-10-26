@@ -173,6 +173,16 @@ class KanaRepository extends ChangeNotifier {
     return pool.where((k) => ids.contains(k.id)).toList();
   }
 
+  /// Memasukkan satu huruf ke set aktif. Kalau script-nya belum punya huruf
+  /// aktif, awalan 5 huruf diisi dulu; kalau tidak, huruf ini akan jadi
+  /// satu-satunya huruf aktif di script itu (sesi hanya berisi 1 kartu).
+  Future<void> addToActive(Kana kana) async {
+    await activeKana(kana.type);
+    final ids = await activeIds();
+    if (ids.contains(kana.id)) return;
+    await setActiveIds({...ids, kana.id});
+  }
+
   /// Menambah [count] huruf berikutnya (urut seperti di dataset) ke set aktif.
   Future<List<Kana>> addNextLetters(String type, {int count = starterCount}) async {
     final ids = await activeIds();
