@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kana_quest/core/settings/app_settings.dart';
 import 'package:kana_quest/core/widgets/answer_option.dart';
 import 'package:kana_quest/core/widgets/primary_button.dart';
+import 'package:kana_quest/features/learn/quiz_question.dart';
 import 'package:kana_quest/features/learn/quiz_screen.dart';
 import 'package:kana_quest/features/learn/session_controller.dart';
 
@@ -162,8 +163,16 @@ void main() {
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.reset);
 
+      // Jenis tetap supaya panjang prompt tidak mengubah jarak pilihan ke Next.
       await tester.pumpWidget(
-        const MaterialApp(home: QuizScreen(args: SessionArgs(type: 'hiragana'))),
+        const MaterialApp(
+          home: QuizScreen(
+            args: SessionArgs(
+              type: 'hiragana',
+              quizKind: QuizKind.kanaToSound,
+            ),
+          ),
+        ),
       );
       await settle(tester, rounds: 10);
 
