@@ -16,6 +16,8 @@ class AppPageTransitionsBuilder extends PageTransitionsBuilder {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
+    // Reduce Motion: halaman langsung tampil tanpa fade/geser.
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) return child;
     final curved = CurvedAnimation(
       parent: animation,
       curve: Curves.easeOutCubic,

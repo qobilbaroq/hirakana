@@ -35,7 +35,10 @@ class _PracticeScreenState extends State<PracticeScreen> {
             subtitle: 'Short drills. One small set at a time.',
             bottomGap: AppSpacing.md,
           ),
-          Text('Script', style: AppText.caption),
+          Text(
+            'Script',
+            style: AppText.caption.copyWith(color: AppColors.onGradientMuted),
+          ),
           const SizedBox(height: AppSpacing.sm),
           PillChoiceWrap(
             children: [

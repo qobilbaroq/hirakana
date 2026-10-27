@@ -10,6 +10,7 @@ import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/widgets/answer_option.dart';
+import '../../core/widgets/choice_stage.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/session_header.dart';
@@ -196,33 +197,28 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: canPlay ? () => _speak(q.target) : null,
                 ),
               ),
-              // Atas: soal dan info jawaban (muncul setelah menjawab).
-              // Bawah: pilihan jawaban tepat di atas tombol Next, supaya
-              // jempol tidak perlu berpindah jauh.
+              // Soal + pilihan dikelompokkan di tengah-atas layar (zona
+              // jempol), jauh dari tombol Next di bawah. Umpan balik muncul
+              // di bawah pilihan dengan ruang tetap, jadi pilihan tidak geser.
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: AppSpacing.lg),
-                  child: Column(
-                    children: [
-                      Text(
-                        q.prompt,
-                        textAlign: TextAlign.center,
-                        style: AppText.section.copyWith(
-                          fontSize: 21,
-                          height: 1.25,
-                          letterSpacing: -0.3,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm + 2),
-                      _PromptCard(question: q),
-                      const SizedBox(height: AppSpacing.md),
-                      _feedback(q),
-                    ],
+                child: ChoiceStage(
+                  prompt: Text(
+                    q.prompt,
+                    textAlign: TextAlign.center,
+                    style: AppText.section.copyWith(
+                      fontSize: 21,
+                      height: 1.25,
+                      letterSpacing: -0.3,
+                    ),
                   ),
+                  card: _PromptCard(
+                    question: q,
+                    height: ChoiceStage.cardHeight(context),
+                  ),
+                  choices: _choiceGrid(q, ChoiceStage.optionHeight(context)),
+                  feedback: _feedback(q),
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              _choiceGrid(q),
               const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(
@@ -239,7 +235,7 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  Widget _choiceGrid(QuizQuestion q) {
+  Widget _choiceGrid(QuizQuestion q, double optionHeight) {
     Widget tile(Kana k) {
       var state = OptionState.idle;
       if (_answered) {
@@ -255,7 +251,8 @@ class _QuizScreenState extends State<QuizScreen> {
         label: q.optionLabel(k),
         isKana: q.optionsAreKana,
         state: state,
-        textSize: q.optionsAreKana ? 32 : 22,
+        textSize: q.optionsAreKana ? 34 : 22,
+        minHeight: optionHeight,
         onTap: _answered ? null : () => _submit(k.id == q.target.id, pickedId: k.id),
       );
     }
@@ -279,7 +276,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget _feedback(QuizQuestion q) {
-    if (!_answered) return const SizedBox(height: 24);
+    if (!_answered) return const SizedBox.shrink();
     if (_wasCorrect) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -308,23 +305,18 @@ class _QuizScreenState extends State<QuizScreen> {
 }
 
 class _PromptCard extends StatelessWidget {
-  const _PromptCard({required this.question});
+  const _PromptCard({required this.question, required this.height});
 
   final QuizQuestion question;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     final kana = question.target.character;
     return Semantics(
       label: question.showKana ? kana : question.target.romaji,
-      child: Container(
-        width: double.infinity,
-        height: 128,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          borderRadius: BorderRadius.circular(28),
-        ),
+      child: PromptPanel(
+        height: height,
         child: question.showKana
             ? KanaCharacter(
                 kana,

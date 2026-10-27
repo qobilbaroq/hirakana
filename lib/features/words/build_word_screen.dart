@@ -186,7 +186,7 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
 
   Widget _label(String text, {Color? color, double? kanaSize}) {
     if (_toKana) {
-      return KanaCharacter(text, size: kanaSize ?? 28, color: color);
+      return KanaCharacter(text, size: kanaSize ?? 30, color: color);
     }
     return Text(
       text,
@@ -271,16 +271,19 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
     );
   }
 
-  /// Potongan disusun sebagai grid kecil dua baris supaya layar tidak perlu
-  /// di-scroll. Jumlah kolom mengikuti jumlah potongan (8 -> 4, 10 -> 5,
-  /// 12 -> 6), dan ukuran kotak dibatasi 56 px.
+  /// Potongan disusun sebagai grid yang cukup besar untuk ibu jari tapi tetap
+  /// muat tanpa scroll di HP kecil: 8 potongan -> 4 kolom (maks 72 px),
+  /// 10 -> 5 kolom, 12 -> 4 kolom x 3 baris (maks 60 px).
   Widget _tileGrid(BuildQuestion q) {
     const gap = AppSpacing.xs;
-    final columns = (q.tiles.length / 2).ceil();
+    final n = q.tiles.length;
+    final columns = n <= 8 ? 4 : (n <= 10 ? 5 : 4);
+    final rows = (n / columns).ceil();
+    final maxSize = rows >= 3 ? 60.0 : 72.0;
     return LayoutBuilder(
       builder: (context, constraints) {
         final size = min(
-          56.0,
+          maxSize,
           (constraints.maxWidth - gap * (columns - 1)) / columns,
         );
         return Wrap(
@@ -368,24 +371,25 @@ class _BuildWordScreenState extends State<BuildWordScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       _slotGrid(q),
-                      const SizedBox(height: AppSpacing.sm),
-                      if (_answered) _feedback(q),
+                      const SizedBox(height: AppSpacing.md),
+                      // Potongan tepat di bawah kotak jawaban (mata dan
+                      // jempol tidak berpindah jauh) dan jauh dari Check.
+                      // Setelah dicek, umpan balik menggantikan potongan.
+                      if (_answered)
+                        _feedback(q)
+                      else ...[
+                        _tileGrid(q),
+                        const SizedBox(height: AppSpacing.xs),
+                        Text(
+                          'Tap a tile to fill · tap a slot to remove',
+                          textAlign: TextAlign.center,
+                          style: AppText.muted.copyWith(fontSize: 12),
+                        ),
+                      ],
                     ],
                   ),
                 ),
               ),
-              // Potongan huruf ada tepat di atas tombol Check, jadi setelah
-              // memilih jempol tidak perlu naik-turun layar.
-              if (!_answered) ...[
-                const SizedBox(height: AppSpacing.sm),
-                _tileGrid(q),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  'Tap a tile to fill · tap a slot to remove',
-                  textAlign: TextAlign.center,
-                  style: AppText.muted.copyWith(fontSize: 12),
-                ),
-              ],
               const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(

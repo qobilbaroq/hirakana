@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import 'kana_character.dart';
+import '../utils/motion.dart';
 
 enum OptionState { idle, correct, wrong, dimmed }
 
@@ -14,6 +15,7 @@ class AnswerOption extends StatelessWidget {
     required this.state,
     required this.onTap,
     this.textSize,
+    this.minHeight = 84,
   });
 
   final String label;
@@ -21,6 +23,7 @@ class AnswerOption extends StatelessWidget {
   final OptionState state;
   final VoidCallback? onTap;
   final double? textSize; // null = ukuran bawaan (kana 34, romaji 24)
+  final double minHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +66,8 @@ class AnswerOption extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.card),
           onTap: onTap,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
-            constraints: const BoxConstraints(minHeight: 84),
+            duration: motionDuration(context, const Duration(milliseconds: 160)),
+            constraints: BoxConstraints(minHeight: minHeight),
             alignment: Alignment.center,
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(

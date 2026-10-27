@@ -10,6 +10,7 @@ import '../../core/widgets/pill_button.dart';
 import '../../data/models/kana.dart';
 import '../../data/repositories/kana_repository.dart';
 import '../../data/seed/kana_data.dart';
+import '../../core/utils/motion.dart';
 
 /// Pilih huruf mana yang mau dipelajari. Flashcard dan kuis hanya memakai
 /// huruf yang dicentang di sini; huruf baru tidak pernah masuk otomatis.
@@ -170,7 +171,14 @@ class _ChooseLettersScreenState extends State<ChooseLettersScreen> {
                       ),
                     ),
                   ),
-                  kanaGroupRow(entry.value, _tile),
+                  kanaGroupRow(
+                    entry.value,
+                    _tile,
+                    columns: kanaGridColumns(
+                      width: MediaQuery.sizeOf(context).width - 40,
+                      textScale: MediaQuery.textScalerOf(context).scale(1),
+                    ),
+                  ),
                   const SizedBox(height: AppSpacing.sm),
                 ],
                 const SizedBox(height: AppSpacing.lg),
@@ -222,7 +230,7 @@ class _LetterTile extends StatelessWidget {
     final fg = AppColors.ink;
     return AnimatedScale(
       scale: on ? 1 : 0.97,
-      duration: const Duration(milliseconds: 180),
+      duration: motionDuration(context, const Duration(milliseconds: 180)),
       curve: Curves.easeOutBack,
       child: Material(
         color: AppColors.card,
@@ -230,9 +238,7 @@ class _LetterTile extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
-          child: SizedBox(
-            height: 72,
-            child: Stack(
+          child: Stack(
               children: [
                 Positioned.fill(
                   child: DecoratedBox(
@@ -248,7 +254,7 @@ class _LetterTile extends StatelessWidget {
                 Positioned.fill(
                   child: AnimatedOpacity(
                     opacity: on ? 1 : 0,
-                    duration: const Duration(milliseconds: 220),
+                    duration: motionDuration(context, const Duration(milliseconds: 220)),
                     curve: Curves.easeOutCubic,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
@@ -269,7 +275,7 @@ class _LetterTile extends StatelessWidget {
                   right: 6,
                   child: AnimatedOpacity(
                     opacity: on ? 1 : 0,
-                    duration: const Duration(milliseconds: 180),
+                    duration: motionDuration(context, const Duration(milliseconds: 180)),
                     child: Icon(
                       Icons.check_circle,
                       size: 13,
@@ -277,9 +283,14 @@ class _LetterTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(
+                // Tinggi minimum 72, bukan tetap: isi ikut membesar saat teks
+                // diperbesar. Anak ini yang menentukan tinggi Stack.
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 72),
+                  child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       KanaCharacter(
                         kana.character,
@@ -289,7 +300,7 @@ class _LetterTile extends StatelessWidget {
                       Text(
                         kana.romaji,
                         style: TextStyle(
-                          fontSize: 10.5,
+                          fontSize: 12,
                           height: 1.2,
                           color: on
                               ? fg.withValues(alpha: 0.75)
@@ -303,9 +314,9 @@ class _LetterTile extends StatelessWidget {
                       ),
                     ],
                   ),
+                  ),
                 ),
               ],
-            ),
           ),
         ),
       ),

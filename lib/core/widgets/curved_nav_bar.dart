@@ -1,20 +1,31 @@
 import 'dart:math' as math;
+import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_fonts.dart';
+import '../utils/motion.dart';
 import 'curved_nav_geometry.dart';
 
 /// Satu item pada bar melengkung: ikon, huruf (mis. `あ`), atau teks pendek.
 class CurvedNavItem {
-  const CurvedNavItem({required this.label, this.icon, this.glyph, this.text})
-    : assert(icon != null || glyph != null || text != null);
+  const CurvedNavItem({
+    required this.label,
+    this.icon,
+    this.selectedIcon,
+    this.glyph,
+    this.text,
+  }) : assert(icon != null || glyph != null || text != null);
 
-  /// Untuk aksesibilitas (pembaca layar) dan tooltip.
+  /// Untuk aksesibilitas (pembaca layar), tooltip, dan label terlihat saat
+  /// [CurvedNavBar.showLabels] menyala.
   final String label;
   final IconData? icon;
+
+  /// Ikon terisi yang dipakai saat item ini terpilih (bukan hanya warna).
+  final IconData? selectedIcon;
   final String? glyph;
   final String? text;
 }
@@ -39,6 +50,7 @@ class CurvedNavBar extends StatefulWidget {
     this.idleColor,
     this.activeColor,
     this.haptics = true,
+    this.showLabels = false,
   });
 
   final List<CurvedNavItem> items;
@@ -53,6 +65,10 @@ class CurvedNavBar extends StatefulWidget {
   final Color? idleColor;
   final Color? activeColor;
   final bool haptics;
+
+  /// Tampilkan label teks kecil di bawah ikon (navigasi bawah). Toggle teks
+  /// tidak memakainya karena itemnya sudah berupa teks.
+  final bool showLabels;
 
   @override
   State<CurvedNavBar> createState() => _CurvedNavBarState();
@@ -84,7 +100,9 @@ class _CurvedNavBarState extends State<CurvedNavBar>
 
   void _animateTo(int index) {
     final g = _geometry;
-    if (g == null) {
+    // Reduce Motion: pil langsung pindah tanpa animasi.
+    final reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    if (g == null || reduce) {
       _shown = index;
       return;
     }
@@ -163,13 +181,25 @@ class _CurvedNavBarState extends State<CurvedNavBar>
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
+                    // Buram latar di belakang bar (dipotong sesuai bentuk bar)
+                    // supaya teks yang bergulir di belakangnya tidak tampak
+                    // tajam seperti hantu.
+                    Positioned.fill(
+                      child: ClipPath(
+                        clipper: _BarClipper(g),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                          child: const SizedBox.expand(),
+                        ),
+                      ),
+                    ),
                     Positioned.fill(
                       child: CustomPaint(
                         painter: _NavPainter(
                           geometry: g,
                           left: l,
                           right: r,
-                          glass: widget.glassColor ?? AppColors.glass,
+                          glass: _glass(context),
                           pill: widget.pillColor ?? AppColors.glassPill,
                         ),
                       ),
@@ -185,6 +215,15 @@ class _CurvedNavBarState extends State<CurvedNavBar>
         );
       },
     );
+  }
+
+  /// Warna kaca bar. Saat pengguna meminta kontras tinggi, bar dibuat pekat.
+  Color _glass(BuildContext context) {
+    final base = widget.glassColor ?? AppColors.glass;
+    if (MediaQuery.maybeHighContrastOf(context) ?? false) {
+      return base.withValues(alpha: 1);
+    }
+    return base;
   }
 
   Widget _buildItem(CurvedNavGeometry g, int i) {
@@ -214,8 +253,9 @@ class _CurvedNavBarState extends State<CurvedNavBar>
               child: Center(
                 child: TweenAnimationBuilder<Color?>(
                   tween: ColorTween(end: selected ? active : idle),
-                  duration: _duration,
-                  builder: (context, color, _) => _content(item, color),
+                  duration: motionDuration(context, _duration),
+                  builder: (context, color, _) =>
+                      _content(context, item, color, selected),
                 ),
               ),
             ),
@@ -225,20 +265,58 @@ class _CurvedNavBarState extends State<CurvedNavBar>
     );
   }
 
-  Widget _content(CurvedNavItem item, Color? color) {
-    if (item.icon != null) {
-      return Icon(item.icon, size: widget.iconSize, color: color);
-    }
-    if (item.glyph != null) {
-      return Text(
-        item.glyph!,
-        style: TextStyle(
-          fontFamily: AppFonts.kana,
-          fontSize: widget.iconSize - 2,
-          height: 1,
-          fontWeight: FontWeight.w500,
-          color: color,
-        ),
+  Widget _content(
+    BuildContext context,
+    CurvedNavItem item,
+    Color? color,
+    bool selected,
+  ) {
+    if (item.icon != null || item.glyph != null) {
+      final Widget mark = item.icon != null
+          ? Icon(
+              selected ? (item.selectedIcon ?? item.icon) : item.icon,
+              size: widget.iconSize,
+              color: color,
+            )
+          : MediaQuery.withClampedTextScaling(
+              // Huruf di bar dibatasi skalanya (seperti ikon) supaya tidak
+              // mendorong label keluar dari pil saat teks 200%.
+              maxScaleFactor: 1.2,
+              child: Text(
+                item.glyph!,
+                style: TextStyle(
+                  fontFamily: AppFonts.kana,
+                  fontSize: widget.iconSize - 2,
+                  height: 1,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  color: color,
+                ),
+              ),
+            );
+      if (!widget.showLabels) return mark;
+      // Label dibatasi skala 1,2 supaya tidak keluar dari pil; teks lengkap
+      // tetap tersedia lewat Semantics dan tooltip.
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          mark,
+          const SizedBox(height: 1),
+          MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.2,
+            child: Text(
+              item.label,
+              maxLines: 1,
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                fontSize: 11,
+                height: 1,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                color: selected ? color : AppColors.glassLabel,
+              ),
+            ),
+          ),
+        ],
       );
     }
     return Text(
@@ -305,4 +383,53 @@ class _NavPainter extends CustomPainter {
       old.geometry.width != geometry.width ||
       old.geometry.thickness != geometry.thickness ||
       old.geometry.radius != geometry.radius;
+}
+
+/// Bentuk bar (busur tebal berujung bulat) sebagai [Path], dipakai untuk
+/// memotong buram latar. Ukurannya sama dengan yang digambar [_NavPainter].
+class _BarClipper extends CustomClipper<Path> {
+  _BarClipper(this.g);
+
+  final CurvedNavGeometry g;
+
+  @override
+  Path getClip(Size size) {
+    final center = Offset(size.width / 2, g.thickness / 2 + g.radius);
+    final t = g.thickness;
+    final a0 = -math.pi / 2 - g.phi;
+    final sweep = 2 * g.phi;
+    final a1 = a0 + sweep;
+    Offset onArc(double a) =>
+        center + Offset(math.cos(a), math.sin(a)) * g.radius;
+    return Path()
+      ..arcTo(
+        Rect.fromCircle(center: center, radius: g.radius + t / 2),
+        a0,
+        sweep,
+        true,
+      )
+      // Ujung kanan bulat: dari tepi luar ke tepi dalam.
+      ..arcTo(Rect.fromCircle(center: onArc(a1), radius: t / 2), a1, math.pi, false)
+      ..arcTo(
+        Rect.fromCircle(center: center, radius: g.radius - t / 2),
+        a1,
+        -sweep,
+        false,
+      )
+      // Ujung kiri bulat: dari tepi dalam kembali ke tepi luar.
+      ..arcTo(
+        Rect.fromCircle(center: onArc(a0), radius: t / 2),
+        a0 + math.pi,
+        math.pi,
+        false,
+      )
+      ..close();
+  }
+
+  @override
+  bool shouldReclip(_BarClipper old) =>
+      old.g.width != g.width ||
+      old.g.thickness != g.thickness ||
+      old.g.radius != g.radius ||
+      old.g.phi != g.phi;
 }

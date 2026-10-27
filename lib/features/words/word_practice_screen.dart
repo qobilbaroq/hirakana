@@ -8,6 +8,7 @@ import '../../app/theme/app_theme.dart';
 import '../../core/audio/kana_audio_service.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/widgets/answer_option.dart';
+import '../../core/widgets/choice_stage.dart';
 import '../../core/widgets/kana_character.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/session_header.dart';
@@ -181,46 +182,34 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
                   onPressed: _answered ? () => _hear(q) : null,
                 ),
               ),
+              // Soal + pilihan di tengah-atas layar (zona jempol), jauh dari
+              // Next. Umpan balik muncul di bawah pilihan.
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(top: AppSpacing.lg),
-                  child: Column(
-                    children: [
-                      Text(
-                        _prompt(q),
-                        textAlign: TextAlign.center,
-                        style: AppText.section.copyWith(
-                          fontSize: 21,
-                          height: 1.25,
-                          letterSpacing: -0.3,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.sm + 2),
-                      Container(
-                        width: double.infinity,
-                        height: 128,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: AppColors.card,
-                          borderRadius: BorderRadius.circular(28),
-                        ),
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: KanaCharacter(q.text, size: 72),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      _feedback(q),
-                    ],
+                child: ChoiceStage(
+                  prompt: Text(
+                    _prompt(q),
+                    textAlign: TextAlign.center,
+                    style: AppText.section.copyWith(
+                      fontSize: 21,
+                      height: 1.25,
+                      letterSpacing: -0.3,
+                    ),
                   ),
+                  card: PromptPanel(
+                    height: ChoiceStage.cardHeight(context),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: KanaCharacter(q.text, size: 72),
+                      ),
+                    ),
+                  ),
+                  choices: _grid(q),
+                  feedback: _feedback(q),
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              _grid(q),
               const SizedBox(height: AppSpacing.md),
               if (_answered)
                 PrimaryButton(
@@ -253,7 +242,8 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
         label: option,
         isKana: false,
         state: state,
-        textSize: 22,
+        textSize: 26,
+        minHeight: ChoiceStage.optionHeight(context, large: true),
         onTap: _answered ? null : () => _answer(option),
       );
     }
@@ -272,7 +262,7 @@ class _WordPracticeScreenState extends State<WordPracticeScreen> {
   }
 
   Widget _feedback(ReadQuestion q) {
-    if (!_answered) return const SizedBox(height: 24);
+    if (!_answered) return const SizedBox.shrink();
     final ok = _picked == q.answer;
     final meaning = q.word?.meaning ?? '';
     final showMeaning =

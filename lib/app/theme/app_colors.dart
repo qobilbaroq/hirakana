@@ -142,7 +142,7 @@ class AppPalette {
     paper: Color(0xFFEBECEE),
     ink: Color(0xFF1B1B1D),
     sage: Color(0xFF6B6D72),
-    clay: Color(0xFFB0605A),
+    clay: Color(0xFF9C4D48),
     sand: Color(0xFFE0E1E4),
     white: Color(0xFFF7F7F9),
     muted: Color(0xFF5E6066),
@@ -206,6 +206,18 @@ abstract final class AppColors {
   static Color get sand => _p.sand;
   static Color get white => _p.white;
   static Color get muted => _p.muted;
+
+  /// Teks sekunder di atas gradient latar (judul layar, body onboarding,
+  /// label kecil). Di terang `muted` hanya 2,2:1 pada abu bagian atas, jadi
+  /// dipakai warna yang lebih gelap (4,8:1 di #979898). Di gelap `muted`
+  /// sudah cukup.
+  static Color get onGradientMuted =>
+      isDark ? _p.muted : const Color(0xFF2B2C30);
+
+  /// Label kecil di bar kaca (navigasi): lebih pekat dari ikon supaya teks
+  /// 11sp tetap terbaca (>= 4,5:1).
+  static Color get glassLabel =>
+      isDark ? const Color(0xE6FFFFFF) : const Color(0xCC000000);
   static Color get line => _p.line;
   static Color get guide => _p.guide;
   static Color get action => _p.action;
@@ -241,7 +253,7 @@ abstract final class AppColors {
       ? const Color(0x3DFFFFFF)
       : const Color(0x40000000);
   static Color get segText =>
-      isDark ? const Color(0xB3FFFFFF) : const Color(0x8C000000);
+      isDark ? const Color(0xB3FFFFFF) : const Color(0xB8000000);
   static Color get segTextOn => hasAccent || isDark
       ? const Color(0xFFFFFFFF)
       : const Color(0xE6000000);

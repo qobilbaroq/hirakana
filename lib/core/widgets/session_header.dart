@@ -53,8 +53,8 @@ class SessionHeader extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 40,
-              height: 40,
+              width: 44,
+              height: 44,
               child: Center(child: trailing),
             ),
           ],
@@ -90,7 +90,7 @@ class _DismissPill extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.pill),
           onTap: onTap,
           child: Container(
-            height: 38,
+            constraints: const BoxConstraints(minHeight: 44),
             padding: const EdgeInsets.only(left: 10, right: 14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.pill),

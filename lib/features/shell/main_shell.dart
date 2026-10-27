@@ -42,6 +42,8 @@ class _MainShellState extends State<MainShell>
   void _openTab(int index) {
     if (!mounted || index == _index) return;
     setState(() => _index = index);
+    // Reduce Motion: pindah tab tanpa fade/geser.
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) return;
     _pageController.forward(from: 0);
   }
 
@@ -137,9 +139,21 @@ class _FloatingNav extends StatelessWidget {
 
   static const _items = [
     CurvedNavItem(label: 'Kana', glyph: 'あ'),
-    CurvedNavItem(label: 'Practice', icon: Icons.grid_view_rounded),
-    CurvedNavItem(label: 'Words', icon: Icons.menu_book_outlined),
-    CurvedNavItem(label: 'Profile', icon: Icons.person_outline_rounded),
+    CurvedNavItem(
+      label: 'Practice',
+      icon: Icons.grid_view_outlined,
+      selectedIcon: Icons.grid_view_rounded,
+    ),
+    CurvedNavItem(
+      label: 'Words',
+      icon: Icons.menu_book_outlined,
+      selectedIcon: Icons.menu_book_rounded,
+    ),
+    CurvedNavItem(
+      label: 'Profile',
+      icon: Icons.person_outline_rounded,
+      selectedIcon: Icons.person_rounded,
+    ),
   ];
 
   @override
@@ -152,6 +166,8 @@ class _FloatingNav extends StatelessWidget {
           items: _items,
           currentIndex: index,
           onTap: onSelected,
+          showLabels: true,
+          iconSize: 20,
         ),
       ),
     );

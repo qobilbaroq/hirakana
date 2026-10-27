@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/router.dart';
+import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_spacing.dart';
 import '../../app/theme/app_theme.dart';
 import '../../core/widgets/mode_card.dart';
@@ -34,7 +35,10 @@ class _WordsScreenState extends State<WordsScreen> {
             subtitle: 'Read, understand, and build real words.',
             bottomGap: AppSpacing.md,
           ),
-          Text('Script', style: AppText.caption),
+          Text(
+            'Script',
+            style: AppText.caption.copyWith(color: AppColors.onGradientMuted),
+          ),
           const SizedBox(height: AppSpacing.sm),
           PillChoiceWrap(
             children: [

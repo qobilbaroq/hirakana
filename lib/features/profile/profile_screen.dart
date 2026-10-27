@@ -378,7 +378,7 @@ class _DayDot extends StatelessWidget {
           Text(
             '${date.day}',
             style: TextStyle(
-              fontSize: 9.5,
+              fontSize: 11,
               color: isToday ? AppColors.ink : AppColors.muted,
             ),
           ),
@@ -538,7 +538,7 @@ class _Milestone extends StatelessWidget {
           Text(
             '$threshold kana',
             style: TextStyle(
-              fontSize: 10.5,
+              fontSize: 11,
               color: unlocked ? AppColors.ink : AppColors.muted,
             ),
           ),

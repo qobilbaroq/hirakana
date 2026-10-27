@@ -252,10 +252,7 @@ class _LearnScreenState extends State<LearnScreen> {
         onStudy: (mode) async {
           Navigator.pop(sheetContext);
           // Huruf yang diketuk ikut masuk set supaya benar-benar dipelajari.
-          if (!active) {
-            final ids = await KanaRepository.instance.activeIds();
-            await KanaRepository.instance.setActiveIds({...ids, kana.id});
-          }
+          if (!active) await KanaRepository.instance.addToActive(kana);
           if (!mounted) return;
           launchSession(
             context,
@@ -513,7 +510,12 @@ class _KanaGrid extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         const gap = 8.0;
-        const columns = 5;
+        // Kolom dikurangi saat teks membesar (200%) supaya sel tidak overflow.
+        final columns = kanaGridColumns(
+          width: constraints.maxWidth - 40,
+          textScale: MediaQuery.textScalerOf(context).scale(1),
+          gap: gap,
+        );
         final width =
             (constraints.maxWidth - 40 - gap * (columns - 1)) / columns;
         if (!grouped) {
@@ -532,7 +534,12 @@ class _KanaGrid extends StatelessWidget {
             children: [
               if (header != null) ...[header!, const SizedBox(height: gap)],
               for (final group in groupKana(kana)) ...[
-                kanaGroupRow(group, (k) => _tile(context, k, null), gap: gap),
+                kanaGroupRow(
+                  group,
+                  (k) => _tile(context, k, null),
+                  gap: gap,
+                  columns: columns,
+                ),
                 const SizedBox(height: gap),
               ],
             ],
@@ -598,7 +605,10 @@ class _KanaCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           onTap: onTap,
           child: Container(
-            height: showRomaji ? 72 : 62,
+            // Tinggi minimum, bukan tetap: isi (kana + romaji) ikut membesar
+            // saat teks diperbesar.
+            constraints: BoxConstraints(minHeight: showRomaji ? 72 : 62),
+            padding: const EdgeInsets.symmetric(vertical: 6),
             decoration: BoxDecoration(
               gradient: fill,
               borderRadius: BorderRadius.circular(16),
@@ -620,7 +630,7 @@ class _KanaCell extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         height: 1.1,
                         color: selected
                             ? AppColors.ink.withValues(alpha: 0.72)
@@ -683,7 +693,7 @@ class _BottomControls extends StatelessWidget {
             items: _scripts,
             currentIndex: script == 'katakana' ? 1 : 0,
             onTap: (i) => onScript(i == 0 ? 'hiragana' : 'katakana'),
-            thickness: 42,
+            thickness: 44,
             slotWidth: 104,
             haptics: false,
             pillColor: AppColors.segPill,

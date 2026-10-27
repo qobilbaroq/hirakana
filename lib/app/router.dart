@@ -60,7 +60,12 @@ class AppRouter {
       case wordHistory:
         page = const WordHistoryScreen();
       case onboarding:
-        page = const OnboardingScreen();
+        // Harus bertipe OnboardingResult, karena MainShell memanggil
+        // pushNamed<OnboardingResult>; MaterialPageRoute<void> bikin cast gagal.
+        return MaterialPageRoute<OnboardingResult>(
+          builder: (_) => const OnboardingScreen(),
+          settings: settings,
+        );
       case summary:
         page = SessionSummaryScreen(result: settings.arguments as SessionResult);
       default:

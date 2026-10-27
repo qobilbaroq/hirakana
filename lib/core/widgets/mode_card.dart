@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_theme.dart';
+import '../utils/motion.dart';
 import 'app_card.dart';
 
 /// Baris mode latihan: ikon dalam kotak lembut, judul, keterangan, chevron.
@@ -46,6 +47,19 @@ class _ModeCardState extends State<ModeCard>
       begin: const Offset(0, 0.025),
       end: Offset.zero,
     ).animate(_fade);
+  }
+
+  bool _entered = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Mulai sekali. Durasi nol kalau pengguna mematikan animasi (Reduce
+    // Motion), jadi kartu langsung tampil tanpa gerak.
+    if (_entered) return;
+    _entered = true;
+    _controller.duration =
+        motionDuration(context, const Duration(milliseconds: 240));
     _controller.forward();
   }
 

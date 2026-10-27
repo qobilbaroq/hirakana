@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kana_quest/core/settings/app_settings.dart';
 import 'package:kana_quest/core/widgets/answer_option.dart';
+import 'package:kana_quest/core/widgets/primary_button.dart';
 import 'package:kana_quest/features/learn/quiz_screen.dart';
 import 'package:kana_quest/features/learn/session_controller.dart';
 
@@ -152,4 +153,40 @@ void main() {
     print('MASALAH TAP = $problems');
     expect(problems, isEmpty);
   });
+
+  for (final size in const [Size(360, 640), Size(412, 915)]) {
+    testWidgets(
+        'pilihan jauh dari Next dan tidak bergeser saat menjawab '
+        '(${size.width.toInt()}x${size.height.toInt()})', (tester) async {
+      tester.view.physicalSize = size;
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(
+        const MaterialApp(home: QuizScreen(args: SessionArgs(type: 'hiragana'))),
+      );
+      await settle(tester, rounds: 10);
+
+      Rect lowest() {
+        final rects = [
+          for (var i = 0; i < 4; i++)
+            tester.getRect(find.byType(AnswerOption).at(i)),
+        ];
+        return rects.reduce((a, b) => a.bottom > b.bottom ? a : b);
+      }
+
+      final before = lowest();
+      await tester.tap(find.byType(AnswerOption).at(0));
+      await settle(tester);
+      final after = lowest();
+
+      // Pilihan tidak loncat saat umpan balik muncul.
+      expect(after.top, before.top);
+      expect(after.bottom, before.bottom);
+
+      // Ada jarak lega antara pilihan dan tombol Next.
+      final next = tester.getRect(find.byType(PrimaryButton));
+      expect(next.top - after.bottom, greaterThanOrEqualTo(60));
+    });
+  }
 }
