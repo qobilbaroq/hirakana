@@ -96,7 +96,10 @@ class KanaRepository extends ChangeNotifier {
     await _store.database;
     final first = await getMeta('first_open');
     if (first == null) {
-      await setMeta('first_open', DateTime.now().millisecondsSinceEpoch.toString());
+      await setMeta(
+        'first_open',
+        DateTime.now().millisecondsSinceEpoch.toString(),
+      );
     }
   }
 
@@ -116,8 +119,10 @@ class KanaRepository extends ChangeNotifier {
 
   Future<void> setMeta(String key, String value) async {
     final db = await _store.database;
-    await db.insert('meta', {'key': key, 'value': value},
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('meta', {
+      'key': key,
+      'value': value,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // ------------------------------------------------------------ progress
@@ -132,9 +137,14 @@ class KanaRepository extends ChangeNotifier {
 
   Future<KanaProgress> _progressOf(String id) async {
     final db = await _store.database;
-    final rows =
-        await db.query('kana_progress', where: 'kana_id = ?', whereArgs: [id]);
-    return rows.isEmpty ? KanaProgress(kanaId: id) : KanaProgress.fromMap(rows.first);
+    final rows = await db.query(
+      'kana_progress',
+      where: 'kana_id = ?',
+      whereArgs: [id],
+    );
+    return rows.isEmpty
+        ? KanaProgress(kanaId: id)
+        : KanaProgress.fromMap(rows.first);
   }
 
   // ------------------------------------------------- huruf yang dipelajari
@@ -184,10 +194,14 @@ class KanaRepository extends ChangeNotifier {
   }
 
   /// Menambah [count] huruf berikutnya (urut seperti di dataset) ke set aktif.
-  Future<List<Kana>> addNextLetters(String type, {int count = starterCount}) async {
+  Future<List<Kana>> addNextLetters(
+    String type, {
+    int count = starterCount,
+  }) async {
     final ids = await activeIds();
-    final next =
-        kanaOf(type).where((k) => !ids.contains(k.id)).take(count).toList();
+    final next = kanaOf(
+      type,
+    ).where((k) => !ids.contains(k.id)).take(count).toList();
     if (next.isEmpty) return next;
     await setActiveIds({...ids, ...next.map((k) => k.id)});
     return next;
@@ -234,13 +248,15 @@ class KanaRepository extends ChangeNotifier {
     // 1. due       = jatuh tempo / sering salah
     // 2. fresh     = belum pernah dilihat
     // 3. rest      = yang paling lama tidak jatuh tempo
-    final due = pool.where((k) {
-      if (!seen(k)) return false;
-      final next = progress[k.id]!.nextReviewAt;
-      return next == null || !next.isAfter(now);
-    }).toList()
-      ..sort((a, b) =>
-          progress[b.id]!.wrongCount.compareTo(progress[a.id]!.wrongCount));
+    final due =
+        pool.where((k) {
+          if (!seen(k)) return false;
+          final next = progress[k.id]!.nextReviewAt;
+          return next == null || !next.isAfter(now);
+        }).toList()..sort(
+          (a, b) =>
+              progress[b.id]!.wrongCount.compareTo(progress[a.id]!.wrongCount),
+        );
 
     final fresh = pool.where((k) => !seen(k)).toList();
 
@@ -251,11 +267,28 @@ class KanaRepository extends ChangeNotifier {
         return an.compareTo(bn);
       });
 
-    final chosen = [...due, ...fresh, ...rest].take(size).toList();
+    bool mastered(Kana k) => progress[k.id]?.isMastered ?? false;
+
+    final regular = [
+      ...due.where((k) => !mastered(k)),
+      ...fresh,
+      ...rest.where((k) => !mastered(k)),
+    ];
+    final masteredReview = [
+      ...due.where(mastered),
+      ...rest.where(mastered),
+    ];
+    final chosen = regular.take(size).toList();
+    final masteredLimit = size ~/ 4;
+    if (masteredLimit > 0 && chosen.length < size) {
+      chosen.addAll(
+        masteredReview.take(min(masteredLimit, size - chosen.length)),
+      );
+    }
 
     if (fillToSize && chosen.isNotEmpty && chosen.length < size) {
-      final base = [...chosen];
-      while (chosen.length < size) {
+      final base = chosen.where((k) => !mastered(k)).toList();
+      while (base.isNotEmpty && chosen.length < size) {
         final round = [...base];
         if (shuffle) round.shuffle(rng ?? Random());
         chosen.addAll(round.take(size - chosen.length));
@@ -351,14 +384,15 @@ class KanaRepository extends ChangeNotifier {
       next = consWrong >= 2 ? now : now.add(const Duration(minutes: 1));
     }
 
-    final int level;
+    final int earnedLevel;
     if (sessionsCorrect >= 3 && consCorrect >= 2) {
-      level = 3;
+      earnedLevel = 3;
     } else if (sessionsCorrect >= 2) {
-      level = 2;
+      earnedLevel = 2;
     } else {
-      level = 1;
+      earnedLevel = 1;
     }
+    final level = max(p.masteryLevel, earnedLevel);
 
     await db.insert(
       'kana_progress',
@@ -392,13 +426,20 @@ class KanaRepository extends ChangeNotifier {
       [now, ids[0], ids[1]],
     );
     if (updated == 0) {
-      await db.insert('confusions',
-          {'a_id': ids[0], 'b_id': ids[1], 'count': 1, 'last_at': now});
+      await db.insert('confusions', {
+        'a_id': ids[0],
+        'b_id': ids[1],
+        'count': 1,
+        'last_at': now,
+      });
     }
     notifyListeners();
   }
 
-  Future<List<ConfusionPair>> topConfusions({int limit = 6, int minCount = 1}) async {
+  Future<List<ConfusionPair>> topConfusions({
+    int limit = 6,
+    int minCount = 1,
+  }) async {
     final db = await _store.database;
     final rows = await db.query(
       'confusions',
@@ -411,7 +452,9 @@ class KanaRepository extends ChangeNotifier {
     for (final r in rows) {
       final a = _byId[r['a_id']];
       final b = _byId[r['b_id']];
-      if (a != null && b != null) result.add(ConfusionPair(a, b, r['count'] as int));
+      if (a != null && b != null) {
+        result.add(ConfusionPair(a, b, r['count'] as int));
+      }
     }
     return result;
   }
@@ -491,7 +534,8 @@ class KanaRepository extends ChangeNotifier {
   Future<HomeStats> homeStats() async {
     final now = DateTime.now();
     final midnight = DateTime(now.year, now.month, now.day);
-    final firstMs = int.tryParse(await getMeta('first_open') ?? '') ??
+    final firstMs =
+        int.tryParse(await getMeta('first_open') ?? '') ??
         now.millisecondsSinceEpoch;
     final first = DateTime.fromMillisecondsSinceEpoch(firstMs);
     final firstDay = DateTime(first.year, first.month, first.day);
@@ -511,18 +555,28 @@ class KanaRepository extends ChangeNotifier {
     final progress = await loadProgress();
 
     double mastery(List<Kana> list) {
-      final sum =
-          list.fold<int>(0, (s, k) => s + (progress[k.id]?.masteryLevel ?? 0));
+      final sum = list.fold<int>(
+        0,
+        (s, k) => s + (progress[k.id]?.masteryLevel ?? 0),
+      );
       return sum / (list.length * 3);
     }
 
-    final weak = allKana.where((k) => progress[k.id]?.needsAnotherLook ?? false).toList()
-      ..sort((a, b) =>
-          progress[b.id]!.wrongCount.compareTo(progress[a.id]!.wrongCount));
+    final weak =
+        allKana.where((k) => progress[k.id]?.needsAnotherLook ?? false).toList()
+          ..sort(
+            (a, b) => progress[b.id]!.wrongCount.compareTo(
+              progress[a.id]!.wrongCount,
+            ),
+          );
 
     final db = await _store.database;
-    final rows = await db.query('study_sessions',
-        where: 'cards > 0', orderBy: 'started_at DESC', limit: 5);
+    final rows = await db.query(
+      'study_sessions',
+      where: 'cards > 0',
+      orderBy: 'started_at DESC',
+      limit: 5,
+    );
 
     // Statistik turunan untuk layar Profile. Semua dihitung dari sesi yang
     // sudah ada, tanpa tabel atau data baru.
@@ -538,7 +592,8 @@ class KanaRepository extends ChangeNotifier {
       if (cards <= 0 && seconds <= 0) continue;
       totalSessions++;
       final dt = DateTime.fromMillisecondsSinceEpoch(
-          (row['started_at'] as num).toInt());
+        (row['started_at'] as num).toInt(),
+      );
       final day = DateTime(dt.year, dt.month, dt.day);
       daySeconds[day] = (daySeconds[day] ?? 0) + seconds;
     }
@@ -565,12 +620,15 @@ class KanaRepository extends ChangeNotifier {
       for (var i = 6; i >= 0; i--)
         daySeconds[today.subtract(Duration(days: i))] ?? 0,
     ];
-    final wordRows =
-        await db.rawQuery('SELECT COUNT(*) AS c FROM word_history');
+    final wordRows = await db.rawQuery(
+      'SELECT COUNT(*) AS c FROM word_history',
+    );
     final wordsMet = (wordRows.first['c'] as num?)?.toInt() ?? 0;
 
     return ProgressStats(
-      knownCount: allKana.where((k) => progress[k.id]?.isMastered ?? false).length,
+      knownCount: allKana
+          .where((k) => progress[k.id]?.isMastered ?? false)
+          .length,
       totalCount: allKana.length,
       weekSeconds: await _secondsSince(monday),
       hiraganaMastery: mastery(hiraganaList),
@@ -581,10 +639,7 @@ class KanaRepository extends ChangeNotifier {
         for (final e in progress.entries)
           e.key: e.value.masteryLevel >= 3
               ? 4
-              : max(
-                  e.value.masteryLevel,
-                  e.value.sessionsCorrect.clamp(0, 3),
-                ),
+              : max(e.value.masteryLevel, e.value.sessionsCorrect.clamp(0, 3)),
       },
       active: await activeIds(),
       recent: rows.map(StudySession.fromMap).toList(),

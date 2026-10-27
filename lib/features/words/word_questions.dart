@@ -46,6 +46,9 @@ List<String> buildReadingOptions({
     for (var i = 0; i < pieces.length; i++)
       if (pieces[i].kana != null) i,
   ];
+  if (positions.isEmpty) {
+    throw StateError('Soal baca tidak memiliki huruf kana: "$answer"');
+  }
   final options = <String>{answer};
 
   var guard = 0;
@@ -59,8 +62,7 @@ List<String> buildReadingOptions({
     if (near.isNotEmpty && rng.nextDouble() < 0.4) {
       replacement = near[rng.nextInt(near.length)];
     } else {
-      final candidates =
-          letterPool.where((k) => k.id != original.id).toList();
+      final candidates = letterPool.where((k) => k.id != original.id).toList();
       if (candidates.isEmpty) break;
       replacement = candidates[rng.nextInt(candidates.length)];
     }
@@ -71,17 +73,19 @@ List<String> buildReadingOptions({
 
   // Cadangan (jarang terjadi): lengkapi dengan romaji huruf lain.
   if (options.length < 4) {
-    final extra = [...letterPool]..shuffle(rng);
+    final script = pieces[positions.first].kana!.type;
+    final fallback = allKana.where((k) => k.type == script).toList()
+      ..shuffle(rng);
+    final extra = [...letterPool.where((k) => k.type == script), ...fallback];
     for (final k in extra) {
       options.add(k.romaji);
       if (options.length == 4) break;
     }
   }
   final result = options.toList()..shuffle(rng);
-  assert(
-    result.contains(answer) && result.length == 4,
-    'Pilihan baca tidak sah untuk "$answer": $result',
-  );
+  if (result.length != 4 || !result.contains(answer)) {
+    throw StateError('Pilihan baca tidak sah untuk "$answer": $result');
+  }
   return result;
 }
 
@@ -162,26 +166,31 @@ Future<List<ReadQuestion>> buildReadingSession({
   }
   for (final w in picked) {
     final pieces = WordRepository.parse(w.text)!;
-    final letters = [for (final p in pieces) if (p.kana != null) p.kana!];
+    final letters = [
+      for (final p in pieces)
+        if (p.kana != null) p.kana!,
+    ];
     final script = letters.first.type;
     var letterPool = _scriptPool(active, script);
     if (letterPool.length < WordRepository.minLetters) {
       letterPool = script == 'hiragana' ? hiraganaList : katakanaList;
     }
-    questions.add(ReadQuestion(
-      kind: ReadKind.word,
-      text: w.text,
-      letters: letters,
-      answer: w.reading,
-      options: buildReadingOptions(
+    questions.add(
+      ReadQuestion(
+        kind: ReadKind.word,
+        text: w.text,
+        letters: letters,
         answer: w.reading,
-        pieces: pieces,
-        letterPool: letterPool,
-        rng: r,
-        partners: partners,
+        options: buildReadingOptions(
+          answer: w.reading,
+          pieces: pieces,
+          letterPool: letterPool,
+          rng: r,
+          partners: partners,
+        ),
+        word: w,
       ),
-      word: w,
-    ));
+    );
     usedTexts.add(w.text);
   }
 
@@ -195,19 +204,21 @@ Future<List<ReadQuestion>> buildReadingSession({
     if (!usedTexts.add(text)) return;
     final pieces = [for (final k in chosen) WordPiece.kana(k)];
     final answer = WordRepository.romajiOf(pieces);
-    questions.add(ReadQuestion(
-      kind: ReadKind.chunk,
-      text: text,
-      letters: chosen,
-      answer: answer,
-      options: buildReadingOptions(
+    questions.add(
+      ReadQuestion(
+        kind: ReadKind.chunk,
+        text: text,
+        letters: chosen,
         answer: answer,
-        pieces: pieces,
-        letterPool: _scriptPool(active, script),
-        rng: r,
-        partners: partners,
+        options: buildReadingOptions(
+          answer: answer,
+          pieces: pieces,
+          letterPool: _scriptPool(active, script),
+          rng: r,
+          partners: partners,
+        ),
       ),
-    ));
+    );
   }
 
   var guard = 0;
@@ -226,19 +237,21 @@ Future<List<ReadQuestion>> buildReadingSession({
     final letterPool = _scriptPool(active, script);
     final k = letterPool[r.nextInt(letterPool.length)];
     if (!usedTexts.add(k.character)) continue;
-    questions.add(ReadQuestion(
-      kind: ReadKind.single,
-      text: k.character,
-      letters: [k],
-      answer: k.romaji,
-      options: buildReadingOptions(
+    questions.add(
+      ReadQuestion(
+        kind: ReadKind.single,
+        text: k.character,
+        letters: [k],
         answer: k.romaji,
-        pieces: [WordPiece.kana(k)],
-        letterPool: letterPool,
-        rng: r,
-        partners: partners,
+        options: buildReadingOptions(
+          answer: k.romaji,
+          pieces: [WordPiece.kana(k)],
+          letterPool: letterPool,
+          rng: r,
+          partners: partners,
+        ),
       ),
-    ));
+    );
   }
 
   // Pelengkap: kalau masih kurang dari [size] (kata dan huruf tunggal yang unik

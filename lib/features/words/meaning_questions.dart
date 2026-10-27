@@ -15,12 +15,20 @@ class MeaningQuestion {
 }
 
 /// Kata-kata umum yang tidak dihitung saat membandingkan dua arti.
-const _ignoredTokens = {'buah', 'saya', 'yang', 'dan', 'untuk', 'dari', 'dengan'};
+const _ignoredTokens = {
+  'buah',
+  'saya',
+  'yang',
+  'dan',
+  'untuk',
+  'dari',
+  'dengan',
+};
 
 Set<String> _tokens(String meaning) => {
-      for (final t in meaning.toLowerCase().split(RegExp(r'[^a-z]+')))
-        if (t.length >= 3 && !_ignoredTokens.contains(t)) t,
-    };
+  for (final t in meaning.toLowerCase().split(RegExp(r'[^a-z]+')))
+    if (t.length >= 3 && !_ignoredTokens.contains(t)) t,
+};
 
 /// Dua arti dianggap bentrok kalau sama persis atau berbagi kata penting,
 /// misalnya "satu (buah)" dan "lantai satu / satu kali". Pengecoh yang
@@ -72,7 +80,11 @@ List<String> buildMeaningOptions({
     tryAdd(w);
   }
 
-  return [target.meaning, ...picked]..shuffle(rng);
+  final options = [target.meaning, ...picked]..shuffle(rng);
+  if (options.length != 4 || options.toSet().length != 4) {
+    throw StateError('Pilihan arti tidak sah untuk "${target.text}": $options');
+  }
+  return options;
 }
 
 /// Menyusun satu sesi tebak arti sebanyak [size] soal.
