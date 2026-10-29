@@ -86,7 +86,7 @@ Kalau salah: **1x** berturut tampil lagi dalam 1 menit; **2x** berturut langsung
 | 0 | baru | belum pernah dibuka |
 | 1 | sedang belajar | sudah pernah dijawab |
 | 2 | mulai familiar | benar di >= 2 sesi berbeda |
-| 3 | dikuasai | benar di >= 3 sesi berbeda **dan** benar 2x berturut-turut |
+| 3 | dikuasai | benar di >= 4 sesi berbeda **dan** benar 3x berturut-turut |
 
 Level 3 dipakai sebagai "Known kana" di Profile. Persen penguasaan per script =
 `jumlah level / (jumlah huruf x 3)`.

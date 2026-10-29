@@ -48,6 +48,9 @@ class _QuizScreenState extends State<QuizScreen> {
   String? _pickedId;
   // Riwayat tipe soal terakhir, supaya jenis yang sama tidak mendominasi.
   final _recentKinds = <QuizKind>[];
+  // Jenis soal terakhir per huruf, supaya huruf yang muncul lagi di sesi yang
+  // sama tidak ditanyakan dengan cara yang sama terus.
+  final _lastKindByKana = <String, QuizKind>{};
 
   /// Type soal yang baru saja dipakai. Kalau [kind] sudah muncul
   /// [maxRepeat] kali berturut-turut, cari tipe lain yang belum dicapai.
@@ -80,6 +83,8 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
+    // Tahan notifikasi Home/Progress selama kuis supaya Next tidak macet.
+    KanaRepository.instance.holdNotifications();
     _session = SessionController(mode: 'quiz', args: widget.args);
     _session.start().then((_) {
       if (!mounted) return;
@@ -95,20 +100,30 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void dispose() {
     _session.flush();
+    KanaRepository.instance.releaseNotifications();
     super.dispose();
   }
 
   void _nextQuestion() {
     KanaAudioService.instance.resetCycle();
     final kana = _session.current!;
-    final kind = _nextKind();
-    _q = buildQuestion(
-      kana,
-      kind,
-      _rng,
-      pool: _session.activePool,
-      partners: _session.partners[kana.id] ?? const [],
-    );
+    var kind = _nextKind();
+    // Huruf yang sama muncul lagi: pakai jenis soal yang berbeda kalau bisa.
+    if (widget.args.quizKind == null && _lastKindByKana[kana.id] == kind) {
+      kind = kind == QuizKind.kanaToSound
+          ? QuizKind.soundToKana
+          : QuizKind.kanaToSound;
+    }
+    if (_recentKinds.isNotEmpty) _recentKinds[_recentKinds.length - 1] = kind;
+    _lastKindByKana[kana.id] = kind;
+    final partners = _session.partners[kana.id] ?? const <Kana>[];
+    try {
+      _q = buildQuestion(kana, kind, _rng,
+          pool: _session.activePool, partners: partners);
+    } on StateError {
+      // Jangan sampai layar macet: ulangi dengan pengecoh dari semua huruf.
+      _q = buildQuestion(kana, kind, _rng, pool: null, partners: partners);
+    }
     _pos = _session.position;
     _answered = false;
     _wasCorrect = false;

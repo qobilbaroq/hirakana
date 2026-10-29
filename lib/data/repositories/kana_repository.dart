@@ -92,6 +92,31 @@ class KanaRepository extends ChangeNotifier {
 
   final _store = LocalDatabase.instance;
 
+  // Selama sesi kuis berjalan, notifikasi ke Home/Progress ditahan supaya
+  // layar-layar itu tidak memuat ulang statistik di setiap jawaban (penyebab
+  // tombol Next terasa macet). Satu notifikasi dikirim saat sesi ditutup.
+  int _holds = 0;
+  bool _pendingNotify = false;
+
+  void holdNotifications() => _holds++;
+
+  void releaseNotifications() {
+    if (_holds > 0) _holds--;
+    if (_holds == 0 && _pendingNotify) {
+      _pendingNotify = false;
+      super.notifyListeners();
+    }
+  }
+
+  @override
+  void notifyListeners() {
+    if (_holds > 0) {
+      _pendingNotify = true;
+      return;
+    }
+    super.notifyListeners();
+  }
+
   Future<void> init() async {
     await _store.database;
     final first = await getMeta('first_open');
@@ -340,6 +365,90 @@ class KanaRepository extends ChangeNotifier {
       ..addAll(out);
   }
 
+  /// Antrean khusus KUIS. Memakai SEMUA huruf aktif (yang belum punya level
+  /// juga ikut), jumlah soal selalu sama dengan [size].
+  ///
+  /// - Huruf aktif <= [size]: semua huruf dipakai, tiap huruf muncul merata
+  ///   (selisih maksimal 1 kali). Sisa slot diberikan ke huruf berprioritas.
+  /// - Huruf aktif > [size]: dipilih [size] huruf BERBEDA secara acak
+  ///   berbobot (level rendah / jatuh tempo / sering salah lebih sering
+  ///   terpilih). Huruf mastered dibatasi ~25% selama masih ada huruf lain.
+  /// - Kalau semua mastered, bobot sama rata, jadi murni acak.
+  /// - Huruf yang sama tidak bersebelahan (selama masih mungkin).
+  Future<List<Kana>> buildQuizQueue({
+    required String type,
+    int size = sessionSize,
+    Random? rng,
+  }) async {
+    final r = rng ?? Random();
+    final progress = await loadProgress();
+    final active = await activeKana(type);
+    if (active.isEmpty) return [];
+    final now = DateTime.now();
+
+    bool mastered(Kana k) => progress[k.id]?.isMastered ?? false;
+
+    double weight(Kana k) {
+      final p = progress[k.id];
+      if (p == null || !p.reviewed) return 6; // belum pernah dijawab
+      var w = switch (p.masteryLevel) {
+        0 => 6.0,
+        1 => 5.0,
+        2 => 3.0,
+        _ => 1.0, // mastered: jarang, tapi tetap bisa muncul
+      };
+      final next = p.nextReviewAt;
+      if (next == null || !next.isAfter(now)) w += 3; // jatuh tempo
+      w += min(p.wrongCount, 5).toDouble(); // sering salah
+      final last = p.lastReviewedAt;
+      if (last != null) {
+        w += min(now.difference(last).inDays, 7) / 3; // lama tidak disentuh
+      }
+      return w;
+    }
+
+    // Urutan acak berbobot (Efraimidis-Spirakis): bobot besar cenderung di depan.
+    List<Kana> weightedOrder(List<Kana> list) {
+      final keyed = [
+        for (final k in list) (k, pow(r.nextDouble(), 1 / weight(k)).toDouble()),
+      ]..sort((a, b) => b.$2.compareTo(a.$2));
+      return [for (final e in keyed) e.$1];
+    }
+
+    final chosen = <Kana>[];
+    if (active.length <= size) {
+      final base = size ~/ active.length;
+      final extra = size % active.length;
+      for (final k in active) {
+        chosen.addAll(List.filled(base, k));
+      }
+      // Sisa slot: huruf berprioritas (bukan huruf yang sama berulang).
+      chosen.addAll(weightedOrder(active).take(extra));
+    } else {
+      final order = weightedOrder(active);
+      final cap = (size / 4).ceil();
+      var masteredTaken = 0;
+      final skipped = <Kana>[];
+      for (final k in order) {
+        if (chosen.length >= size) break;
+        if (mastered(k) && masteredTaken >= cap) {
+          skipped.add(k);
+          continue;
+        }
+        if (mastered(k)) masteredTaken++;
+        chosen.add(k);
+      }
+      // Huruf non-mastered kurang: baru isi dengan mastered.
+      for (final k in skipped) {
+        if (chosen.length >= size) break;
+        chosen.add(k);
+      }
+    }
+
+    _spreadNoRepeat(chosen, r);
+    return chosen;
+  }
+
   /// Mencatat satu jawaban. [fast] = terlalu cepat, jadi tidak dihitung
   /// sebagai bukti penguasaan lintas sesi.
   Future<void> recordAnswer({
@@ -384,8 +493,12 @@ class KanaRepository extends ChangeNotifier {
       next = consWrong >= 2 ? now : now.add(const Duration(minutes: 1));
     }
 
+    // Level 1: pernah benar. Level 2: benar di >= 2 sesi berbeda.
+    // Level 3 (mastered, tampil sebagai langkah ke-4): benar di >= 4 sesi
+    // berbeda DAN minimal 3 jawaban benar berturut-turut. Jadi 3 jawaban
+    // benar saja tidak cukup.
     final int earnedLevel;
-    if (sessionsCorrect >= 3 && consCorrect >= 2) {
+    if (sessionsCorrect >= 4 && consCorrect >= 3) {
       earnedLevel = 3;
     } else if (sessionsCorrect >= 2) {
       earnedLevel = 2;
@@ -421,18 +534,22 @@ class KanaRepository extends ChangeNotifier {
     final ids = [target.id, picked.id]..sort();
     final db = await _store.database;
     final now = DateTime.now().millisecondsSinceEpoch;
-    final updated = await db.rawUpdate(
+    // Insert idempoten dulu, lalu increment. Dua jawaban salah yang mencatat
+    // pasangan sama secara bersamaan tidak lagi bentrok UNIQUE.
+    await db.insert(
+      'confusions',
+      {
+        'a_id': ids[0],
+        'b_id': ids[1],
+        'count': 0,
+        'last_at': now,
+      },
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+    await db.rawUpdate(
       'UPDATE confusions SET count = count + 1, last_at = ? WHERE a_id = ? AND b_id = ?',
       [now, ids[0], ids[1]],
     );
-    if (updated == 0) {
-      await db.insert('confusions', {
-        'a_id': ids[0],
-        'b_id': ids[1],
-        'count': 1,
-        'last_at': now,
-      });
-    }
     notifyListeners();
   }
 

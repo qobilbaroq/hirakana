@@ -127,11 +127,18 @@ class SessionController {
     if (args.quizKind == QuizKind.lookalike) {
       queue.addAll(
           await _repo.confusableQueue(size: AppSettings.instance.sessionSize));
+    } else if (mode == 'quiz') {
+      // Kuis: semua huruf aktif ikut, jumlah soal = pengaturan sesi.
+      queue.addAll(await _repo.buildQuizQueue(
+        type: type,
+        size: AppSettings.instance.sessionSize,
+      ));
+      putKanaFirst(queue, args.firstKanaId);
     } else {
       queue.addAll(await _repo.buildQueue(
         type: type,
         quick: args.quick,
-        reviewedOnly: mode == 'quiz',
+        reviewedOnly: false,
         size: AppSettings.instance.sessionSize,
         fillToSize:
             AppSettings.instance.sessionSize > AppSettings.minSessionSize,
