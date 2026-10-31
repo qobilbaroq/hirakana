@@ -68,11 +68,16 @@ List<Kana> _choices(
   final picked = <Kana>[];
   for (final k in partners) {
     if (k.type == target.type && used.add(k.romaji)) picked.add(k);
-    if (picked.length == 3) break;
+    if (picked.length >= 3) break;
   }
-  for (final k in c) {
-    if (used.add(k.romaji)) picked.add(k);
-    if (picked.length == 3) break;
+  // Kalau pengecoh dari pasangan tertukar sudah cukup, jangan tambah lagi:
+  // menambah satu huruf ke daftar yang sudah 3 membuat syarat == 3 tidak
+  // pernah terpenuhi dan seluruh kandidat ikut masuk.
+  if (picked.length < 3) {
+    for (final k in c) {
+      if (used.add(k.romaji)) picked.add(k);
+      if (picked.length >= 3) break;
+    }
   }
   return [target, ...picked]..shuffle(rng);
 }

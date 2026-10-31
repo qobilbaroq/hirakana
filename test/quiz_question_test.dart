@@ -69,6 +69,35 @@ void main() {
     }
   });
 
+  group('pengecoh dari pasangan tertukar', () {
+    test('3 pengecoh dari partners tetap menghasilkan tepat 4 pilihan', () {
+      final target = katakanaList.firstWhere((k) => k.romaji == 'ko');
+      final partners = [
+        katakanaList.firstWhere((k) => k.romaji == 'fu'),
+        katakanaList.firstWhere((k) => k.romaji == 'ne'),
+        katakanaList.firstWhere((k) => k.romaji == 'pe'),
+      ];
+
+      for (final kind in QuizKind.values) {
+        final q = buildQuestion(
+          target,
+          kind,
+          Random(1),
+          pool: katakanaList,
+          partners: partners,
+        );
+        expect(q.options.length, 4, reason: 'kind=$kind');
+        expect(q.options.map(q.optionLabel).toSet().length, 4,
+            reason: 'kind=$kind');
+        expect(
+          q.options.any((k) => k.id == target.id),
+          isTrue,
+          reason: 'jawaban benar hilang untuk kind=$kind',
+        );
+      }
+    });
+  });
+
   group('data kana', () {
     test('く/ク = ku dan こ/コ = ko dengan id & group benar', () {
       final hKu = hiraganaList.firstWhere((k) => k.romaji == 'ku');

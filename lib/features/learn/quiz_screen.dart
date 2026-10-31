@@ -122,7 +122,13 @@ class _QuizScreenState extends State<QuizScreen> {
           pool: _session.activePool, partners: partners);
     } on StateError {
       // Jangan sampai layar macet: ulangi dengan pengecoh dari semua huruf.
-      _q = buildQuestion(kana, kind, _rng, pool: null, partners: partners);
+      try {
+        _q = buildQuestion(kana, kind, _rng, pool: null, partners: partners);
+      } on StateError {
+        // Pasangan tertukar yang rusak tidak boleh menghentikan kuis.
+        _q = buildQuestion(kana, kind, _rng,
+            pool: null, partners: const <Kana>[]);
+      }
     }
     _pos = _session.position;
     _answered = false;
